@@ -334,6 +334,33 @@
       "title": "Project home",
       "guidance": "guided",
       "content_hash": "38304736aa9020c42f4caeb2ad291df470bf197cb1f1439a3ea7fbcff173636e"
+    },
+    {
+      "slug": "m2-u1",
+      "kind": "unit",
+      "parent_slug": "m2",
+      "position": 1,
+      "title": "Values, functions and tests",
+      "guidance": "guided",
+      "content_hash": "0c6dbcb5d67df7830b7eb560eef9e4fbe048b13898fdc9a0567efb2859d6a5fc"
+    },
+    {
+      "slug": "m2-u1-quiz",
+      "kind": "quiz",
+      "parent_slug": "m2-u1",
+      "position": 1,
+      "title": "Values, functions and tests",
+      "guidance": "guided",
+      "content_hash": "71e38dae858b40c6c1fafc40e54a5dea39111550cc78cbb4e92152cebf1836ab"
+    },
+    {
+      "slug": "m2-p1",
+      "kind": "project",
+      "parent_slug": "m2-u1",
+      "position": 2,
+      "title": "Grading scale",
+      "guidance": "guided",
+      "content_hash": "bf4ff0c3dfa9be87d0439de9eb6590fee71366be08fe5c25472587119ec74b25"
     }
   ]
 }

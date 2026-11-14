@@ -1,0 +1,116 @@
+{
+  "id": "m2-u1-quiz",
+  "title": "Values, functions and tests",
+  "pass_mark": 5,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "GPIS D-01: what is the remark for a total of 79?",
+      "options": ["Highest", "High", "Higher", "High Average"],
+      "answer": 2,
+      "why": "Higher is 70–79. Highest starts at 80.",
+      "wrong": {
+        "0": "79 does not round up. Highest starts at exactly 80.",
+        "1": "High is the band below: 65–69.",
+        "3": "High Average is 60–64, two bands lower."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "GPIS D-01: which pair tests one boundary correctly?",
+      "options": [
+        "64 → High Average and 65 → High",
+        "60 and 65",
+        "65 and 69",
+        "64 and 66"
+      ],
+      "answer": 0,
+      "why": "64 and 65 sit on the two sides of one edge, the start of High.",
+      "wrong": {
+        "1": "These are the lower edges of two different bands; neither edge is tested from both sides.",
+        "2": "Both are inside one band, High.",
+        "3": "It skips 65, the edge itself."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "What does `typeof NaN` give?",
+      "options": ["\"NaN\"", "\"undefined\"", "\"object\"", "\"number\""],
+      "answer": 3,
+      "why": "NaN is a special number value: \"not a number\" is still of kind number.",
+      "wrong": {
+        "0": "There is no kind called NaN.",
+        "1": "`undefined` is a different value.",
+        "2": "That is what `typeof null` gives."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "What do `\"80\" >= 80` and `\"80\" === 80` give?",
+      "options": [
+        "true and true",
+        "true and false",
+        "false and false",
+        "An error"
+      ],
+      "answer": 1,
+      "why": "`>=` turns the text into a number first; `===` needs the same kind, and text is not a number.",
+      "wrong": {
+        "0": "`===` never converts. Text and number are different kinds.",
+        "2": "`>=` does convert the text \"80\" to the number 80.",
+        "3": "JavaScript does not refuse; it converts silently. That is the trap."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "Find the mistake: `if (s >= 0) return \"Lowest\"; if (s >= 40) return \"Lower\"; …`",
+      "options": [
+        "`>=` should be `==`",
+        "`return` cannot be used inside `if`",
+        "The first test is true for every score, so every remark is Lowest",
+        "Nothing is wrong"
+      ],
+      "answer": 2,
+      "why": "The checks start at the bottom. Start from the top band, so the first true check is the right band.",
+      "wrong": {
+        "0": "`==` would match only whole edge numbers, and most totals none at all.",
+        "1": "An early return inside `if` is normal.",
+        "3": "A total of 90 would be called Lowest."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "Why does GPIS never store the remark beside the score?",
+      "options": [
+        "It can always be worked out from the score, and a stored copy can disagree with it",
+        "To save disk space",
+        "Because text cannot be stored in a database",
+        "Because remarks are secret"
+      ],
+      "answer": 0,
+      "why": "One source of truth: the score. A stored remark could stay wrong after a scale change.",
+      "wrong": {
+        "1": "A word per score is tiny. Space is not the reason.",
+        "2": "Databases store text all the time.",
+        "3": "The remark is printed on the report card for parents to read."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "A remark function receives 140. Which behaviour is safest for a report card?",
+      "options": [
+        "Return \"Highest\"",
+        "Refuse it (throw), so the wrong mark is found",
+        "Return \"\"",
+        "Return the remark for 100 and write a log line"
+      ],
+      "answer": 1,
+      "why": "A refusal is noticed at once. Every other choice prints something that looks normal.",
+      "wrong": {
+        "0": "It hides a wrong mark behind the best result.",
+        "2": "A blank means \"not assessed\" (D-10). It would look like a missing score.",
+        "3": "Nobody reads the log, and the card still shows a remark for a mark that does not exist."
+      }
+    }
+  ]
+}

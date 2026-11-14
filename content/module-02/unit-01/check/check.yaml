@@ -1,0 +1,95 @@
+# Check for project 2.1 "Grading scale".
+# Any change in this folder needs a new version (docs/checker.md).
+# A repo project: run it inside ~/projects/gpis-rebuild.
+id: m2-p1
+title: Grading scale
+version: 1.0.0
+unit: m2-u1
+requires: [wsl, node, git]
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: files
+    kind: files
+    title: src/lib/grading and tests/grading.test exist
+    required: true
+    expect:
+      - { glob: "src/lib/grading.*", type: file }
+      - { glob: "tests/grading.test.*", type: file }
+
+  - id: scale
+    kind: tests
+    title: remarkFor gives the D-01 remark for every total
+    required: true
+    files: [tests/scale.test.mjs]
+
+  - id: refuses
+    kind: tests
+    title: remarkFor refuses what is not a total from 0 to 100
+    required: true
+    files: [tests/refuses.test.mjs]
+
+  - id: bands-exported
+    kind: tests
+    title: REMARK_BANDS holds the nine bands, highest first
+    required: true
+    files: [tests/bands.test.mjs]
+
+  - id: one-table
+    kind: tests
+    title: Each remark word is typed once
+    required: true
+    run:
+      command: grep -cE "[\"']High Average[\"']" src/lib/grading.*
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "1\n"
+
+  - id: own-tests
+    kind: tests
+    title: Your tests/grading.test has at least 18 tests
+    required: true
+    run:
+      command: grep -cE '^\s*(test|it)\(' tests/grading.test.* | awk '{exit !($1 >= 18)}'
+      cwd: project
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: npm-test
+    kind: tests
+    title: npm test passes
+    required: true
+    run:
+      command: npm test --silent
+      cwd: project
+      timeout_seconds: 120
+      expect_exit: 0
+
+  - id: lint
+    kind: static
+    title: npm run lint passes
+    required: true
+    run: [lint]
+
+  - id: history
+    kind: git
+    title: The history is long enough, says what changed, and holds no secret
+    required: true
+    expect:
+      min_commits: 12
+      message_min_chars: 15
+      no_secrets: true
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  files: "src/lib/grading or tests/grading.test is missing."
+  scale: "remarkFor gives the wrong remark for at least one total."
+  refuses: "remarkFor accepted a value it must refuse, or refused it with the wrong kind of error."
+  bands-exported: "REMARK_BANDS is not the nine bands, highest first."
+  one-table: "A remark word is typed in more than one place in grading. remarkFor must read REMARK_BANDS."
+  own-tests: "tests/grading.test has fewer than 18 tests."
+  npm-test: "npm test fails."
+  lint: "npm run lint reports problems."
+  history: "Too few commits, a message that says too little, or a secret."
