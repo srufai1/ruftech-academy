@@ -1,0 +1,94 @@
+# Check for project 2.3 "Score rules".
+# Any change in this folder needs a new version (docs/checker.md).
+# A repo project: run it inside ~/projects/gpis-rebuild.
+id: m2-p3
+title: Score rules
+version: 1.0.0
+unit: m2-u3
+requires: [wsl, node, git]
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: typescript-setup
+    kind: files
+    title: TypeScript is set up, and grading and ranking are .ts files
+    required: true
+    expect:
+      - { path: tsconfig.json, type: file }
+      - { path: src/lib/marks.ts, type: file }
+      - { path: src/lib/grading.ts, type: file }
+      - { path: src/lib/ranking.ts, type: file }
+      - { path: src/lib/grading.mjs, type: absent }
+      - { path: src/lib/ranking.mjs, type: absent }
+      - { glob: "tests/marks.test.*", type: file }
+
+  - id: parse-accepts
+    kind: tests
+    title: parseMark accepts blank, ABS, zero and marks up to the maximum
+    required: true
+    files: [tests/parse-accepts.test.mjs]
+
+  - id: parse-refuses
+    kind: tests
+    title: parseMark refuses everything else, without throwing
+    required: true
+    files: [tests/parse-refuses.test.mjs]
+
+  - id: total
+    kind: tests
+    title: calculateTotal gives D-162 numbers for a complete set of marks
+    required: true
+    files: [tests/total.test.mjs]
+
+  - id: total-incomplete
+    kind: tests
+    title: calculateTotal gives no total when a part is blank or ABS
+    required: true
+    files: [tests/total-incomplete.test.mjs]
+
+  - id: old-rules-still-pass
+    kind: tests
+    title: grading and ranking behave as before the move to TypeScript
+    required: true
+    files: [tests/old-rules.test.mjs]
+
+  - id: no-any
+    kind: tests
+    title: The type any is not used in src/
+    required: true
+    run:
+      command: |-
+        grep -rnE '(:\s*any\b|\bas any\b|<any>)' src ; true
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: ""
+
+  - id: npm-test
+    kind: tests
+    title: npm test passes
+    required: true
+    run:
+      command: npm test --silent
+      cwd: project
+      timeout_seconds: 120
+      expect_exit: 0
+
+  - id: static
+    kind: static
+    title: Lint and the type check pass
+    required: true
+    run: [lint, tsc]
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  typescript-setup: "TypeScript is not set up as required, or grading and ranking are not converted to .ts yet."
+  parse-accepts: "parseMark refused or changed a value it must accept. Check blank, ABS and zero."
+  parse-refuses: "parseMark accepted a value it must refuse, threw an error, or its message does not name the maximum."
+  total: "calculateTotal gave a wrong number for a complete set of marks."
+  total-incomplete: "calculateTotal gave a total, or wrong flags, when a part was blank or ABS."
+  old-rules-still-pass: "After the move to TypeScript, grading or ranking no longer behaves as before."
+  no-any: "The type any is used in src/."
+  npm-test: "npm test fails."
+  static: "Lint or the type check reports problems."

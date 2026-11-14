@@ -1,0 +1,118 @@
+{
+  "id": "m2-u3-quiz",
+  "title": "TypeScript and input you cannot trust",
+  "pass_mark": 6,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What does `Number(\"\")` give?",
+      "options": ["NaN", "null", "0", "An error"],
+      "answer": 2,
+      "why": "An empty text converts to 0. That is why the blank check must come before converting.",
+      "wrong": {
+        "0": "That is `Number(\"abc\")`. Empty text is a special case: 0.",
+        "1": "`Number` never returns null.",
+        "3": "`Number` does not throw; it converts silently."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "GPIS D-162: parts 15, 15, 15, 15 and the exam blank. What is the total?",
+      "options": ["50", "No total (null)", "100", "60"],
+      "answer": 1,
+      "why": "A total exists only when every part is a number. A blank exam means \"not entered\".",
+      "wrong": {
+        "0": "That counts the blank exam as 0. A blank is not a zero.",
+        "2": "The exam has no mark at all.",
+        "3": "60 is the raw CA. It is not a final result."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "GPIS D-162: Individual 12, Class Test 13.5, Group 14, Project 10, Exam 68/100. What is the Final?",
+      "options": ["117.5", "83.5", "75", "75.25"],
+      "answer": 3,
+      "why": "CA raw 49.5 → 49.5 / 60 × 50 = 41.25. Exam 68 / 100 × 50 = 34. 41.25 + 34 = 75.25.",
+      "wrong": {
+        "0": "That adds the raw marks without scaling.",
+        "1": "The CA was not scaled: 49.5 + 34.",
+        "2": "The rule keeps two decimals; it does not round to a whole number."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "GPIS D-171: a JHS 2 exam marked 112 out of 140. What is the exam scaled to 50?",
+      "options": ["40", "56", "112", "80"],
+      "answer": 0,
+      "why": "112 / 140 × 50 = 40.",
+      "wrong": {
+        "1": "That is the JHS 3 mock scale, out of 70.",
+        "2": "The exam is not scaled at all here.",
+        "3": "80 is the percentage. The final uses the exam scaled to 50."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "A pupil was absent for Group Work, and the teacher types ABS. What does the total show?",
+      "options": [
+        "Nothing: the result is incomplete, and it records that there is an absence",
+        "0 for that part, and a total",
+        "The average of the other parts",
+        "An error that blocks saving"
+      ],
+      "answer": 0,
+      "why": "ABS is a valid entry, but no total exists unless every part is a number.",
+      "wrong": {
+        "1": "That invents a zero for a pupil who was not there.",
+        "2": "No rule says to average. That would invent a mark.",
+        "3": "ABS is allowed. The teacher must be able to record it."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "Find the mistake: `const mark = input || null`",
+      "options": [
+        "`||` cannot be used with null",
+        "A typed 0 becomes null",
+        "`const` cannot hold null",
+        "Nothing is wrong"
+      ],
+      "answer": 1,
+      "why": "`||` treats 0 as false, so it picks `null`. Use a check with `=== null` or `??`.",
+      "wrong": {
+        "0": "`||` works with any values. That is the problem: it works too well.",
+        "2": "`const` can hold any value, null included.",
+        "3": "A pupil who scored 0 would show as blank."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "Which type is right for a value that comes from a form?",
+      "options": ["`any`", "`string`", "`unknown`", "`never`"],
+      "answer": 2,
+      "why": "`unknown` means \"could be anything; check before use\". TypeScript enforces the check.",
+      "wrong": {
+        "0": "`any` switches checking off.",
+        "1": "It might be missing, or a number. You do not know yet.",
+        "3": "`never` is a type with no values at all."
+      }
+    },
+    {
+      "id": "q8",
+      "prompt": "What does `parseFloat(\"12abc\")` give, and what must a strict mark parser do with `\"12abc\"`?",
+      "options": [
+        "NaN; refuse it",
+        "12; refuse it",
+        "12; accept 12",
+        "\"12abc\"; accept it as text"
+      ],
+      "answer": 1,
+      "why": "parseFloat reads digits until it meets something else. A strict parser matches the whole text and refuses.",
+      "wrong": {
+        "0": "parseFloat stops at the first letter and returns what it read: 12.",
+        "2": "Accepting 12 silently drops what the teacher typed.",
+        "3": "parseFloat returns a number, never text."
+      }
+    }
+  ]
+}

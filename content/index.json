@@ -388,6 +388,33 @@
       "title": "Class ranking",
       "guidance": "guided",
       "content_hash": "eed3c726537fc7853e6a3f56f694797e2d8803cb7ac14c94731f985a8522fb8a"
+    },
+    {
+      "slug": "m2-u3",
+      "kind": "unit",
+      "parent_slug": "m2",
+      "position": 3,
+      "title": "TypeScript and input you cannot trust",
+      "guidance": "guided",
+      "content_hash": "3854c20e7af55fe78a77a4298202896fedeb7b050fbf6f2a1312902abe148c9d"
+    },
+    {
+      "slug": "m2-u3-quiz",
+      "kind": "quiz",
+      "parent_slug": "m2-u3",
+      "position": 1,
+      "title": "TypeScript and input you cannot trust",
+      "guidance": "guided",
+      "content_hash": "35dea72bb1b3fc3473911768a8161fa95878be7dd9b9ad358790500884ea3903"
+    },
+    {
+      "slug": "m2-p3",
+      "kind": "project",
+      "parent_slug": "m2-u3",
+      "position": 2,
+      "title": "Score rules",
+      "guidance": "guided",
+      "content_hash": "439f5020711ffdac1aca72fcf6c81eaa556b72cdb6e31d786bdb39cec513d98d"
     }
   ]
 }
