@@ -1,0 +1,128 @@
+{
+  "id": "m2-u4-quiz",
+  "title": "Dates, time zones and text",
+  "pass_mark": 6,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "A server in Virginia (UTC−5) runs at 01:00 UTC on 15 December. A function uses `new Date().getDate()`. Which day does it report?",
+      "options": ["15", "16", "14", "It depends on the browser"],
+      "answer": 2,
+      "why": "getDate uses the machine's zone: in Virginia it is still 20:00 on the 14th.",
+      "wrong": {
+        "0": "15 is the UTC date, and the school's date. getDate does not use either.",
+        "1": "No zone is that far ahead of Virginia.",
+        "3": "This code runs on the server. No browser is involved."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "What does `new Date(\"2026-02-30\").toISOString().slice(0, 10)` give?",
+      "options": ["\"2026-02-30\"", "\"2026-03-02\"", "An error", "\"2026-02-28\""],
+      "answer": 1,
+      "why": "JavaScript rolls the two extra days into March. It does not refuse.",
+      "wrong": {
+        "0": "30 February cannot be kept: no such day exists.",
+        "2": "Date does not refuse; it rolls over silently. That is the trap.",
+        "3": "It is not clamped to the end of the month."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "A term runs 2026-09-14 to 2026-12-18. Is 2026-12-18 in the term?",
+      "options": [
+        "Yes: both ends are included",
+        "No: the end is not included",
+        "Only until noon",
+        "Only if it is a weekday"
+      ],
+      "answer": 0,
+      "why": "The last day of term is a school day. Compare with <= on both ends.",
+      "wrong": {
+        "1": "That would cut the last school day off.",
+        "2": "A calendar date has no hours.",
+        "3": "Weekdays are not part of the rule."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "Why can `\"2026-09-14\" < \"2026-12-18\"` be trusted as a date comparison?",
+      "options": [
+        "JavaScript turns them into dates first",
+        "It cannot be trusted",
+        "Because both are 10 characters long",
+        "In YYYY-MM-DD form, text order is date order"
+      ],
+      "answer": 3,
+      "why": "Year, then month, then day, each with fixed digits: comparing text character by character compares the dates.",
+      "wrong": {
+        "0": "It compares the text. That works only because of the form.",
+        "1": "It can, as long as both are in YYYY-MM-DD form.",
+        "2": "Length alone is not enough: \"14/12/2026\" is 10 characters too, and sorts wrongly."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "GPIS D-247: does the query `asante g.` match \"Godfred Kofi Asante\"?",
+      "options": [
+        "No: the words are in the wrong order",
+        "No: because of the full stop",
+        "No: \"g\" is not a whole word",
+        "Yes"
+      ],
+      "answer": 3,
+      "why": "Every typed word appears in the name, in any order, and full stops are ignored.",
+      "wrong": {
+        "0": "Order does not matter in D-247.",
+        "1": "Full stops are ignored.",
+        "2": "A typed word only has to appear somewhere in the name."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "GPIS D-247: does the query `ama mensah` match \"Ama Serwaa Birikran\"?",
+      "options": [
+        "No: \"mensah\" is not in the name",
+        "Yes: one matching word is enough",
+        "Yes, on the first name only",
+        "An error"
+      ],
+      "answer": 0,
+      "why": "Every typed word must appear in the name. \"mensah\" does not.",
+      "wrong": {
+        "1": "D-247 needs every word, not one.",
+        "2": "There is no first-name-only rule.",
+        "3": "A search never errors because of a name."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "Find the mistake in a unit test: `function isToday(d) { return d === schoolToday(); }`",
+      "options": [
+        "`===` cannot compare text",
+        "It reads the real clock, so the result depends on the day the test runs",
+        "It should use `==`",
+        "Nothing is wrong"
+      ],
+      "answer": 1,
+      "why": "schoolToday() with no argument reads the clock. Pass a fixed moment instead.",
+      "wrong": {
+        "0": "`===` compares text well.",
+        "2": "`==` would change nothing here, and is never better.",
+        "3": "The test would pass on one day and fail on the next."
+      }
+    },
+    {
+      "id": "q8",
+      "prompt": "What is `\"  Ama   Birikran \".trim().split(\" \").length`?",
+      "options": ["2", "3", "4", "5"],
+      "answer": 2,
+      "why": "trim leaves \"Ama   Birikran\". Splitting on one space gives \"Ama\", \"\", \"\", \"Birikran\".",
+      "wrong": {
+        "0": "The three spaces between the words give two empty pieces.",
+        "1": "Count the pieces between three spaces: there are two empty ones.",
+        "3": "trim removed the spaces at both ends first."
+      }
+    }
+  ]
+}

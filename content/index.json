@@ -415,6 +415,33 @@
       "title": "Score rules",
       "guidance": "guided",
       "content_hash": "439f5020711ffdac1aca72fcf6c81eaa556b72cdb6e31d786bdb39cec513d98d"
+    },
+    {
+      "slug": "m2-u4",
+      "kind": "unit",
+      "parent_slug": "m2",
+      "position": 4,
+      "title": "Dates, time zones and text",
+      "guidance": "guided",
+      "content_hash": "1502ab03af91daf30c3a314344c86b9e564e0a5483aa217b47f18fd194804518"
+    },
+    {
+      "slug": "m2-u4-quiz",
+      "kind": "quiz",
+      "parent_slug": "m2-u4",
+      "position": 1,
+      "title": "Dates, time zones and text",
+      "guidance": "guided",
+      "content_hash": "6dbb27d90636d0790a5a7bed1af7c2c7b2b5912e0ce9c773d4dce9efa7d28bc7"
+    },
+    {
+      "slug": "m2-p4",
+      "kind": "project",
+      "parent_slug": "m2-u4",
+      "position": 2,
+      "title": "School dates and names",
+      "guidance": "guided",
+      "content_hash": "9861c2835c6a8ba659aba6ece6551f675cbfb7200153f38ff919f0d945a1d347"
     }
   ]
 }

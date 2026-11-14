@@ -1,0 +1,94 @@
+# Check for project 2.4 "School dates and names".
+# Any change in this folder needs a new version (docs/checker.md).
+# A repo project: run it inside ~/projects/gpis-rebuild.
+id: m2-p4
+title: School dates and names
+version: 1.0.0
+unit: m2-u4
+requires: [wsl, node, git]
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: today
+    kind: tests
+    title: schoolToday gives the Accra date for a fixed moment
+    required: true
+    files: [tests/today.test.mjs]
+
+  - id: any-machine-zone
+    kind: tests
+    title: schoolToday gives the same date on a computer in any time zone
+    required: true
+    files: [tests/any-zone.test.mjs]
+
+  - id: real-dates
+    kind: tests
+    title: isIsoCalendarDate accepts only real YYYY-MM-DD dates
+    required: true
+    files: [tests/real-dates.test.mjs]
+
+  - id: day-arithmetic
+    kind: tests
+    title: addDays and daysBetween count whole calendar days
+    required: true
+    files: [tests/day-arithmetic.test.mjs]
+
+  - id: term-for
+    kind: tests
+    title: termFor includes both ends of a term
+    required: true
+    files: [tests/term-for.test.mjs]
+
+  - id: name-words
+    kind: tests
+    title: nameSearchWords gives clean lower-case words
+    required: true
+    files: [tests/name-words.test.mjs]
+
+  - id: name-match
+    kind: tests
+    title: matchesName finds names in any word order (D-247)
+    required: true
+    files: [tests/name-match.test.mjs]
+
+  - id: no-hidden-clock
+    kind: tests
+    title: Only a now parameter reads the clock
+    required: true
+    run:
+      command: |-
+        grep -rnE 'Date\.now\(\)|new Date\(\)' src/lib | grep -v 'now: Date = new Date()' ; true
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: ""
+
+  - id: npm-test
+    kind: tests
+    title: npm test passes
+    required: true
+    run:
+      command: npm test --silent
+      cwd: project
+      timeout_seconds: 120
+      expect_exit: 0
+
+  - id: static
+    kind: static
+    title: Lint and the type check pass
+    required: true
+    run: [lint, tsc]
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  today: "schoolToday gave the wrong date for a fixed moment."
+  any-machine-zone: "schoolToday changes when the computer's time zone changes."
+  real-dates: "isIsoCalendarDate accepted a date that does not exist, or refused a real one."
+  day-arithmetic: "addDays or daysBetween gave a wrong answer. Check month ends and leap years."
+  term-for: "termFor gave the wrong term. Check the first day, the last day and the days between terms."
+  name-words: "nameSearchWords gave the wrong words."
+  name-match: "matchesName gave a wrong answer. Check word order, case, full stops and an empty query."
+  no-hidden-clock: "A function reads the clock directly. Only a now parameter with a default may do that."
+  npm-test: "npm test fails."
+  static: "Lint or the type check reports problems."
