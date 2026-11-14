@@ -19,12 +19,12 @@ let checks = 0;
 // Without --apply nothing is written: planning only reads.
 const first = await planPublish(query, index, manifest);
 assert.equal(first.items.length, index.items.length); checks++;
-assert.equal(first.checks.length, 1); checks++;
+assert.equal(first.checks.length, manifest.checks.length); checks++;
 assert.equal(await count("content_items"), 0, "planning writes nothing"); checks++;
 
 await applyPublish(query, first);
 assert.equal(await count("content_items"), index.items.length); checks++;
-assert.equal(await count("check_definitions"), 1); checks++;
+assert.equal(await count("check_definitions"), manifest.checks.length); checks++;
 
 // Second run: nothing to change.
 const second = await planPublish(query, index, manifest);
@@ -41,12 +41,12 @@ const tampered = { checks: [{ ...manifest.checks[0], sha256: "0".repeat(64) }] }
 const fourth = await planPublish(query, index, tampered);
 assert.equal(fourth.refused.length, 1); checks++;
 await assert.rejects(applyPublish(query, fourth), /Nothing written/); checks++;
-assert.equal((await db.query("select sha256 from public.check_definitions")).rows[0].sha256, manifest.checks[0].sha256, "the published hash is unchanged"); checks++;
+assert.equal((await db.query("select sha256 from public.check_definitions where item_slug = $1", [manifest.checks[0].id])).rows[0].sha256, manifest.checks[0].sha256, "the published hash is unchanged"); checks++;
 
 // A new version is a new row; the old one stays.
 const bumped = { checks: [{ ...manifest.checks[0], version: "1.1.0", sha256: "1".repeat(64) }] };
 await applyPublish(query, await planPublish(query, index, bumped));
-assert.deepEqual((await db.query("select version from public.check_definitions order by version")).rows.map((r) => r.version), ["1.0.0", "1.1.0"]); checks++;
+assert.deepEqual((await db.query("select version from public.check_definitions where item_slug = $1 order by version", [manifest.checks[0].id])).rows.map((r) => r.version), ["1.0.0", "1.1.0"]); checks++;
 
 // The app never imports the publish script.
 const { spawnSync } = await import("node:child_process");

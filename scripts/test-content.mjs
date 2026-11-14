@@ -36,10 +36,14 @@ const editJson = (path, edit) => { const v = JSON.parse(readFileSync(path, "utf8
 try {
   // The sample unit loads.
   const { course, index, manifest } = buildContent(contentRoot, JSON.parse(readFileSync(join(contentRoot, "manifest.json"), "utf8")));
-  assert.deepEqual(course.units.map((u) => u.meta.id), ["m1-u1"]); checks++;
+  // Units load in course order; the sample unit is first. (The list grows as units are built.)
+  const unitIds = course.units.map((u) => u.meta.id);
+  assert.equal(unitIds[0], "m1-u1"); checks++;
+  assert.deepEqual(unitIds, [...unitIds].sort((a, b) => a.localeCompare(b, "en", { numeric: true })), "units are in course order"); checks++;
   assert.equal(index.items.filter((i) => i.kind === "module").length, 10, "all ten modules are in the index"); checks++;
   assert.ok(index.items.every((i) => /^[0-9a-f]{64}$/.test(i.content_hash)), "every item has a content hash"); checks++;
-  assert.deepEqual(manifest.checks.map((c) => [c.id, c.version]), [["m1-p1", "1.0.0"]]); checks++;
+  assert.deepEqual(manifest.checks[0] && [manifest.checks[0].id, manifest.checks[0].version], ["m1-p1", "1.0.0"]); checks++;
+  assert.equal(manifest.checks.length, new Set(manifest.checks.map((c) => c.id)).size, "check ids are unique"); checks++;
 
   // The manifest hash is stable across two runs.
   assert.deepEqual(buildContent(contentRoot).manifest, buildContent(contentRoot).manifest); checks++;
