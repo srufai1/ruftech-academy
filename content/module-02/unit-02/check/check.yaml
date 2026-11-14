@@ -1,0 +1,82 @@
+# Check for project 2.2 "Class ranking".
+# Any change in this folder needs a new version (docs/checker.md).
+# A repo project: run it inside ~/projects/gpis-rebuild.
+id: m2-p2
+title: Class ranking
+version: 1.0.0
+unit: m2-u2
+requires: [wsl, node, git]
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: files
+    kind: files
+    title: src/lib/ranking and tests/ranking.test exist
+    required: true
+    expect:
+      - { glob: "src/lib/ranking.*", type: file }
+      - { glob: "tests/ranking.test.*", type: file }
+
+  - id: ranks
+    kind: tests
+    title: competitionRanks gives D-02 positions and leaves its input alone
+    required: true
+    files: [tests/ranks.test.mjs]
+
+  - id: totals
+    kind: tests
+    title: subjectsTotal skips blanks and rounds to two decimals
+    required: true
+    files: [tests/totals.test.mjs]
+
+  - id: ordinal
+    kind: tests
+    title: ordinal gives the right word and refuses what is not a position
+    required: true
+    files: [tests/ordinal.test.mjs]
+
+  - id: rank-class
+    kind: tests
+    title: rankClass ranks the active students of one class
+    required: true
+    files: [tests/rank-class.test.mjs]
+
+  - id: own-tests
+    kind: tests
+    title: Your tests/ranking.test has at least 15 tests, one named for D-04
+    required: true
+    run:
+      command: |-
+        grep -cE '^\s*(test|it)\(' tests/ranking.test.* | awk '{exit !($1 >= 15)}' && grep -q 'D-04' tests/ranking.test.*
+      cwd: project
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: npm-test
+    kind: tests
+    title: npm test passes
+    required: true
+    run:
+      command: npm test --silent
+      cwd: project
+      timeout_seconds: 120
+      expect_exit: 0
+
+  - id: lint
+    kind: static
+    title: npm run lint passes
+    required: true
+    run: [lint]
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  files: "src/lib/ranking or tests/ranking.test is missing."
+  ranks: "competitionRanks gave a wrong position, or changed the array it was given."
+  totals: "subjectsTotal gave a wrong total. Check blanks and decimals."
+  ordinal: "ordinal gave a wrong word, or accepted a value it must refuse."
+  rank-class: "rankClass gave a wrong row. Check ties, a missing subject, and students who are not active."
+  own-tests: "tests/ranking.test needs at least 15 tests, one of them named for D-04."
+  npm-test: "npm test fails."
+  lint: "npm run lint reports problems."

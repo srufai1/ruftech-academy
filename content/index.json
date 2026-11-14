@@ -361,6 +361,33 @@
       "title": "Grading scale",
       "guidance": "guided",
       "content_hash": "bf4ff0c3dfa9be87d0439de9eb6590fee71366be08fe5c25472587119ec74b25"
+    },
+    {
+      "slug": "m2-u2",
+      "kind": "unit",
+      "parent_slug": "m2",
+      "position": 2,
+      "title": "Arrays, objects and sorting",
+      "guidance": "guided",
+      "content_hash": "fc9df289afefb537a8e513fb988f15e4a884b36aea1f7c828ca011f03f697289"
+    },
+    {
+      "slug": "m2-u2-quiz",
+      "kind": "quiz",
+      "parent_slug": "m2-u2",
+      "position": 1,
+      "title": "Arrays, objects and sorting",
+      "guidance": "guided",
+      "content_hash": "4f89f43314805b237c7e9ddcc281f26a6dd5583392fd815977557bf4b45e3176"
+    },
+    {
+      "slug": "m2-p2",
+      "kind": "project",
+      "parent_slug": "m2-u2",
+      "position": 2,
+      "title": "Class ranking",
+      "guidance": "guided",
+      "content_hash": "eed3c726537fc7853e6a3f56f694797e2d8803cb7ac14c94731f985a8522fb8a"
     }
   ]
 }
