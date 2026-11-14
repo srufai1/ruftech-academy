@@ -199,6 +199,33 @@
       "title": "Find your way",
       "guidance": "guided",
       "content_hash": "04daea3877c4106b5ce657130f4524db6af78a5f4068a0e6a95887c3f653bf05"
+    },
+    {
+      "slug": "m1-u2",
+      "kind": "unit",
+      "parent_slug": "m1",
+      "position": 2,
+      "title": "Text, pipes and small scripts",
+      "guidance": "guided",
+      "content_hash": "73f32bf15177888045f47c1d51ac154de5373b2edf52ef98a36572aef9eeb4bc"
+    },
+    {
+      "slug": "m1-u2-quiz",
+      "kind": "quiz",
+      "parent_slug": "m1-u2",
+      "position": 1,
+      "title": "Text, pipes and small scripts",
+      "guidance": "guided",
+      "content_hash": "ff2e109bf55ce686af340f97588234cc101bb84da3b075bf13a96e17e813783d"
+    },
+    {
+      "slug": "m1-p2",
+      "kind": "project",
+      "parent_slug": "m1-u2",
+      "position": 2,
+      "title": "Log report",
+      "guidance": "guided",
+      "content_hash": "bf6515cca058db4f782bdfd18dc0e0f60451d3e14f18b0907f6de0e38335ef94"
     }
   ]
 }

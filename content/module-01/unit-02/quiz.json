@@ -1,0 +1,121 @@
+{
+  "id": "m1-u2-quiz",
+  "title": "Text, pipes and small scripts",
+  "pass_mark": 5,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What does `printf 'b\\na\\nb\\n' | uniq -c` print?",
+      "options": [
+        "2 b, then 1 a",
+        "1 a, then 2 b",
+        "Three lines, each with the count 1",
+        "An error, because the input is not sorted"
+      ],
+      "answer": 2,
+      "why": "`uniq` only joins lines that are next to each other. The two `b` lines are separated by `a`, so each line is its own group.",
+      "wrong": {
+        "0": "That would need `uniq` to sort first. It does not.",
+        "1": "That is the answer after `sort`. `uniq` neither sorts nor joins lines that are apart.",
+        "3": "`uniq` accepts unsorted input without complaint. It only gives a useless answer."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "A script is run as `./r.sh term 1.log`. What is `$#` inside it?",
+      "options": ["1", "2", "3", "0"],
+      "answer": 1,
+      "why": "Without quotes the shell splits on the space, so the script gets two arguments: `term` and `1.log`.",
+      "wrong": {
+        "0": "The shell does not know you meant one name. Only quotes keep it together.",
+        "2": "`$#` does not count the script's own name.",
+        "3": "`$#` is the number of arguments. You are thinking of `$?`, the exit code."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "A check script in CI contains `if [ ! -r $1 ]; then echo \"cannot read\"; exit 0; fi`. What is most wrong?",
+      "options": [
+        "It exits 0, so the caller thinks it worked",
+        "`-r` is not a real test",
+        "`echo` cannot be used inside `if`",
+        "`fi` should be `end`"
+      ],
+      "answer": 0,
+      "why": "Exit code 0 means success. CI would go green although the file could not be read.",
+      "wrong": {
+        "1": "`-r` is a real test: \"the file exists and I can read it\".",
+        "2": "Any command can be used inside `if`.",
+        "3": "Bash ends an `if` with `fi`."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "Where should the line `usage: report.sh FILE` go?",
+      "options": [
+        "Standard output",
+        "A file named error.log",
+        "Nowhere; the exit code is enough",
+        "Standard error"
+      ],
+      "answer": 3,
+      "why": "Standard error is for messages to people. A pipeline that reads the output never mistakes it for data.",
+      "wrong": {
+        "0": "The next command in a pipe would read the usage line as data.",
+        "1": "The person running the script would never see it.",
+        "2": "The exit code tells a program; the person still needs to know what to type."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "What does `sort -k1,1nr` print for the lines `9 x`, `10 y`, `2 z`?",
+      "options": [
+        "9 x, 2 z, 10 y",
+        "10 y, 9 x, 2 z",
+        "2 z, 9 x, 10 y",
+        "10 y, 2 z, 9 x"
+      ],
+      "answer": 1,
+      "why": "`n` compares the first column as a number and `r` puts the biggest first: 10, 9, 2.",
+      "wrong": {
+        "0": "That is text order reversed, as if `n` were missing.",
+        "2": "That is number order, smallest first, as if `r` were missing.",
+        "3": "That is text order: `10` comes before `2` because `1` comes before `2`."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "What does `set -e` change in a script?",
+      "options": [
+        "It prints every command before running it",
+        "It makes a variable that was never set an error",
+        "The script stops at the first command that fails",
+        "The script runs faster"
+      ],
+      "answer": 2,
+      "why": "With `-e`, a failing command ends the script instead of letting it carry on with bad data.",
+      "wrong": {
+        "0": "That is `set -x`.",
+        "1": "That is `set -u`.",
+        "3": "It changes nothing about speed."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "GPIS: why must a check script in `scripts/` exit with a non-zero code when it finds a problem?",
+      "options": [
+        "So that the message is printed in red",
+        "Because Git refuses to commit scripts that exit 0",
+        "It does not matter, as long as the message is clear",
+        "CI reads only the exit code, and 0 means \"all good\""
+      ],
+      "answer": 3,
+      "why": "CI does not read the text. A problem that exits 0 makes the run green, and the problem ships.",
+      "wrong": {
+        "0": "Colour is not the signal. Many CI screens show no colour at all.",
+        "1": "Git has no such rule. It stores scripts; it does not run them.",
+        "2": "Nobody reads the messages of a green run."
+      }
+    }
+  ]
+}

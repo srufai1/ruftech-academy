@@ -1,0 +1,124 @@
+# Check for project 1.2 "Log report".
+# Any change in this folder needs a new version (docs/checker.md).
+id: m1-p2
+title: Log report
+version: 1.0.0
+unit: m1-u2
+requires: [wsl]
+
+# `academy init m1-p2` builds the lab folder from this seed.
+lab:
+  root: ~/academy-labs/m1-p2/logs
+  seed: fixtures/seed.sh
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: script-exists
+    kind: files
+    title: report.sh exists and you can run it as ./report.sh
+    required: true
+    expect:
+      - path: report.sh
+        type: file
+        mode_any_of: ["700", "750", "755"]
+
+  - id: log-untouched
+    kind: files
+    title: access.log is unchanged
+    required: true
+    expect:
+      - path: access.log
+        type: file
+        sha256_of: fixtures/access.log
+
+  - id: answers
+    kind: doc
+    title: answers.md explains your pipeline
+    required: true
+    expect:
+      path: answers.md
+      headings:
+        - "## My pipeline, part by part"
+        - "## Why uniq needs sort"
+        - "## How I tested the awkward cases"
+      min_words_per_heading: 20
+
+  - id: normal-log
+    kind: tests
+    title: The five most common failures of access.log, biggest first
+    required: true
+    run:
+      command: ./report.sh access.log
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: "9 401 /login\n6 500 /students/import\n4 403 /api/scores\n4 404 /favicon.ico\n2 500 /reports/print\n"
+
+  - id: odd-name
+    kind: tests
+    title: A file name with spaces works
+    required: true
+    run:
+      command: ./report.sh "term 1 access.log"
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: "3 404 /favicon.ico\n1 401 /login\n"
+
+  - id: empty-log
+    kind: tests
+    title: An empty log prints "no failures"
+    required: true
+    run:
+      command: ./report.sh empty.log
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: "no failures\n"
+
+  - id: clean-log
+    kind: tests
+    title: A log without failures prints "no failures"
+    required: true
+    run:
+      command: ./report.sh no-failures.log
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: "no failures\n"
+
+  - id: no-argument
+    kind: tests
+    title: No argument gives exit code 1 and nothing on standard output
+    required: true
+    run:
+      command: ./report.sh
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 1
+      expect_stdout: ""
+
+  - id: missing-file
+    kind: tests
+    title: A missing file gives exit code 2 and nothing on standard output
+    required: true
+    run:
+      command: ./report.sh not-here.log
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 2
+      expect_stdout: ""
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  script-exists: "report.sh is missing, or you cannot run it as ./report.sh."
+  log-untouched: "access.log was changed. A report must never edit the log it reads."
+  answers: "answers.md is missing a heading, or a section is too short."
+  normal-log: "The report for access.log is not the expected five lines."
+  odd-name: "The script gave the wrong report for a file name with spaces."
+  empty-log: "A log with no failures must print exactly: no failures."
+  clean-log: "A log with no failures must print exactly: no failures."
+  no-argument: "With no argument the script must print nothing on standard output and exit with 1."
+  missing-file: "For a file that does not exist the script must print nothing on standard output and exit with 2."
