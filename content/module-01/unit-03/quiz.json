@@ -1,0 +1,121 @@
+{
+  "id": "m1-u3-quiz",
+  "title": "Processes, signals and ports",
+  "pass_mark": 5,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "A server listens on `127.0.0.1:8080` on a laptop. A phone on the same Wi-Fi opens `http://<laptop address>:8080`. What happens?",
+      "options": [
+        "It works, because they are on the same network",
+        "It cannot connect",
+        "It works, but slowly",
+        "The phone is asked for a password"
+      ],
+      "answer": 1,
+      "why": "`127.0.0.1` is the loopback address: only the laptop itself can connect to it.",
+      "wrong": {
+        "0": "The same network is not enough. The server listens only on loopback, not on the laptop's Wi-Fi address.",
+        "2": "There is no slow path. The connection is refused.",
+        "3": "Listening has no password step. Either the address is reachable or it is not."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "A program may be writing a file. Which signal do you send first to stop it?",
+      "options": ["`KILL`", "`STOP`", "`HUP`", "`TERM`"],
+      "answer": 3,
+      "why": "`TERM` asks the program to stop, so it can finish writing and close the file.",
+      "wrong": {
+        "0": "`KILL` cannot be caught. The file may be left half written.",
+        "1": "`STOP` pauses the program. It does not end it.",
+        "2": "Many programs reload their settings on `HUP` and keep running."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "You kill the three `sleep` children of `leaky.sh`. The parent `leaky.sh` still runs. What do you see one minute later?",
+      "options": [
+        "New `sleep` children",
+        "No children at all",
+        "The parent has stopped by itself",
+        "The same three children, with the same PIDs"
+      ],
+      "answer": 0,
+      "why": "The parent's loop keeps starting children. Stop the parent first.",
+      "wrong": {
+        "1": "The parent makes more. Killing children does not stop the loop.",
+        "2": "Nothing told the parent to stop.",
+        "3": "A new process always gets a new PID."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "`curl` ends with code 7: \"Couldn't connect to server\". What is most likely?",
+      "options": [
+        "The server is slow",
+        "The name could not be found (DNS)",
+        "Nothing listens on that address and port",
+        "The password is wrong"
+      ],
+      "answer": 2,
+      "why": "Code 7 means the connection was refused: there is nobody at that address and port.",
+      "wrong": {
+        "0": "A slow server gives a timeout, exit code 28.",
+        "1": "A name problem says \"Could not resolve host\", exit code 6.",
+        "3": "A wrong password is answered by the server, for example with status 401. Here nothing answered."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "`ss -ltn` shows `127.0.0.2:8081`. The note says \"the server is up on 127.0.0.1 port 8080\". What is wrong?",
+      "options": [
+        "Only the port is wrong",
+        "Both the address and the port differ from what was asked",
+        "Nothing; `ss` shows clients, not servers",
+        "Nothing; 127.0.0.2 and 127.0.0.1 are the same"
+      ],
+      "answer": 1,
+      "why": "`127.0.0.2` is a different loopback address, and `8081` is a different port.",
+      "wrong": {
+        "0": "Read the address column too. It is not 127.0.0.1.",
+        "2": "`-l` shows listening sockets, so these are servers.",
+        "3": "Both are this machine, but a request to 127.0.0.1 never reaches a server on 127.0.0.2."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "A process's parent has ended. What is the process's parent now?",
+      "options": [
+        "It has no parent",
+        "The terminal that is open now",
+        "PID 1, the init process",
+        "Nothing; the process ended at the same moment"
+      ],
+      "answer": 2,
+      "why": "Every process has a parent. PID 1 (on WSL, a small init process) adopts orphans.",
+      "wrong": {
+        "0": "Linux never leaves a process without a parent.",
+        "1": "The shell you have open now did not start it.",
+        "3": "Children keep running when their parent ends. That is why leaks grow."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "GPIS: `npm run dev` says port 3000 is in use. What is the best first step?",
+      "options": [
+        "Find which process holds port 3000 with `ss -ltnp`, then decide whether to stop it",
+        "Restart the computer",
+        "Change the app to port 3001 for good",
+        "Run `kill -9` on every node process"
+      ],
+      "answer": 0,
+      "why": "Evidence first: know what holds the port before you change anything.",
+      "wrong": {
+        "1": "It works, but you learn nothing, and it stops your other work too.",
+        "2": "That hides the old copy. It keeps running and using memory.",
+        "3": "That may kill other work, and `-9` gives nothing a chance to clean up."
+      }
+    }
+  ]
+}

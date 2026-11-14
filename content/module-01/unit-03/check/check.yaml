@@ -1,0 +1,115 @@
+# Check for project 1.3 "Processes and ports".
+# Any change in this folder needs a new version (docs/checker.md).
+id: m1-p3
+title: Processes and ports
+version: 1.0.0
+unit: m1-u3
+requires: [wsl, node]
+
+# `academy init m1-p3` builds the lab folder from this seed. The seed starts nothing.
+lab:
+  root: ~/academy-labs/m1-p3/office-server
+  seed: fixtures/seed.sh
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: code-untouched
+    kind: files
+    title: server.mjs, leaky.sh and start.sh are unchanged
+    required: true
+    expect:
+      - path: server.mjs
+        type: file
+        sha256_of: fixtures/server.mjs
+      - path: leaky.sh
+        type: file
+        sha256_of: fixtures/leaky.sh
+      - path: start.sh
+        type: file
+        sha256_of: fixtures/start.sh
+
+  - id: conf-fixed
+    kind: files
+    title: server.conf holds the right address and port
+    required: true
+    expect:
+      - path: server.conf
+        type: file
+        sha256_of: fixtures/server.expected.conf
+
+  - id: evidence
+    kind: doc
+    title: evidence.md records what you saw and what you did
+    required: true
+    expect:
+      path: evidence.md
+      headings:
+        - "## Process tree"
+        - "## Listening sockets"
+        - "## Signals I sent"
+        - "## What was wrong"
+      min_words_per_heading: 20
+
+  - id: tree-recorded
+    kind: tests
+    title: The process tree in evidence.md shows leaky.sh
+    required: true
+    run:
+      command: grep -c 'leaky.sh' evidence.md
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: leak-stopped
+    kind: tests
+    title: leaky.sh is not running
+    required: true
+    run:
+      command: pgrep -f '[l]eaky.sh'
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 1
+
+  - id: children-gone
+    kind: tests
+    title: None of the sleep 6001 children is running
+    required: true
+    run:
+      command: pgrep -f '[s]leep 6001'
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 1
+
+  - id: health-answers
+    kind: tests
+    title: The server answers ok at 127.0.0.1:8080/health
+    required: true
+    run:
+      command: curl -s --max-time 3 http://127.0.0.1:8080/health
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: "ok\n"
+
+  - id: old-port-closed
+    kind: tests
+    title: Nothing listens on the old address and port
+    required: true
+    run:
+      command: curl -s --max-time 3 http://127.0.0.2:8081/health
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 7
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  code-untouched: "A program file was changed. Only server.conf needs an edit."
+  conf-fixed: "server.conf is not the expected two lines."
+  evidence: "evidence.md is missing a heading, or a section is too short."
+  tree-recorded: "The process tree in evidence.md does not show leaky.sh. Record the tree before you stop anything."
+  leak-stopped: "leaky.sh is still running."
+  children-gone: "Some sleep 6001 processes started by leaky.sh are still running."
+  health-answers: "Nothing answered ok at http://127.0.0.1:8080/health. Is the server running with the new settings?"
+  old-port-closed: "Something still listens on 127.0.0.2 port 8081."

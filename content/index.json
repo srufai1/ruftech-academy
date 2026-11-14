@@ -226,6 +226,33 @@
       "title": "Log report",
       "guidance": "guided",
       "content_hash": "bf6515cca058db4f782bdfd18dc0e0f60451d3e14f18b0907f6de0e38335ef94"
+    },
+    {
+      "slug": "m1-u3",
+      "kind": "unit",
+      "parent_slug": "m1",
+      "position": 3,
+      "title": "Processes, signals and ports",
+      "guidance": "guided",
+      "content_hash": "b4d8f2d04a1515441460e161885d4bedf9424be93f203a4db820fd39e677965d"
+    },
+    {
+      "slug": "m1-u3-quiz",
+      "kind": "quiz",
+      "parent_slug": "m1-u3",
+      "position": 1,
+      "title": "Processes, signals and ports",
+      "guidance": "guided",
+      "content_hash": "4c6589baab6204750ab30007a70ee86e4e24281b5689ee5a4099d1a8793e2edd"
+    },
+    {
+      "slug": "m1-p3",
+      "kind": "project",
+      "parent_slug": "m1-u3",
+      "position": 2,
+      "title": "Processes and ports",
+      "guidance": "guided",
+      "content_hash": "0d73f026245e07979847c18da7137a3351833a0d93257fde80622b2c0d26bdfc"
     }
   ]
 }

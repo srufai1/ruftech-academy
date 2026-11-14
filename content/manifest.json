@@ -11,6 +11,12 @@
       "version": "1.0.0",
       "sha256": "116cd56c3044fb116c8cdb75230bf46f6f744a91b081871eafbbdd8cc07e59d4",
       "unit": "m1-u2"
+    },
+    {
+      "id": "m1-p3",
+      "version": "1.0.0",
+      "sha256": "4115a2bbe2e35bd251634446f6e800dc488adb7fe5164a296f500faae06f3353",
+      "unit": "m1-u3"
     }
   ]
 }
