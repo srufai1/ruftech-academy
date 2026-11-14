@@ -307,6 +307,33 @@
       "title": "Request journey",
       "guidance": "guided",
       "content_hash": "01d8cbadd92ea0fb9b4125e3288a45bd7c3ef25083b99ff66e1933685c4c40b2"
+    },
+    {
+      "slug": "m1-u6",
+      "kind": "unit",
+      "parent_slug": "m1",
+      "position": 6,
+      "title": "A project home",
+      "guidance": "guided",
+      "content_hash": "e74f67293fb4ff905cfd22a7228f32050299b6187502c5f00e1aa0c87693b8ae"
+    },
+    {
+      "slug": "m1-u6-quiz",
+      "kind": "quiz",
+      "parent_slug": "m1-u6",
+      "position": 1,
+      "title": "A project home",
+      "guidance": "guided",
+      "content_hash": "e1df3926d2b36c5c66b569b8dbc34dd75d84441a1cee47e36c31f9a61972e30c"
+    },
+    {
+      "slug": "m1-p6",
+      "kind": "project",
+      "parent_slug": "m1-u6",
+      "position": 2,
+      "title": "Project home",
+      "guidance": "guided",
+      "content_hash": "38304736aa9020c42f4caeb2ad291df470bf197cb1f1439a3ea7fbcff173636e"
     }
   ]
 }

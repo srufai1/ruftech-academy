@@ -1,0 +1,162 @@
+# Check for project 1.6 "Project home".
+# Any change in this folder needs a new version (docs/checker.md).
+# A repo project: no lab folder. Run it inside ~/projects/gpis-rebuild.
+id: m1-p6
+title: Project home
+version: 1.0.0
+unit: m1-u6
+requires: [wsl, git, node]
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: project-files
+    kind: files
+    title: The project's files exist, and verify.sh can be run
+    required: true
+    expect:
+      - { path: README.md, type: file }
+      - { path: RULES.md, type: file }
+      - { path: package.json, type: file }
+      - { path: package-lock.json, type: file }
+      - { path: eslint.config.mjs, type: file }
+      - { path: .gitignore, type: file }
+      - { path: .env.example, type: file }
+      - { path: src/config/school.mjs, type: file }
+      - { path: scripts/school-info.mjs, type: file }
+      - { path: scripts/verify.sh, type: file, mode_any_of: ["700", "750", "755"] }
+
+  - id: readme
+    kind: doc
+    title: README.md tells a stranger what they need
+    required: true
+    expect:
+      path: README.md
+      headings: ["## What this is", "## How to run", "## Folder layout", "## Rules"]
+      min_words_per_heading: 25
+
+  - id: rules
+    kind: doc
+    title: RULES.md holds the rules you follow
+    required: true
+    expect:
+      path: RULES.md
+      headings: ["## Boundaries", "## Before I commit", "## When something looks wrong"]
+      min_words_per_heading: 30
+
+  - id: six-steps
+    kind: tests
+    title: RULES.md names the six steps, in order
+    required: true
+    run:
+      command: grep -qiE 'observe.*isolate.*test.*prove.*document.*move on' RULES.md
+      cwd: project
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: package-shape
+    kind: tests
+    title: package.json is private, a module, with lint and verify scripts
+    required: true
+    run:
+      command: |-
+        node -e "const p = require('./package.json'); process.exit(p.private === true && p.type === 'module' && p.scripts && p.scripts.lint && p.scripts.verify ? 0 : 1)"
+      cwd: project
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: school-info
+    kind: tests
+    title: school-info.mjs prints the school's name from the config module
+    required: true
+    run:
+      command: node scripts/school-info.mjs
+      cwd: project
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: "Great Pakyiman International School (GPIS)\n"
+
+  - id: one-source
+    kind: tests
+    title: The school's name is typed in one file only
+    required: true
+    run:
+      command: grep -rl "Pakyiman" src scripts
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "src/config/school.mjs\n"
+
+  - id: verify-passes
+    kind: tests
+    title: scripts/verify.sh passes and ends with "verify ok"
+    required: true
+    run:
+      command: set -o pipefail; ./scripts/verify.sh | tail -n 1
+      cwd: project
+      timeout_seconds: 120
+      expect_exit: 0
+      expect_stdout: "verify ok\n"
+
+  - id: nothing-private-tracked
+    kind: tests
+    title: node_modules and .env are not tracked
+    required: true
+    run:
+      command: git ls-files node_modules .env | wc -l | tr -d ' '
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "0\n"
+
+  - id: example-tracked
+    kind: tests
+    title: .env.example is committed
+    required: true
+    run:
+      command: git ls-files --error-unmatch .env.example
+      cwd: project
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: on-main
+    kind: tests
+    title: You are on the main branch
+    required: true
+    run:
+      command: git branch --show-current
+      cwd: project
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: "main\n"
+
+  - id: lint
+    kind: static
+    title: npm run lint passes
+    required: true
+    run: [lint]
+
+  - id: history
+    kind: git
+    title: The history is long enough, says what changed, and holds no secret
+    required: true
+    expect:
+      min_commits: 8
+      message_min_chars: 15
+      forbidden_messages: ["fix", "update", "wip", "changes", "first commit"]
+      no_secrets: true
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  project-files: "A required file is missing, or scripts/verify.sh cannot be run."
+  readme: "README.md is missing a heading, or a section is too short."
+  rules: "RULES.md is missing a heading, or a section is too short."
+  six-steps: "RULES.md does not name the six steps for when something looks wrong, in order."
+  package-shape: "package.json must be private, of type module, and have lint and verify scripts."
+  school-info: "scripts/school-info.mjs did not print the school's name and short name in the expected form."
+  one-source: "The school's name is typed in more than one file, or not in src/config/school.mjs."
+  verify-passes: "scripts/verify.sh failed, or its last line is not: verify ok."
+  nothing-private-tracked: "node_modules or .env is tracked by Git."
+  example-tracked: ".env.example is not committed."
+  on-main: "You are not on the main branch."
+  lint: "npm run lint reports problems."
+  history: "The history has too few commits, a message that says too little, or a secret."

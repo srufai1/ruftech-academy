@@ -1,0 +1,121 @@
+{
+  "id": "m1-u6-quiz",
+  "title": "A project home",
+  "pass_mark": 5,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "Which of these is committed?",
+      "options": ["`node_modules/`", "`.env`", "`package-lock.json`", "`.next/`"],
+      "answer": 2,
+      "why": "The lock file records the exact versions, so every computer installs the same thing.",
+      "wrong": {
+        "0": "`npm install` rebuilds it from `package.json` and the lock file.",
+        "1": "It holds local values and secrets.",
+        "3": "It is build output; the build makes it again."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "`verify.sh` is `npm run lint; echo \"verify ok\"` with no `set -e`. Lint fails. What happens?",
+      "options": [
+        "It prints `verify ok` and exits 0",
+        "It stops at lint",
+        "It exits 1",
+        "It prints nothing"
+      ],
+      "answer": 0,
+      "why": "`;` runs the next command anyway, and the last command (`echo`) decides the exit code.",
+      "wrong": {
+        "1": "Only `set -e` or `&&` would stop it.",
+        "2": "The last command is `echo`, which worked, so the code is 0.",
+        "3": "Both commands run and print."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "Lint reports an unused variable. What is the best action?",
+      "options": [
+        "Add a comment that switches the rule off",
+        "Delete `eslint.config.mjs`",
+        "Ignore it; lint is only about style",
+        "Remove the variable, or use it if a step is missing"
+      ],
+      "answer": 3,
+      "why": "Fix the code. An unused variable is often a step you forgot.",
+      "wrong": {
+        "0": "That hides the problem; it does not remove it.",
+        "1": "Then nothing checks the code at all.",
+        "2": "Unused code is often a real mistake, not style."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "What belongs in `.env.example`?",
+      "options": [
+        "Variable names with empty values, and a comment",
+        "The real values",
+        "Nothing; the file should not exist",
+        "Test passwords"
+      ],
+      "answer": 0,
+      "why": "It is committed, so it tells a newcomer what to set without giving any value away.",
+      "wrong": {
+        "1": "It is committed, so real values would be published.",
+        "2": "Then nobody knows which variables the project needs.",
+        "3": "They are still secrets in spirit, and they get copied into real use."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "GPIS: where should the school's name be written in the code?",
+      "options": [
+        "In every page that shows it",
+        "Once, in a config module that other files import",
+        "In the database only",
+        "In README.md"
+      ],
+      "answer": 1,
+      "why": "One place to change. GPIS keeps it in `src/config/school.ts`.",
+      "wrong": {
+        "0": "When it changes, one page will be forgotten.",
+        "2": "The app needs it before it has a database connection, for example on a printed page header.",
+        "3": "Code cannot import a README."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "The README says \"run `npm start`\". `package.json` has only a `lint` script. What is wrong?",
+      "options": [
+        "Nothing; `npm start` always exists",
+        "README files need no commands",
+        "`lint` should be renamed `start`",
+        "The README was never tested: the command does not exist"
+      ],
+      "answer": 3,
+      "why": "Following the README once, in a fresh copy, would have shown the mistake.",
+      "wrong": {
+        "0": "`npm start` works only if a `start` script is defined (or a `server.js` exists).",
+        "1": "\"How to run\" is the most important part of a README.",
+        "2": "Renaming hides the mistake. The README should name the real commands."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "`.gitignore` has `.env.*` and no other line about env files. Does `git add .` commit `.env.example`?",
+      "options": [
+        "Yes; example files are special",
+        "No; it is ignored until you add a line `!.env.example`",
+        "Yes, because it holds no secret",
+        "Git asks you"
+      ],
+      "answer": 1,
+      "why": "`.env.*` matches `.env.example` too. A `!` line makes an exception.",
+      "wrong": {
+        "0": "Git has no special rule for example files.",
+        "2": "Git does not read file contents to decide what to ignore.",
+        "3": "Git never asks; it follows the patterns."
+      }
+    }
+  ]
+}
