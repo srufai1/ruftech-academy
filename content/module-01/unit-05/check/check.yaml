@@ -1,0 +1,137 @@
+# Check for project 1.5 "Request journey".
+# Any change in this folder needs a new version (docs/checker.md).
+# A repo project: no lab folder. Run it inside ~/projects/gpis-rebuild.
+id: m1-p5
+title: Request journey
+version: 1.0.0
+unit: m1-u5
+requires: [wsl]
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: evidence-files
+    kind: files
+    title: The three evidence files exist
+    required: true
+    expect:
+      - path: docs/evidence/dns.txt
+        type: file
+      - path: docs/evidence/tls.txt
+        type: file
+      - path: docs/evidence/headers.txt
+        type: file
+
+  - id: journey-doc
+    kind: doc
+    title: docs/request-journey.md has the eight sections, each long enough
+    required: true
+    expect:
+      path: docs/request-journey.md
+      headings:
+        - "## Browser"
+        - "## DNS"
+        - "## TCP and TLS"
+        - "## Edge"
+        - "## App server"
+        - "## Database"
+        - "## Response"
+        - "## Diagram"
+      min_words_per_heading: 40
+
+  - id: heading-order
+    kind: tests
+    title: The eight sections are in the journey's order
+    required: true
+    run:
+      command: grep -E '^## (Browser|DNS|TCP and TLS|Edge|App server|Database|Response|Diagram)$' docs/request-journey.md
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "## Browser\n## DNS\n## TCP and TLS\n## Edge\n## App server\n## Database\n## Response\n## Diagram\n"
+
+  - id: cache-lines
+    kind: tests
+    title: Each hop has one Cache line
+    required: true
+    run:
+      command: |-
+        grep -c '^Cache: ' docs/request-journey.md
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "7\n"
+
+  - id: evidence-lines
+    kind: tests
+    title: Each hop has one Evidence line
+    required: true
+    run:
+      command: |-
+        grep -c '^Evidence: ' docs/request-journey.md
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "7\n"
+
+  - id: dns-real
+    kind: tests
+    title: dns.txt is full dig output
+    required: true
+    run:
+      command: grep -c 'ANSWER SECTION' docs/evidence/dns.txt
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "1\n"
+
+  - id: tls-real
+    kind: tests
+    title: tls.txt shows the certificate's subject, issuer and dates
+    required: true
+    run:
+      command: grep -cE '^(subject|issuer|notBefore|notAfter)' docs/evidence/tls.txt
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "4\n"
+
+  - id: headers-real
+    kind: tests
+    title: headers.txt starts with an HTTP status line
+    required: true
+    run:
+      command: head -n 1 docs/evidence/headers.txt | grep -cE '^HTTP/[0-9.]+ [0-9]{3}'
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "1\n"
+
+  - id: diagram
+    kind: tests
+    title: The Diagram section has a Mermaid sequence diagram
+    required: true
+    run:
+      command: grep -c 'sequenceDiagram' docs/request-journey.md
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: "1\n"
+
+  - id: no-session
+    kind: tests
+    title: No cookie value or authorization header in the evidence
+    required: true
+    run:
+      command: |-
+        grep -rilE 'set-cookie: [^[]|authorization: ' docs/evidence ; true
+      cwd: project
+      timeout_seconds: 10
+      expect_stdout: ""
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  evidence-files: "An evidence file is missing in docs/evidence/."
+  journey-doc: "docs/request-journey.md is missing a heading, or a section is too short."
+  heading-order: "The headings of docs/request-journey.md are not in the journey's order."
+  cache-lines: "Each of the seven hops needs exactly one line that starts with Cache:."
+  evidence-lines: "Each of the seven hops needs exactly one line that starts with Evidence:."
+  dns-real: "dns.txt does not look like full dig output."
+  tls-real: "tls.txt does not show the certificate's subject, issuer and dates."
+  headers-real: "headers.txt does not start with an HTTP status line."
+  diagram: "The Diagram section has no Mermaid sequence diagram."
+  no-session: "An evidence file contains a cookie value or an authorization header."

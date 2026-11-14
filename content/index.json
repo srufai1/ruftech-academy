@@ -280,6 +280,33 @@
       "title": "Git rescue",
       "guidance": "guided",
       "content_hash": "842c1c83706cf8c6c95d735b81d8afb2b900904adb70039a7f668e0b67870ba4"
+    },
+    {
+      "slug": "m1-u5",
+      "kind": "unit",
+      "parent_slug": "m1",
+      "position": 5,
+      "title": "How the web works: one request's journey",
+      "guidance": "guided",
+      "content_hash": "768b12226f8e54d074d933322911494dd6e9531fb0e6eafb56a32569bf48d890"
+    },
+    {
+      "slug": "m1-u5-quiz",
+      "kind": "quiz",
+      "parent_slug": "m1-u5",
+      "position": 1,
+      "title": "How the web works: one request's journey",
+      "guidance": "guided",
+      "content_hash": "bb522e8f1d68be477e9cda785fc8aaaac6b4cd926461085c19fa25044ed794db"
+    },
+    {
+      "slug": "m1-p5",
+      "kind": "project",
+      "parent_slug": "m1-u5",
+      "position": 2,
+      "title": "Request journey",
+      "guidance": "guided",
+      "content_hash": "01d8cbadd92ea0fb9b4125e3288a45bd7c3ef25083b99ff66e1933685c4c40b2"
     }
   ]
 }

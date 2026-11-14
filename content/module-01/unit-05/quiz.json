@@ -1,0 +1,133 @@
+{
+  "id": "m1-u5-quiz",
+  "title": "How the web works: one request's journey",
+  "pass_mark": 6,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "In which order do these happen when you open an HTTPS page?",
+      "options": [
+        "TLS → DNS → TCP → HTTP request → app → database → response",
+        "DNS → TCP → HTTP request → TLS → app → database → response",
+        "DNS → TCP → TLS → HTTP request → database → app → response",
+        "DNS → TCP → TLS → HTTP request → app → database → response"
+      ],
+      "answer": 3,
+      "why": "First an address (DNS), then a connection (TCP), then trust (TLS), then the request goes to the app, which asks the database.",
+      "wrong": {
+        "0": "TLS needs a connection, and a connection needs an address from DNS.",
+        "1": "On HTTPS the request is sent inside TLS, so TLS comes first.",
+        "2": "The browser never talks to the database. The app does."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "`curl: (6) Could not resolve host`. Which hop failed?",
+      "options": ["TLS", "DNS", "The app", "The database"],
+      "answer": 1,
+      "why": "Resolving means turning the name into an address. That is DNS.",
+      "wrong": {
+        "0": "No connection was tried yet, so TLS never started.",
+        "2": "Without an address, the request never reached the app.",
+        "3": "The database is two hops behind the app. Nothing got that far."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "The response is status 302 with `location: /login`. What happens next?",
+      "options": [
+        "The browser makes a new request to /login",
+        "The page is shown, then replaced",
+        "An error page is shown",
+        "Nothing; the server is down"
+      ],
+      "answer": 0,
+      "why": "3xx means \"go elsewhere\". The browser follows `location` with a new request.",
+      "wrong": {
+        "1": "A 302 usually has no page to show. The browser goes straight on.",
+        "2": "3xx is not an error family.",
+        "3": "A server that is down sends no status at all."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "The hosting edge answers 502. What does that mean?",
+      "options": [
+        "DNS failed",
+        "The password is wrong",
+        "The edge was reached, but it got no valid answer from the app behind it",
+        "The page does not exist"
+      ],
+      "answer": 2,
+      "why": "502 Bad Gateway: the edge works; the hop behind it did not answer properly.",
+      "wrong": {
+        "0": "The edge answered, so DNS, TCP and TLS all worked.",
+        "1": "That would be 401, from the app.",
+        "3": "That would be 404."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "Someone on the same Wi-Fi watches your HTTPS traffic. What can they NOT read?",
+      "options": [
+        "The path, the headers and the body",
+        "Anything at all, including which site you visit",
+        "Only the password field",
+        "Everything; HTTPS only proves who the server is"
+      ],
+      "answer": 0,
+      "why": "TLS encrypts the whole HTTP conversation. The host name is still visible in DNS and in TLS.",
+      "wrong": {
+        "1": "The host name is visible: DNS asks for it, and TLS names it.",
+        "2": "TLS encrypts all of the request, not one field.",
+        "3": "TLS also encrypts. Proving identity is only half of it."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "You changed a page. The browser shows the old one; `curl` shows the new one. Which cache is most likely?",
+      "options": ["The DNS cache", "The database", "TLS", "The browser cache"],
+      "answer": 3,
+      "why": "`curl` keeps no copy. Only the browser kept the old page.",
+      "wrong": {
+        "0": "Both would go to the same server, so both would see the same page.",
+        "1": "Both read the same rows.",
+        "2": "TLS keeps no copy of pages."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "An evidence file contains a full `set-cookie` session value. What is wrong?",
+      "options": [
+        "Nothing; cookies are public anyway",
+        "A live session was written down; it must be removed",
+        "Nothing, because the file is in docs/",
+        "Nothing; only passwords are secret"
+      ],
+      "answer": 1,
+      "why": "Whoever has a session cookie is signed in as you, without a password.",
+      "wrong": {
+        "0": "A session cookie is as good as a password while it is valid.",
+        "2": "A folder name protects nothing. docs/ is often committed and shared.",
+        "3": "A session cookie gives the same access as a password."
+      }
+    },
+    {
+      "id": "q8",
+      "prompt": "GPIS: why must a page with a student's scores never be stored in a shared edge cache?",
+      "options": [
+        "It would be too slow",
+        "Caches cannot store HTML",
+        "The next visitor could be given another person's page",
+        "Because scores change every second"
+      ],
+      "answer": 2,
+      "why": "A shared cache gives the same stored copy to everyone who asks for that address.",
+      "wrong": {
+        "0": "A cache makes pages faster, not slower.",
+        "1": "Edge caches store HTML all the time.",
+        "3": "Scores change rarely. Privacy is the reason."
+      }
+    }
+  ]
+}
