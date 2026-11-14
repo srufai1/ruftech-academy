@@ -1,0 +1,149 @@
+# Check for project 1.4 "Git rescue".
+# Any change in this folder needs a new version (docs/checker.md).
+id: m1-p4
+title: Git rescue
+version: 1.0.0
+unit: m1-u4
+requires: [wsl, git]
+
+# `academy init m1-p4` builds the repository from this seed (fixed author and dates).
+# The seed also builds the debugging lab's repository beside it: ~/academy-labs/m1-p4/timetable.
+lab:
+  root: ~/academy-labs/m1-p4/school-notes
+  seed: fixtures/seed.sh
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: terms-final
+    kind: files
+    title: terms.md holds the right dates
+    required: true
+    expect:
+      - path: terms.md
+        type: file
+        sha256_of: fixtures/terms.expected.md
+
+  - id: houses-back
+    kind: files
+    title: houses.md is back, with the content of the lost commit
+    required: true
+    expect:
+      - path: houses.md
+        type: file
+        sha256_of: fixtures/houses.md
+
+  - id: no-markers
+    kind: tests
+    title: No file holds conflict markers
+    required: true
+    run:
+      command: grep -rlE '^(<<<<<<<|=======|>>>>>>>)' --include='*.md' . ; true
+      cwd: lab
+      timeout_seconds: 10
+      expect_stdout: ""
+
+  - id: on-main
+    kind: tests
+    title: You are on the main branch
+    required: true
+    run:
+      command: git branch --show-current
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: "main\n"
+
+  - id: one-merge
+    kind: tests
+    title: fix/term-dates is merged into main with a merge commit
+    required: true
+    run:
+      # The seeded tip of fix/term-dates must be a parent of a merge commit on main.
+      command: |
+        tip=$(git log --format='%H%x09%s' main | awk -F'\t' '$2 == "Correct the Term 2 closing date" {print $1}')
+        test -n "$tip" && git log --merges --format=%P main | grep -qw "$tip"
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: history-kept
+    kind: tests
+    title: Every seeded commit is still in the history of main
+    required: true
+    run:
+      command: |
+        for s in "Add the term notes file" "Add the class list" "Correct the Term 1 opening date" \
+                 "List the public holidays" "Add the mid-term break to Term 1" "Correct the Term 2 closing date"; do
+          test "$(git log --format=%s main | grep -cxF "$s")" = 1 || exit 1
+        done
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: env-ignored
+    kind: tests
+    title: .env is ignored
+    required: true
+    run:
+      command: git check-ignore -q .env
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: env-not-tracked
+    kind: tests
+    title: .env was never committed
+    required: true
+    run:
+      command: git log --all --format=%H -- .env | wc -l | tr -d ' '
+      cwd: lab
+      timeout_seconds: 10
+      expect_stdout: "0\n"
+
+  - id: gitignore-tracked
+    kind: tests
+    title: .gitignore is committed
+    required: true
+    run:
+      command: git ls-files --error-unmatch .gitignore
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: clean-tree
+    kind: tests
+    title: Every change is committed
+    required: true
+    run:
+      command: git status --porcelain --untracked-files=no
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+      expect_stdout: ""
+
+  - id: history
+    kind: git
+    title: The history is long enough, says what changed, and holds no secret
+    required: true
+    expect:
+      min_commits: 9
+      message_min_chars: 15
+      # Whole messages are compared, so "Merge branch 'fix/term-dates'" is allowed.
+      forbidden_messages: ["fix", "update", "wip", "changes", "merge"]
+      no_secrets: true
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  terms-final: "terms.md is not the expected text. Read TASK.md again: which opening date is right, and is the mid-term break kept?"
+  houses-back: "houses.md is missing on main, or its content differs from the lost commit."
+  no-markers: "A file still contains conflict markers."
+  on-main: "You are not on the main branch."
+  one-merge: "fix/term-dates is not merged into main with a merge commit."
+  history-kept: "A commit that was in the repository at the start is no longer in the history of main. History must not be rewritten."
+  env-ignored: ".env is not ignored."
+  env-not-tracked: ".env appears in the history."
+  gitignore-tracked: ".gitignore is not committed."
+  clean-tree: "There are changes that are not committed."
+  history: "The history has too few commits, a message that says too little, or a secret."

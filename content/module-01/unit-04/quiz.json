@@ -1,0 +1,143 @@
+{
+  "id": "m1-u4-quiz",
+  "title": "Git: a history you can trust",
+  "pass_mark": 6,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "What is a branch in Git?",
+      "options": [
+        "A copy of all the files",
+        "A folder on disk",
+        "A name that points to one commit",
+        "A list of all commits by one person"
+      ],
+      "answer": 2,
+      "why": "A branch is a movable name. When you commit, the name moves to the new commit.",
+      "wrong": {
+        "0": "Making a branch copies no files. That is why it is instant.",
+        "1": "A branch is not a folder. All branches share the same working tree.",
+        "3": "Commits by many people can be on one branch. Authors are stored in the commits."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "You delete the branch `houses` (never merged) with `git branch -D houses`. Its last commit is…",
+      "options": [
+        "still stored, and `git reflog` shows its ID",
+        "deleted at once",
+        "moved onto main",
+        "in the Windows recycle bin"
+      ],
+      "answer": 0,
+      "why": "Deleting a branch deletes the name only. The commit stays for weeks, and the reflog knows it.",
+      "wrong": {
+        "1": "Git keeps commits without a name for weeks before it cleans them up.",
+        "2": "Nothing moves to main unless you merge or cherry-pick it.",
+        "3": "Git does not use the recycle bin. The commit is inside `.git`."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "A committed file contains `<<<<<<< HEAD`. What does that mean?",
+      "options": [
+        "Git marks every merge like this for ever",
+        "The conflict was not resolved: the markers must go and the right text must be written",
+        "It only needs `git push`",
+        "The file is binary"
+      ],
+      "answer": 1,
+      "why": "Markers are Git's question to you. Committing them commits a broken file.",
+      "wrong": {
+        "0": "A resolved merge has no markers. They exist only until you write the answer.",
+        "2": "Pushing shares the broken file with everyone.",
+        "3": "Markers are plain text lines. They appear in text files."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "`.env` was committed last week. Today you add `.env` to `.gitignore` and commit. What is true now?",
+      "options": [
+        "`.env` is removed from history",
+        "Git refuses to open the repository",
+        "`.env` is deleted from disk",
+        "Git still tracks `.env`, and the old value is still in history"
+      ],
+      "answer": 3,
+      "why": "`.gitignore` only affects files Git does not track yet. History is not changed.",
+      "wrong": {
+        "0": "Nothing in `.gitignore` rewrites history.",
+        "1": "The repository works normally.",
+        "2": "`.gitignore` never deletes files."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "Which commit message is best?",
+      "options": [
+        "fix",
+        "Updated files",
+        "Reject marks above the stored maximum",
+        "asdf"
+      ],
+      "answer": 2,
+      "why": "It says what changed and hints why, so a reader understands without opening the diff.",
+      "wrong": {
+        "0": "Fix what? The reader has to open every file to find out.",
+        "1": "Which files, and why? Every commit updates files.",
+        "3": "It says nothing at all."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "`main` has not moved since `topic` was made from it. What does `git merge topic` on main do?",
+      "options": [
+        "Always makes a merge commit",
+        "A fast-forward: `main` moves to `topic`'s commit, with no merge commit",
+        "A conflict",
+        "An error: nothing to merge"
+      ],
+      "answer": 1,
+      "why": "There is nothing to join, so Git moves the name forward.",
+      "wrong": {
+        "0": "Only with `--no-ff`, or when both branches moved.",
+        "2": "A conflict needs changes on both sides. Main has none.",
+        "3": "There is something to merge: the commits on `topic`."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "You have changes you never committed, and you run `git reset --hard`. What happens to them?",
+      "options": [
+        "They are in the reflog",
+        "They are in the staging area",
+        "They move to a new branch",
+        "They are gone; nothing can bring back what was never committed"
+      ],
+      "answer": 3,
+      "why": "The reflog lists commits. Uncommitted changes were never stored as a commit.",
+      "wrong": {
+        "0": "The reflog lists commits only.",
+        "1": "`--hard` resets the staging area too.",
+        "2": "Git makes no branch for you."
+      }
+    },
+    {
+      "id": "q8",
+      "prompt": "GPIS: a real key was pushed in a commit. What must happen first?",
+      "options": [
+        "Change (rotate) the key, because anyone with the history has it",
+        "Delete the file in a new commit",
+        "Make the repository private",
+        "Add the file to `.gitignore`"
+      ],
+      "answer": 0,
+      "why": "Copies of the history may already exist. Only a new key makes the old one useless.",
+      "wrong": {
+        "1": "The old commit still holds the key.",
+        "2": "Anyone who already copied it keeps it.",
+        "3": "Too late: `.gitignore` does not touch committed files."
+      }
+    }
+  ]
+}

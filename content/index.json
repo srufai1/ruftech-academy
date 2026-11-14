@@ -253,6 +253,33 @@
       "title": "Processes and ports",
       "guidance": "guided",
       "content_hash": "0d73f026245e07979847c18da7137a3351833a0d93257fde80622b2c0d26bdfc"
+    },
+    {
+      "slug": "m1-u4",
+      "kind": "unit",
+      "parent_slug": "m1",
+      "position": 4,
+      "title": "Git: a history you can trust",
+      "guidance": "guided",
+      "content_hash": "d451756ac7674022de2409e7d817d047a4a5ef0d60464a124ad5cab37d16aea1"
+    },
+    {
+      "slug": "m1-u4-quiz",
+      "kind": "quiz",
+      "parent_slug": "m1-u4",
+      "position": 1,
+      "title": "Git: a history you can trust",
+      "guidance": "guided",
+      "content_hash": "2bc52ab520103873900e12c56379ff5edd2f76a26b522541975e5849253e09f6"
+    },
+    {
+      "slug": "m1-p4",
+      "kind": "project",
+      "parent_slug": "m1-u4",
+      "position": 2,
+      "title": "Git rescue",
+      "guidance": "guided",
+      "content_hash": "842c1c83706cf8c6c95d735b81d8afb2b900904adb70039a7f668e0b67870ba4"
     }
   ]
 }
