@@ -442,6 +442,33 @@
       "title": "School dates and names",
       "guidance": "guided",
       "content_hash": "9861c2835c6a8ba659aba6ece6551f675cbfb7200153f38ff919f0d945a1d347"
+    },
+    {
+      "slug": "m2-u5",
+      "kind": "unit",
+      "parent_slug": "m2",
+      "position": 5,
+      "title": "Reading and repairing code",
+      "guidance": "guided",
+      "content_hash": "24963b7d6932b58b16e14b0ccf31de26d3ca114fc76c16fc5372888fa4adb57d"
+    },
+    {
+      "slug": "m2-u5-quiz",
+      "kind": "quiz",
+      "parent_slug": "m2-u5",
+      "position": 1,
+      "title": "Reading and repairing code",
+      "guidance": "guided",
+      "content_hash": "6b4195f9e78d0c54080c3abeb7b3d65541b364127900628ad1706cffc8efd8df"
+    },
+    {
+      "slug": "m2-p5",
+      "kind": "project",
+      "parent_slug": "m2-u5",
+      "position": 2,
+      "title": "Repair, do not rewrite",
+      "guidance": "guided",
+      "content_hash": "1d06c5276ff763fa23d77e5387df17ede424037f5eeb2fd4c203026afae0fa6b"
     }
   ]
 }

@@ -1,0 +1,99 @@
+{
+  "id": "m2-u5-quiz",
+  "title": "Reading and repairing code",
+  "pass_mark": 4,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "A bug report arrives. What do you do first?",
+      "options": [
+        "Read all the code",
+        "Reproduce it with a failing test",
+        "Try the most likely fix",
+        "Ask for the module to be rewritten"
+      ],
+      "answer": 1,
+      "why": "A failing test proves the bug exists, and later proves the fix worked.",
+      "wrong": {
+        "0": "Slow, and you do not yet know what to look for.",
+        "2": "Without a failing test you cannot tell whether it worked.",
+        "3": "A rewrite brings new bugs and cannot be reviewed."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "Your new test fails with \"Cannot find module\". What does that prove about the bug?",
+      "options": [
+        "The bug is confirmed",
+        "The module is the bug",
+        "Nothing: the test fails for another reason",
+        "The test is finished"
+      ],
+      "answer": 2,
+      "why": "The test never reached the code. Fix the import, then see whether it fails for the right reason.",
+      "wrong": {
+        "0": "It failed before it could check anything.",
+        "1": "A missing import says nothing about the code's behaviour.",
+        "3": "A test is finished when it fails because of the bug, and passes after the fix."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "GPIS D-70: House 1 has 12 pupils, House 2 has 9, House 3 has 9, House 4 has 11. Where does the new pupil go?",
+      "options": ["House 3", "House 1", "House 4", "House 2"],
+      "answer": 3,
+      "why": "Houses 2 and 3 have the fewest; the tie goes to the first name in alphabetical order.",
+      "wrong": {
+        "0": "That takes the last of the tie.",
+        "1": "House 1 has the most pupils. Names only break a tie.",
+        "2": "House 4 has 11, more than 9."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "GPIS D-48: in 2027 so far there are ADM/GPIS/2027/001 and /002; 150 numbers exist for 2026. What is the next number for 2027?",
+      "options": ["ADM/GPIS/2027/003", "ADM/GPIS/2027/153", "ADM/GPIS/2027/151", "ADM/GPIS/2026/151"],
+      "answer": 0,
+      "why": "NNN runs from 001 within the admission year. Only 2027 numbers count.",
+      "wrong": {
+        "1": "That counts the numbers of every year.",
+        "2": "That continues from 2026's last number.",
+        "3": "The year in the number is the admission year, 2027."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "GPIS D-46: how is the full name \"Ama Serwaa Birikran\" imported?",
+      "options": [
+        "First \"Ama\", middle \"Serwaa\", last \"Birikran\"",
+        "First \"Ama\", last \"Serwaa Birikran\", no middle name",
+        "First \"Ama Serwaa\", last \"Birikran\"",
+        "As a row error"
+      ],
+      "answer": 1,
+      "why": "The first word is the first name, the rest is the last name, and the middle name stays empty.",
+      "wrong": {
+        "0": "D-46 leaves the middle name empty.",
+        "2": "Only the first word is the first name.",
+        "3": "Only a one-word name is a row error."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "While fixing a bug you see an ugly but working function next to it. What do you do?",
+      "options": [
+        "Tidy it in the same commit",
+        "Rewrite both",
+        "Leave it, and note it for later",
+        "Delete it"
+      ],
+      "answer": 2,
+      "why": "Stay inside the task. Say what you noticed; do not change it.",
+      "wrong": {
+        "0": "That hides the real change inside a bigger diff.",
+        "1": "A rewrite is the riskiest change of all.",
+        "3": "It works, and something may use it."
+      }
+    }
+  ]
+}

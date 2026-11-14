@@ -1,0 +1,115 @@
+# Check for project 2.5 "Repair, do not rewrite".
+# Any change in this folder needs a new version (docs/checker.md).
+id: m2-p5
+title: Repair, do not rewrite
+version: 1.0.0
+unit: m2-u5
+requires: [wsl, node, git]
+
+# `academy init m2-p5` builds the repository (tag start) from this seed, and the debugging
+# lab's repository beside it: ~/academy-labs/m2-p5/class-codes.
+lab:
+  root: ~/academy-labs/m2-p5/admissions-helper
+  seed: fixtures/seed.sh
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: admission-number
+    kind: tests
+    title: Report A is fixed (D-48)
+    required: true
+    files: [tests/admission-number.test.mjs]
+
+  - id: full-name
+    kind: tests
+    title: Report B is fixed (D-46)
+    required: true
+    files: [tests/full-name.test.mjs]
+
+  - id: house
+    kind: tests
+    title: Report C is fixed (D-70)
+    required: true
+    files: [tests/house.test.mjs]
+
+  - id: still-right
+    kind: tests
+    title: What worked at the start still works
+    required: true
+    files: [tests/still-right.test.mjs]
+
+  - id: test-commits
+    kind: tests
+    title: At least three commits start with "Test:"
+    required: true
+    run:
+      command: |-
+        git log --format=%s start..HEAD | grep -c '^Test: ' | awk '{exit !($1 >= 3)}'
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: fix-commits
+    kind: tests
+    title: At least three commits start with "Fix:"
+    required: true
+    run:
+      command: |-
+        git log --format=%s start..HEAD | grep -c '^Fix: ' | awk '{exit !($1 >= 3)}'
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: small-diff
+    kind: tests
+    title: src/ changed by 12 lines or fewer since start
+    required: true
+    run:
+      command: git diff --numstat start -- src | awk '{s += $1 + $2} END {exit !(s > 0 && s <= 12)}'
+      cwd: lab
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: same-files
+    kind: tests
+    title: No file in src/ was added, deleted or renamed
+    required: true
+    run:
+      command: git diff --name-status start -- src | grep -cv '^M' ; true
+      cwd: lab
+      timeout_seconds: 10
+      expect_stdout: "0\n"
+
+  - id: npm-test
+    kind: tests
+    title: npm test passes
+    required: true
+    run:
+      command: npm test --silent
+      cwd: lab
+      timeout_seconds: 120
+      expect_exit: 0
+
+  - id: history
+    kind: git
+    title: The history is long enough, says what changed, and holds no secret
+    required: true
+    expect:
+      min_commits: 9
+      message_min_chars: 15
+      no_secrets: true
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  admission-number: "nextAdmissionNumber gives a wrong number. Read report A and D-48 again."
+  full-name: "splitFullName gives a wrong result for a name with extra spaces, or changed for a normal name."
+  house: "assignHouse chose the wrong House when counts are equal."
+  still-right: "Something that worked at the start no longer works."
+  test-commits: "There are fewer than three commits whose message starts with Test:."
+  fix-commits: "There are fewer than three commits whose message starts with Fix:."
+  small-diff: "The change to src/ since the start is more than 12 lines. Repair, do not rewrite."
+  same-files: "A file in src/ was added, deleted or renamed."
+  npm-test: "npm test fails."
+  history: "Too few commits, a message that says too little, or a secret."
