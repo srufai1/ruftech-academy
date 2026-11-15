@@ -65,6 +65,12 @@
       "version": "1.0.0",
       "sha256": "2f5de9fb2eac42a08e65e01a18c77658df102feabe5485bf96d3a6c548844959",
       "unit": "m2-u5"
+    },
+    {
+      "id": "m2-p6",
+      "version": "1.0.0",
+      "sha256": "ffa9206119989a8eb66d4bae6b186d834623a0ef3ab04a3907dbe49ad9c1b1ec",
+      "unit": "m2-u6"
     }
   ]
 }

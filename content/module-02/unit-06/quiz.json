@@ -1,0 +1,143 @@
+{
+  "id": "m2-u6-quiz",
+  "title": "Types that model the school",
+  "pass_mark": 6,
+  "questions": [
+    {
+      "id": "q1",
+      "prompt": "GPIS D-19: where is a student's current class kept?",
+      "options": [
+        "In a class_id field on the student",
+        "In both, kept in step",
+        "Nowhere as a field: it is derived from the open membership",
+        "In the score rows"
+      ],
+      "answer": 2,
+      "why": "The membership is the one source of truth. The current class is worked out from it.",
+      "wrong": {
+        "0": "That is the legacy design, the one GPIS removed.",
+        "1": "Two copies drift apart; one of them will be wrong.",
+        "3": "A score points to a membership; it does not hold the student's class today."
+      }
+    },
+    {
+      "id": "q2",
+      "prompt": "GPIS D-21: Ama was in Basic 3A in Term 1 and moved to Basic 3B for Term 2. Her Term 1 card is reprinted in Term 3. Which class and cohort?",
+      "options": [
+        "Basic 3B, her class today",
+        "Basic 3A, ranked among the Term 1 class",
+        "Both classes",
+        "Whichever the admin picks"
+      ],
+      "answer": 1,
+      "why": "Her Term 1 scores point to the 3A membership. The card comes from that reference.",
+      "wrong": {
+        "0": "That is the legacy bug: today's class on an old card.",
+        "2": "A term belongs to exactly one class (D-20).",
+        "3": "Nothing is chosen at read time."
+      }
+    },
+    {
+      "id": "q3",
+      "prompt": "GPIS D-23: a pupil leaves the school in February. What changes?",
+      "options": [
+        "The membership gets an end date, and the student's status becomes withdrawn",
+        "Only the status",
+        "The student row is deleted",
+        "The pupil is moved to a class called Left"
+      ],
+      "answer": 0,
+      "why": "Status and membership are separate facts; a withdrawal changes both.",
+      "wrong": {
+        "1": "The membership stays open, and class lists go wrong.",
+        "2": "The pupil's history would be lost.",
+        "3": "A status is never a class."
+      }
+    },
+    {
+      "id": "q4",
+      "prompt": "GPIS D-23: where do graduates go?",
+      "options": [
+        "Into a class named Alumni",
+        "Into a separate archive table",
+        "They are deleted after a year",
+        "Nowhere: alumni is a status; their memberships and scores stay as they are"
+      ],
+      "answer": 3,
+      "why": "Nothing moves on graduation. Only the status changes.",
+      "wrong": {
+        "0": "Alumni is a status, never a class.",
+        "1": "No copy is made; the history stays where it is.",
+        "2": "Alumni keep their complete history."
+      }
+    },
+    {
+      "id": "q5",
+      "prompt": "GPIS D-04: who is on a class list for a term?",
+      "options": [
+        "Everyone whose status is active",
+        "Everyone with an open membership",
+        "Students with a membership of that class for that term, and status active",
+        "Everyone who ever had a membership of that class"
+      ],
+      "answer": 2,
+      "why": "Both conditions: the membership places the pupil in the class; the status keeps leavers out.",
+      "wrong": {
+        "0": "That lists active pupils of every class.",
+        "1": "That includes a withdrawn pupil whose membership was not ended.",
+        "3": "That includes pupils who left or moved long ago."
+      }
+    },
+    {
+      "id": "q6",
+      "prompt": "`type S = \"active\" | \"withdrawn\"; const s: S = \"Active\";` What happens?",
+      "options": [
+        "It runs and stores \"Active\"",
+        "A compile error",
+        "It becomes \"active\"",
+        "An error when the program runs"
+      ],
+      "answer": 1,
+      "why": "\"Active\" is not one of the two allowed words. The type checker refuses it.",
+      "wrong": {
+        "0": "The type check fails before it runs.",
+        "2": "TypeScript never changes your values.",
+        "3": "Types are removed before running; the check happens at compile time."
+      }
+    },
+    {
+      "id": "q7",
+      "prompt": "Find the mistake: `type Membership = { …; endedOn?: string }`",
+      "options": [
+        "`?` is not allowed in types",
+        "Dates must be Date objects",
+        "Nothing is wrong",
+        "\"Not ended\" and \"field missing\" cannot be told apart; use a required `string | null`"
+      ],
+      "answer": 3,
+      "why": "null says \"known to be open\". A missing field could also mean it was never loaded.",
+      "wrong": {
+        "0": "`?` is allowed. It is the wrong choice here.",
+        "1": "GPIS keeps calendar dates as YYYY-MM-DD text.",
+        "2": "A membership that was never loaded would look open."
+      }
+    },
+    {
+      "id": "q8",
+      "prompt": "GPIS D-20: why may a pupil change class only at a term boundary?",
+      "options": [
+        "So that every term belongs to exactly one class, and a term's scores have one cohort",
+        "To reduce paperwork",
+        "Because the database is slow",
+        "Because terms are short"
+      ],
+      "answer": 0,
+      "why": "Positions are worked out inside one class for one term. A mid-term move would split the cohort.",
+      "wrong": {
+        "1": "That is not the reason given.",
+        "2": "Speed has nothing to do with it.",
+        "3": "The length of a term is not the reason."
+      }
+    }
+  ]
+}

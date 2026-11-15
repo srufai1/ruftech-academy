@@ -469,6 +469,33 @@
       "title": "Repair, do not rewrite",
       "guidance": "guided",
       "content_hash": "1d06c5276ff763fa23d77e5387df17ede424037f5eeb2fd4c203026afae0fa6b"
+    },
+    {
+      "slug": "m2-u6",
+      "kind": "unit",
+      "parent_slug": "m2",
+      "position": 6,
+      "title": "Types that model the school",
+      "guidance": "guided",
+      "content_hash": "5c8afda06b4a605e22716b593ab822760dc291aaa1ad7462f73b3b236c14dd34"
+    },
+    {
+      "slug": "m2-u6-quiz",
+      "kind": "quiz",
+      "parent_slug": "m2-u6",
+      "position": 1,
+      "title": "Types that model the school",
+      "guidance": "guided",
+      "content_hash": "733291e2d879a507b7cd2a626c54ae34025694e2778970dbde90a376429d2c62"
+    },
+    {
+      "slug": "m2-p6",
+      "kind": "project",
+      "parent_slug": "m2-u6",
+      "position": 2,
+      "title": "Typed data shapes",
+      "guidance": "guided",
+      "content_hash": "87e2c535fefbf46255f0b31e090481cd8ba8d0149956e6f1277b9dbe0efc93ec"
     }
   ]
 }

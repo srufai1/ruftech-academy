@@ -1,0 +1,90 @@
+# Check for project 2.6 "Typed data shapes".
+# Any change in this folder needs a new version (docs/checker.md).
+# A repo project: run it inside ~/projects/gpis-rebuild.
+id: m2-p6
+title: Typed data shapes
+version: 1.0.0
+unit: m2-u6
+requires: [wsl, node, git]
+
+# All required steps must pass.
+pass: all-required
+
+steps:
+  - id: files
+    kind: files
+    title: school-types.ts, membership.ts and tests/membership.test exist
+    required: true
+    expect:
+      - { path: src/lib/school-types.ts, type: file }
+      - { path: src/lib/membership.ts, type: file }
+      - { glob: "tests/membership.test.*", type: file }
+
+  - id: shapes
+    kind: tests
+    title: The school types accept right data and refuse wrong data
+    required: true
+    files: [tests/shapes.test.mjs]
+
+  - id: open-membership
+    kind: tests
+    title: openMembership finds the one open membership
+    required: true
+    files: [tests/open-membership.test.mjs]
+
+  - id: membership-for-term
+    kind: tests
+    title: membershipForTerm finds the membership that covers a term
+    required: true
+    files: [tests/membership-for-term.test.mjs]
+
+  - id: overlaps
+    kind: tests
+    title: overlaps tells when two periods share a day
+    required: true
+    files: [tests/overlaps.test.mjs]
+
+  - id: class-roll
+    kind: tests
+    title: classRoll follows D-04
+    required: true
+    files: [tests/class-roll.test.mjs]
+
+  - id: no-any-no-as
+    kind: tests
+    title: No any, and no type assertion in membership.ts
+    required: true
+    run:
+      command: |-
+        ! grep -rnE '(:\s*any\b|<any>|\bas (any|unknown)\b)' src && test "$(grep -cE '\bas [A-Z]' src/lib/membership.ts)" = 0
+      cwd: project
+      timeout_seconds: 10
+      expect_exit: 0
+
+  - id: npm-test
+    kind: tests
+    title: npm test passes
+    required: true
+    run:
+      command: npm test --silent
+      cwd: project
+      timeout_seconds: 120
+      expect_exit: 0
+
+  - id: static
+    kind: static
+    title: Lint and the type check pass
+    required: true
+    run: [lint, tsc]
+
+# Shown to the learner when a step fails. Say what is wrong, not how to fix it.
+messages:
+  files: "src/lib/school-types.ts, src/lib/membership.ts or tests/membership.test is missing."
+  shapes: "The types allow something they must refuse, or refuse valid data. A student must have no class field; statuses and maxima must be exact sets; properties must be read-only."
+  open-membership: "openMembership gave the wrong record, or accepted two open memberships."
+  membership-for-term: "membershipForTerm did not return the membership that covers the term."
+  overlaps: "overlaps gave a wrong answer. Check periods that touch and open memberships."
+  class-roll: "classRoll is wrong. It needs both conditions of D-04 and the right order."
+  no-any-no-as: "any or a type assertion is used where it is not allowed."
+  npm-test: "npm test fails."
+  static: "Lint or the type check reports problems."
