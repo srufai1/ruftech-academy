@@ -916,13 +916,13 @@ earlier scripts.
 
 | Step id | Kind | Req. | Verifies |
 | :--- | :--- | :--- | :--- |
-| `project-files` | files | yes | Files: `README.md`, `RULES.md`, `package.json`, `package-lock.json`, `eslint.config.mjs`, `.gitignore`, `.env.example`, `src/config/school.mjs`, `scripts/school-info.mjs`; `scripts/verify.sh` with `mode_any_of: ["700","750","755"]` |
+| `project-files` | files | yes | Files: `README.md`, `RULES.md`, `package.json`, `package-lock.json`, `eslint.config.mjs`, `.gitignore`, `.env.example`, `scripts/school-info.mjs`; glob `src/config/school.*`; `scripts/verify.sh` with `mode_any_of: ["700","750","755"]` |
 | `readme` | doc | yes | `README.md`, four headings, `min_words_per_heading: 25` |
 | `rules` | doc | yes | `RULES.md`, three headings, `min_words_per_heading: 30` |
 | `six-steps` | tests (run) | yes | `grep -ciE 'observe.*isolate.*test.*prove.*document.*move on' RULES.md` → output not `0` (command: `grep -qiE '…' RULES.md`, exit 0). The six words may be on one line or the learner is told to write them on one line |
 | `package-shape` | tests (run) | yes | `node -e "const p=require('./package.json'); if(!(p.private===true&&p.type==='module'&&p.scripts&&p.scripts.lint&&p.scripts.verify)) process.exit(1)"` → exit 0 |
 | `school-info` | tests (run) | yes | `node scripts/school-info.mjs` → `"Great Pakyiman International School (GPIS)\n"` |
-| `one-source` | tests (run) | yes | `grep -rl "Pakyiman" src scripts` → `"src/config/school.mjs\n"` |
+| `one-source` | tests (run) | yes | `grep -rl "Pakyiman" src scripts \| wc -l \| tr -d ' '` → `"1\n"` (a count, not a file name: in unit 3.2 the module becomes `school.ts`) |
 | `verify-passes` | tests (run) | yes | `./scripts/verify.sh \| tail -n 1` → `"verify ok\n"`, `timeout_seconds: 120` (and exit 0 of the script itself: run as `set -o pipefail; ./scripts/verify.sh \| tail -n 1`) |
 | `nothing-private-tracked` | tests (run) | yes | `git ls-files node_modules .env \| wc -l \| tr -d ' '` → `"0\n"` |
 | `example-tracked` | tests (run) | yes | `git ls-files --error-unmatch .env.example` → exit 0 |
