@@ -167,9 +167,7 @@ choose an answer; where the builder gave an interim answer (`99-builder-notes.md
 - **Work order:** `05` → `06` → `07` → `08` → `09` → `10` → `99`. After **each** file:
   run `npm test` (must stay green; you change docs only), then commit and push to `main`:
   - message: `Course design: module N` (or `Course design: open questions`);
-  - the message must **not** contain any AI model name; end it with one line
-    `Claude-Session: https://claude.ai/code/session_01A76AM5od1bQZfnCdZAnGES` only if you are
-    asked to; otherwise no trailer;
+  - the message must **not** contain any AI model name, and has no trailer lines;
   - push with `git push origin main`; if it is rejected, `git fetch` and
     `git rebase origin/main`, then push again. **Never force-push.**
 - If you stop part-way, the finished files are already saved.
