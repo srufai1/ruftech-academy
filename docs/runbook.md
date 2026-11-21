@@ -40,6 +40,7 @@ In Supabase → SQL Editor, run each file **whole**, in this order. Each one onl
 | 5 | `supabase/migrations/0005_immutable_history.sql` | History cannot be changed or deleted |
 | 6 | `supabase/migrations/0006_register_device.sql` | `register_device()` for `academy login` |
 | 7 | `supabase/migrations/0007_record_check_run.sql` | `record_check_run()` and the private key table |
+| 8 | `supabase/migrations/0008_named_checks.sql` | Extra checks per unit (debugging lab, own build, Docker) — T27 |
 
 > On the current project (`gpis-academy`) all seven are **already applied** (checked
 > 13 November 2026). Run them only for a new project. A future migration `0008_…` is run the
