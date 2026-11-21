@@ -48,8 +48,9 @@ npm test
 | 3 Checker | T12–T17 | `academy` runs the sample check locally |
 | 4 Results | T18–T21 | Signed results reach the platform and show on the task page |
 | 5 Finish | T22–T24 | Self-review, quality pass, deployment |
+| 6 Course decisions | T25–T32 | The checker and platform follow the owner's answers to the 19 course-design questions |
 
-**ARCHITECT tasks: T04, T12, T19.**
+**ARCHITECT tasks: T04, T12, T19, T26, T27.**
 
 ---
 
@@ -391,8 +392,120 @@ npm test
 
 ---
 
+## Phase 6 — Course decisions (owner's answers, 21 November 2026)
+
+These tasks carry out the owner's answers in `docs/course-design/99-open-questions.md`. Build
+them in this order: **T25 → T26 → T27 → T32 → T28**, then T29–T31 in any order. Module 3
+content waits for T25 and T26.
+
+### T25 — Browser probe in `academy doctor` (Q7)
+- **Needs.** T16, T17.
+- **Goal.** The learner installs the test browser once; `doctor` proves it works.
+- **Files.** `packages/checker/src/commands/doctor.ts`; the install line in `docs/checker.md`
+  and the module 3 "Before you start" text.
+- **Accept.** `doctor` loads Playwright, launches Chromium, opens and closes a blank page, and
+  reports one line: works, or what is missing (package, browser download, system library)
+  with the command that fixes it. It does not install anything itself. A failed probe is a
+  `needs`, not a crash. The browser is shared across projects; `doctor` says which Playwright
+  and browser version it found.
+- **Tests.** `scripts/test-doctor-browser.mjs`: probe passes on this machine; a fixture where
+  the browser path is wrong gives the expected message.
+
+### T26 — `page` step: actions and a signed-in session (Q4) — **ARCHITECT**
+- **Needs.** T16, T25.
+- **Goal.** A check can click, type and sign in, so forms are checked automatically.
+- **Files.** `packages/shared/src/content-schema.ts` (new optional `actions` and `session` in
+  a `page` step), `packages/checker/src/steps/page.ts`, `docs/checker.md`,
+  `docs/course-design/00-guide.md` section 10.5.
+- **Accept.** Actions are a short, fixed list: `fill` (label or test id, value), `click`
+  (role and name, or test id), `press` (key), `expect_text`, `expect_url`, `expect_focus`,
+  `wait_for` (text, at most 10 s). Each action has a time limit; the whole step has a limit.
+  `session` names a role (`admin`, `assessment`, `teacher`, …); the step loads that role's
+  saved browser session from the project's ignored folder `.academy/sessions/<role>.json`
+  (made by the learner signing in once, per Q12). No password or token is ever written in a
+  check file. App not answering, browser missing or session file missing or expired →
+  `needs` with a one-line reason. Old checks without `actions` behave exactly as before.
+  Values typed by a check are fixtures, never secrets.
+- **Tests.** `scripts/test-steps-page-actions.mjs` against a small local test app: a form that
+  passes, one that fails, an expired session, an app that is down.
+
+### T27 — Several named checks per unit (Q1) — **ARCHITECT**
+- **Needs.** T05, T17, T19.
+- **Goal.** A unit can have a main check, a debugging-lab check and an own-build check.
+- **Files.** Content loader and schema (`content-load.ts`, `content-schema.ts`), the manifest
+  and packaging scripts, the CLI lookup (`checks.ts`), progress storage (a migration if
+  needed), the project and progress pages, `content/README.md`, `00-guide.md`.
+- **Accept.** A unit's folder may hold `check/` (main), `check-debug/` and `check-own/`. Ids
+  are `<project id>`, `<project id>-debug`, `<project id>-own` (for unit 1.1: `m1-p1`,
+  `m1-p1-debug`, and `m1-p1-own` — the unit's own-build text is corrected to that id).
+  Each is versioned and hashed on its own. The unit's front matter lists them. Progress shows
+  each check separately; "unit passed" means the main check passed (the other two show as
+  their own results). Units with one `check/` still load unchanged. Signed results already
+  recorded stay valid.
+- **Tests.** Content tests for a unit with three checks and one with one; CLI finds each id;
+  a recorded run for each appears on the progress page.
+
+### T28 — Debugging-lab and own-build checks for built units
+- **Needs.** T27, T32.
+- **Goal.** Units 1.1–2.6 get the two extra checks the owner asked for.
+- **Files.** `content/module-01/*/check-debug/`, `check-own/`, same for module 2; the unit
+  pages that name the checker command.
+- **Accept.** Each check fails on the seeded or empty state and passes on a solved copy (as
+  in `00-guide.md` section 14). Debugging-lab seeds for lab projects come from the lab's own
+  seed or a sibling folder; for repo projects the seed creates a scratch folder under
+  `~/academy-labs/<id>-debug/`. Own-build checks run in `~/projects/gpis-rebuild`.
+- **Tests.** `npm test`, `npm run content`.
+
+### T29 — Unit time as a range (Q6)
+- **Needs.** T05, T07.
+- **Goal.** A unit shows an estimated range, for example "12–18 hours".
+- **Files.** `content-schema.ts` (`minutes` accepts a number or `{ min, max }`), the course map
+  and unit pages, `00-guide.md` section 2.
+- **Accept.** Old units with one number still load and show "about N hours". The range is
+  labelled "estimate". The sum shown for a module is a range too.
+- **Tests.** Content tests for both forms; page test for the label.
+
+### T30 — Two badges for Docker labs (Q8)
+- **Needs.** T27.
+- **Goal.** A Docker lab shows one result for the written or cloud part and one for the live
+  Docker part.
+- **Files.** The design of units 4.6 and 7.5 (and the optional 7.2 and P.4 extras); progress
+  display.
+- **Accept.** Built with T27's named checks: the main `check/` holds the common evidence; a
+  check named `<project id>-docker` holds the live Docker steps. The progress page shows
+  both; the unit passes on the main check alone. No new outcome is added to the protocol.
+- **Tests.** Progress page shows both results for a unit with a passed main check and no
+  Docker run.
+
+### T31 — A person reviews the deployed site (Q3)
+- **Needs.** T20, T22.
+- **Goal.** For projects that end with a deployed site (3.1, 7.4, 9.5, the hosted extra of
+  P.5), a reviewer confirms the online version.
+- **Files.** A migration for review records (RLS on; only the owner as reviewer for now), the
+  project page (learner submits the address; reviewer sees a list), `docs/platform.md`.
+- **Accept.** The learner submits the https address and a note. The reviewer records
+  confirmed or not confirmed, with a reason. Records are insert-only (like check runs). The
+  local check still runs and shows separately. The site uses synthetic data only.
+- **Tests.** RLS tests: a learner cannot write a review; a reviewer cannot change a past one.
+
+### T32 — Update the course design to the owner's answers
+- **Needs.** none (docs only).
+- **Goal.** `00-guide.md` and the module files match the 19 answers.
+- **Files.** `docs/course-design/00-guide.md`, `01`–`10`, `99-builder-notes.md`.
+- **Accept.** Q5: no "two-part" lessons; the extra examples move into the guided example,
+  and every quiz idea is still taught. Q1: every unit's check plan gains a debugging-lab and
+  an own-build check plan. Q4: steps marked "(Q4)" become `page` steps with actions. Q8:
+  Docker steps move to a `-docker` check. Q2: module 8 names the unit where hints stop. Q6:
+  every unit gets a range. Q12: module 5 gives the account setup. Q13, Q14, Q16: module 5's
+  contract gains the new fields, the permanent Student ID with phone history, mock sittings
+  and offerings. Q15, Q17, Q19: tests and the ID allocation table as decided. Nothing else
+  changes.
+- **Tests.** `npm test`.
+
+---
+
 ## After the roadmap
 
-Not planned here: writing the lessons for modules 1–9 and the Python track. Each unit copies
-the shape of `content/module-01/unit-01/` and adds its `check/` folder. The sample unit refers
-to two more checks (`m1-p1-debug`, `m1-u1-own`) that still have to be written in that shape.
+Not planned here: writing the lessons for modules 3–9 and the Python track. Each module is
+built from its file in `docs/course-design/` (modules 1 and 2 are built). The sample unit's
+extra checks are T28.
