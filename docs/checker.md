@@ -12,13 +12,17 @@ Everything happens in the VS Code terminal, opened in the project folder inside 
 
 | Step | Command | What happens |
 | :--- | :--- | :--- |
-| Once | `npx academy doctor` | Confirms WSL, Node, Git and (if needed) the lab database connection |
+| Once | `npx academy doctor` | Checks Linux or WSL, Node, Git, bash and the Chromium test browser |
 | Once | `npx academy login` | Asks for your email; you type the one-time code from the email; the CLI is signed in and this machine is registered as a device (ADR-7) |
 | Any time | `npx academy logout` | Ends the CLI's session on this machine |
 | Each project | `npx academy check m2-p1` | Runs the checks, prints pass or fail with reasons, sends the result |
 | Any time | `npx academy check m2-p1 --dry-run` | Same checks, nothing sent |
 | Any time | `npx academy status` | Shows what the platform has recorded |
 | Any time | `npx academy check m2-p1 --at a1b2c3d` | Checks an earlier commit in a temporary copy; your folder, including uncommitted work, is not touched |
+
+Before module 3, run `npm install -D playwright` in your project, then
+`npx playwright install chromium` once to download the matching browser. Run
+`npx academy doctor` to confirm Chromium opens and closes a blank page.
 
 The task page on the platform shows the exact command to copy. A VS Code task
 (`.vscode/tasks.json`, created by `academy init`) runs the same command from the Run Task

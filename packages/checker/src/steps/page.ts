@@ -4,30 +4,11 @@
  *   expect: { status, title_contains, text: [...], no_sideways_scroll, min_target_px }
  * Needs Playwright with Chromium; without it, or with no page running, the result is "needs".
  */
-import { createRequire } from "node:module";
-import { join } from "node:path";
+import { loadChromium, type Browser } from "../browser.ts";
 import { CheckerError } from "../errors.ts";
 import type { StepKindImpl } from "../runner.ts";
 
 type Expect = { status?: number; title_contains?: string; text?: string[]; no_sideways_scroll?: boolean; min_target_px?: number };
-type Browser = { newPage(o: object): Promise<Page>; close(): Promise<void> };
-type Page = {
-  goto(url: string, o: object): Promise<{ status(): number } | null>;
-  title(): Promise<string>;
-  evaluate<T>(fn: (arg: number) => T, arg: number): Promise<T>;
-  getByText(t: string): { first(): { isVisible(): Promise<boolean> } };
-};
-
-async function loadChromium(projectDir: string): Promise<{ launch(): Promise<Browser> } | null> {
-  for (const from of [join(projectDir, "package.json"), import.meta.url]) {
-    try {
-      const req = createRequire(from);
-      return req(process.env.GPIS_PLAYWRIGHT_MODULE ?? "playwright").chromium;
-    } catch { /* try the next place */ }
-  }
-  return null;
-}
-
 export const pageStep: StepKindImpl = async (step, ctx) => {
   const url = step.url;
   if (typeof url !== "string") throw new CheckerError("a page step needs url");
@@ -36,7 +17,7 @@ export const pageStep: StepKindImpl = async (step, ctx) => {
   if (parsed.protocol !== "http:" || !["localhost", "127.0.0.1"].includes(parsed.hostname)) throw new CheckerError("a page step only opens http://localhost or http://127.0.0.1");
   const e = (step.expect ?? {}) as Expect;
 
-  const chromium = await loadChromium(ctx.workDir);
+  const chromium = loadChromium(ctx.workDir)?.chromium;
   if (!chromium) return { outcome: "needs", reasons: ["Playwright is not installed: npm install -D playwright && npx playwright install chromium"] };
   let browser: Browser;
   try { browser = await chromium.launch(); } catch {

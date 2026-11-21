@@ -36,7 +36,7 @@ export async function main(argv: string[], print: (line: string) => void = conso
   const dirFlag = rest.find((a) => a.startsWith("--dir="))?.slice("--dir=".length);
   try {
     switch (command) {
-      case "doctor": return doctor(print);
+      case "doctor": return await doctor(print);
       case "login": return await login(urlFlag ? { url: urlFlag } : {}, { fetch, ask, print, hostname });
       case "logout": return await logout({ fetch, print });
       case "status": return await status(args[0], { fetch, print });
