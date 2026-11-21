@@ -1,5 +1,32 @@
 # Course design — open questions for the owner
 
+## Owner's decisions (21 November 2026)
+
+All 19 questions are answered. The text after this table keeps the original options as a record.
+Where a decision needs a checker or platform change, the last column says so.
+
+| No. | Decision | Change needed |
+| :--- | :--- | :--- |
+| Q1 | **Separate checks** for the main lab, the debugging lab and the own build (three per unit). Unit 1.1's two named checks become real | Platform: content loader, packaging, CLI lookup, progress storage and site display must support several named checks per unit. Units already built need an update |
+| Q2 | **Fade inside module 8**: hints in the first units, none in the last ones. The builder fixes the switch-over unit and updates the course map | Content and `course.yaml` label |
+| Q3 | **A person reviews the deployed site** (owner or mentor). The checker still tests the local site | Platform: a "reviewed by a person" record per project, with synthetic data and an access arrangement |
+| Q4 | **Teach the checker to click and type**: add actions and a signed-in session setup to the `page` step. A missing app shows as `needs` | Checker: action schema, session handling, time limits, fixtures. Steps marked "(Q4)" in the module files move to this step kind when it exists |
+| Q5 | **Keep lessons short; move examples into the guided example.** The builder must make sure every quiz idea is still taught | Content only. The "two-part lesson" plan in modules 1–5 is replaced |
+| Q6 | **Show a time range** (for example 12–18 hours) | Schema: `minutes` becomes a range (or two fields); site display |
+| Q7 | **Install the test browser once; `academy doctor` opens and closes it** to prove it works and says what is missing | Checker: doctor browser probe and a failure fixture |
+| Q8 | **Two separate badges** for Docker labs: one for the written or cloud part, one for the live Docker part | Platform: progress and display contract |
+| Q9 | **The Academy's own sign-in page** (`ruftech-academy.vercel.app/sign-in`), looking only, no signing in. Confirms the builder's interim answer | None |
+| Q10 | **The learner records two rebuilds** in a document | None |
+| Q11 | **Teach only today's rule**: 60 minutes idle, warning at 58 (D-177) | None |
+| Q12 | **The learner creates practice staff accounts** in their own project and signs in to save local session files (ignored by Git) | Content: setup per role, expiry and clean-up instructions |
+| Q13 | **Match GPIS fully in 5.2**: add gender Other and the parent-phone field by a new migration | Content; earlier fixtures updated once |
+| Q14 | **Permanent Student ID and phone-change history in 5.2** | Content |
+| Q15 | **The test works out the expected House** from the learner's real Houses in the same transaction | Content |
+| Q16 | **Mock sittings and subject offerings in 5.4** | Content |
+| Q17 | **A loose time limit plus a written explanation** of the cost | Content |
+| Q18 | **Python service on the laptop only**; online hosting is an optional extra | None |
+| Q19 | **Separate ID ranges** for temporary and lasting test rows, in one small table | Content: publish the allocation table and update affected tests together |
+
 Module 5 is next in sequence. Its first build decision is how a learner signs in repeatedly as different synthetic staff members. The school’s current idle rule can already be read in D-177. The course still needs an editorial decision about teaching the earlier rule. Module 6 can be built independently while work on the authenticated fixtures is pending.
 
 | Decide before | Questions | What depends on the answer |
