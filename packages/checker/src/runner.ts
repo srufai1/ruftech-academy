@@ -20,7 +20,7 @@ export type SqlClient = {
   end(): Promise<void>;
 };
 export type StepDefinition = Record<string, unknown> & { id: string; kind: string; title: string; required: boolean };
-export type StepOutput = { outcome: StepOutcome; reasons?: string[] };
+export type StepOutput = { outcome: StepOutcome; reasons?: string[]; onlyOwnReason?: boolean };
 export type StepKindImpl = (step: StepDefinition, ctx: StepContext) => Promise<StepOutput> | StepOutput;
 export type StepKinds = Readonly<Record<string, StepKindImpl>>;
 
@@ -44,7 +44,7 @@ export async function runSteps(steps: StepDefinition[], ctx: StepContext, kinds:
       throw error;
     }
     const own = (out.reasons ?? []).map(cleanReason);
-    const message = out.outcome === "fail" && messages[step.id] ? [cleanReason(messages[step.id]!)] : [];
+    const message = out.outcome === "fail" && !out.onlyOwnReason && messages[step.id] ? [cleanReason(messages[step.id]!)] : [];
     const reasons = [...message, ...own].slice(0, LIMITS.reasonsPerStep);
     results.push({ id: step.id, kind: step.kind as StepKind, title: cleanReason(step.title).slice(0, LIMITS.titleChars), required: step.required, outcome: out.outcome, reasons });
   }

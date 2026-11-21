@@ -1,5 +1,7 @@
 /** T16: the page step against a small local page: what fits at 360px, tap targets, and the localhost-only rule. */
 import assert from "node:assert/strict";
+import { fileURLToPath } from "node:url";
+import fake from "./fixtures/doctor-playwright.cjs";
 import { createServer } from "node:http";
 import { pageStep } from "../packages/checker/src/steps/page.ts";
 import { CheckerError } from "../packages/checker/src/errors.ts";
@@ -28,7 +30,22 @@ try {
   assert.ok(wide.reasons.some((r) => r.startsWith("tap targets under 44px: tiny")), "a small tap target is caught"); n++;
   eq((await pageStep(step(`${base}/missing`), ctx)).reasons, [`${base}/missing answered 404, expected 200`]);
   eq((await pageStep(step(`${base}/good`, { text: ["Delete everything"] }), ctx)).reasons, ['"Delete everything" is not visible on the page']);
-  eq((await pageStep(step("http://127.0.0.1:1/"), ctx)).outcome, "needs", "nothing running: needs, not fail");
+  eq(await pageStep(step("http://127.0.0.1:1/"), ctx), { outcome: "needs", reasons: ["Nothing answered at http://127.0.0.1:1/. Start your app (npm run dev)."] });
+  const original = process.env.GPIS_PLAYWRIGHT_MODULE;
+  const fixture = fileURLToPath(new URL("./fixtures/doctor-playwright.cjs", import.meta.url));
+  try {
+    process.env.GPIS_PLAYWRIGHT_MODULE = fixture + ".missing";
+    eq(await pageStep(step(base), ctx), { outcome: "needs", reasons: ["Playwright is not installed. Run: npm install -D playwright"] });
+    process.env.GPIS_PLAYWRIGHT_MODULE = fixture;
+    fake.fixture.failAt = "launch";
+    fake.fixture.message = "Executable doesn't exist";
+    eq(await pageStep(step(base), ctx), { outcome: "needs", reasons: ["Chromium is not installed. Run: npx playwright install chromium"] });
+    fake.fixture.message = "Host system is missing dependencies";
+    eq(await pageStep(step(base), ctx), { outcome: "needs", reasons: ["Chromium cannot start: a Linux library is missing. Run: sudo npx playwright install-deps chromium"] });
+  } finally {
+    if (original === undefined) delete process.env.GPIS_PLAYWRIGHT_MODULE;
+    else process.env.GPIS_PLAYWRIGHT_MODULE = original;
+  }
   for (const url of ["https://example.com/", "http://192.168.1.5/", "file:///etc/passwd"]) {
     await assert.rejects(pageStep(step(url), ctx), CheckerError, url); n++;
   }

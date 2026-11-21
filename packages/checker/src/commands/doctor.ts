@@ -1,6 +1,8 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
-import { loadChromium, type Browser } from "../browser.ts";
+import { browserProblem, loadChromium, missingPlaywright, type Browser } from "../browser.ts";
+
+import { savedSessions } from "./session.ts";
 
 export type DoctorLine = { name: string; ok: boolean; detail: string; required: boolean };
 
@@ -28,7 +30,7 @@ const BROWSER_TIMEOUT_MS = 20_000;
 async function browserLine(): Promise<DoctorLine> {
   const needs = (detail: string): DoctorLine => ({ name: "browser", ok: false, required: false, detail });
   const playwright = loadChromium(process.cwd());
-  if (!playwright) return needs("Playwright is not installed. Run: npm install -D playwright");
+  if (!playwright) return needs(missingPlaywright);
 
   const { chromium, version } = playwright;
   let browser: Browser | undefined;
@@ -67,12 +69,8 @@ async function browserLine(): Promise<DoctorLine> {
     return await Promise.race([inspect(), timeout]);
   } catch (error) {
     const message = error instanceof Error ? error.message : "";
-    if (/host system is missing dependencies|error while loading shared libraries|cannot open shared object file/i.test(message))
-      return needs("Chromium cannot start: a Linux library is missing. Run: sudo npx playwright install-deps chromium");
-    if (/executable doesn't exist/i.test(message))
-      return needs("Chromium is not installed. Run: npx playwright install chromium");
     if (expired || /timeout|timed out/i.test(message)) return needs("Chromium did not finish the browser check within 20 seconds.");
-    return needs("Chromium could not open and close a blank page.");
+    return needs(browserProblem(error));
   } finally {
     clearTimeout(timer!);
     if (expired) void closeBrowser()?.catch(() => {});
@@ -80,7 +78,9 @@ async function browserLine(): Promise<DoctorLine> {
 }
 
 export async function doctorLines(): Promise<DoctorLine[]> {
-  return [...systemLines(), await browserLine()];
+  const sessions = savedSessions(process.cwd());
+  const detail = sessions.length ? `${sessions.length} saved (${sessions.map(s => s.role).join(", ")})` : "none yet — only needed from module 5";
+  return [...systemLines(), await browserLine(), { name: "sessions", ok: true, required: false, detail }];
 }
 
 export function printDoctorLines(lines: DoctorLine[], print: (line: string) => void): number {

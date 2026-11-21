@@ -14,6 +14,7 @@ Everything happens in the VS Code terminal, opened in the project folder inside 
 | :--- | :--- | :--- |
 | Once | `npx academy doctor` | Checks Linux or WSL, Node, Git, bash and the Chromium test browser |
 | Once | `npx academy login` | Asks for your email; you type the one-time code from the email; the CLI is signed in and this machine is registered as a device (ADR-7) |
+| Once per practice role | `npx academy session <role>` | Opens the local sign-in page to save a private browser session |
 | Any time | `npx academy logout` | Ends the CLI's session on this machine |
 | Each project | `npx academy check m2-p1` | Runs the checks, prints pass or fail with reasons, sends the result |
 | Any time | `npx academy check m2-p1 --dry-run` | Same checks, nothing sent |
@@ -23,6 +24,52 @@ Everything happens in the VS Code terminal, opened in the project folder inside 
 Before module 3, run `npm install -D playwright` in your project, then
 `npx playwright install chromium` once to download the matching browser. Run
 `npx academy doctor` to confirm Chromium opens and closes a blank page.
+
+### Interactive page checks
+
+Start the local app first. A page step opens its `url` in a fresh browser context. The
+default viewport is `phone` (360 × 780). Use `viewport: computer` for 1280 × 800.
+The whole step has `timeout_seconds: 60` by default, up to 120. After the initial load
+the checker runs up to 40 actions in order. The first failed action ends the step.
+Each action has five seconds unless `wait_for` specifies its own limit. The existing
+`expect` checks inspect the final page; HTTP status refers to the initial load.
+
+| Action | Value and observable result |
+| :--- | :--- |
+| `goto`, `reload` | A local path with optional query, or `reload: true` |
+| `fill` | A label or test id and a string `value` from the public fixture |
+| `click` | A label, test id, or accessible `role` and `name` |
+| `press` | A `key` such as Enter or Tab on the focused control |
+| `expect_text`, `expect_no_text` | A string that should be visible or absent from visible text |
+| `expect_url` | Exact `path`, plus optional `query` mapping of keys to string values. Extra keys are allowed. |
+| `expect_focus` | Label or test id of the focused control |
+| `expect_attribute` | Label or test id, attribute `name` and expected string `value` |
+| `expect_count` | A `testid` and the expected visible `count` |
+| `expect_local_storage` | A `key` and expected `json`. Null means the key must be absent. |
+| `expect_leave_warning` | True or false. Probe for an actual beforeunload dialog and stay on the current document. |
+| `wait_for` | Visible `text` and `seconds` from 1 to 10 |
+
+**What the checker can and cannot do in a browser**
+
+| Can | Cannot |
+| :--- | :--- |
+| Use accessible controls and test ids with public fixture values | Run course-supplied JavaScript, CSS selectors or XPath |
+| Load the learner’s named practice session | Ask for a password or send a session file with a result |
+| Follow routes on the starting HTTP origin | Navigate to a deployed site, another host or another port |
+
+**Practice sessions.** Add the line `.academy/` to the project’s `.gitignore`. From that
+project run `npx academy session admin --url http://localhost:3000/login`. The URL shown is
+the default. Sign in by hand in the visible Chromium window (WSLg on Windows). Leaving the
+sign-in path saves the session, or press Enter in the terminal when ready. The file is
+`.academy/sessions/admin.json` (mode 600, directory 700). Use a lowercase role slug of up
+to 30 characters. List roles and ages with `npx academy session`. Remove one with
+`npx academy session admin --clear`. If a check lands on `/login`, it asks you to sign in
+again. Set `sign_in_path` on the step for an app with another sign-in route.
+
+**Changed in T26.** Every page step enforces the starting origin, including server redirects
+and port changes. Leaving it fails with `left the local app`. Legacy and interactive steps
+share the new prerequisite messages for an unavailable app, Playwright or Chromium.
+Previously recorded results keep their original reasons.
 
 The task page on the platform shows the exact command to copy. A VS Code task
 (`.vscode/tasks.json`, created by `academy init`) runs the same command from the Run Task

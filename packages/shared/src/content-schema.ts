@@ -4,6 +4,9 @@
  * Every validator returns a list of problems; an empty list means the value is valid.
  */
 
+import { validatePageStep } from "./page-schema.ts";
+export { validatePageStep, localAppUrl, sessionRole, type PageAction, type Target } from "./page-schema.ts";
+
 export type Guidance = "guided" | "half" | "independent";
 export const GUIDANCE: readonly Guidance[] = ["guided", "half", "independent"];
 
@@ -140,6 +143,7 @@ export function validateCheck(value: unknown): string[] {
     else if (ids.has(s.id)) problems.push(`${at}.id "${s.id}" is used twice`);
     else ids.add(s.id);
     if (!(STEP_KINDS as readonly string[]).includes(s.kind as string)) problems.push(`${at}.kind must be one of ${STEP_KINDS.join(", ")}`);
+    if (s.kind === "page") problems.push(...validatePageStep(s).map(problem => `${at}: ${problem}`));
     if (!isText(s.title, 200)) problems.push(`${at}.title is missing`);
     if (typeof s.required !== "boolean") problems.push(`${at}.required must be true or false`);
   });

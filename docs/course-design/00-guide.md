@@ -274,17 +274,18 @@ learner (Known limits in `decisions.md`), so treat it as public.
 
 ### 10.5 Page steps and behaviour in the browser
 
-- The learner starts the app (`npm run dev`); the step opens one address at 360 × 780.
-- It can check: the status, the title, that given texts are visible, no sideways scroll, and
-  a minimum tap-target height (`min_target_px: 44`).
-- State that must be checked goes in the address, as GPIS does (search, filters, page, tab).
-  `http://localhost:3000/students?q=asante&page=2` is checkable; a click is not.
-- Behaviour that needs clicking or typing (score entry, a multi-step form) is checked by a
-  `tests` step with `files:` whose test file drives the page with Playwright, loaded from the
-  project (`createRequire(process.env.ACADEMY_PROJECT + "/package.json")("playwright")`).
-  The test's first assertion is "the app answers at http://localhost:3000", so the reason is
-  clear when it is not running. **[Q4]**
-- A deployed site cannot be opened by a `page` step. **[Q3]**
+- The learner starts the local app. Use `viewport: phone` (360 × 780, the default) or
+  `computer` (1280 × 800). Keep state that can live in the URL in the URL, including search,
+  filters, page and tab.
+- Use a `page` step with ordered `actions` for clicking, filling a labelled field, pressing
+  a key and checking the result. Use accessible labels, role and name, or a test id. Put only
+  public fixture values in the check.
+- For a protected screen, name the practice role in `session`. The learner saves it once with
+  `npx academy session <role>`. The check opens a fresh context. A missing or expired
+  session reports `needs`.
+- The step retains its status, title, visible text, width and tap-target checks. The action
+  contract and time limits are in `docs/checker.md`. All navigation stays on the local
+  app’s origin, including redirects. Hosted deployment evidence remains separate.
 
 ### 10.6 What must not be in a check folder
 

@@ -4,6 +4,7 @@
  */
 import { CheckerError } from "./errors.ts";
 import { check } from "./commands/check.ts";
+import { session } from "./commands/session.ts";
 import { doctor } from "./commands/doctor.ts";
 import { init } from "./commands/init.ts";
 import { login } from "./commands/login.ts";
@@ -17,6 +18,7 @@ import { CHECKER_VERSION } from "./version.ts";
 const HELP = `academy ${CHECKER_VERSION} — checks your Ruftech Academy work on this computer
 
   npx academy doctor                 is this computer ready?
+  npx academy session [role] [--url URL | --clear]   manage private local app sessions
   npx academy login [--url=]         sign in with a code from your email
   npx academy logout                 sign out on this computer
   npx academy init <id> [--reset]    set up a project's lab folder
@@ -36,6 +38,7 @@ export async function main(argv: string[], print: (line: string) => void = conso
   const dirFlag = rest.find((a) => a.startsWith("--dir="))?.slice("--dir=".length);
   try {
     switch (command) {
+      case "session": return await session(rest, print);
       case "doctor": return await doctor(print);
       case "login": return await login(urlFlag ? { url: urlFlag } : {}, { fetch, ask, print, hostname });
       case "logout": return await logout({ fetch, print });
