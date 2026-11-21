@@ -20,6 +20,13 @@ export type CourseModule = {
   label?: string;
 };
 
+export const EXTRA_CHECKS = ["debug", "own", "docker"] as const;
+export type ExtraCheck = typeof EXTRA_CHECKS[number];
+
+export function isCheckFolder(name: string): boolean {
+  return name === "check" || EXTRA_CHECKS.some(kind => name === `check-${kind}`);
+}
+
 export type UnitMeta = {
   id: string;
   title: string;
@@ -28,6 +35,7 @@ export type UnitMeta = {
   guidance: Guidance;
   minutes: number;
   project: string;
+  extra_checks?: ExtraCheck[];
   gpis_part: string;
   requires: string[];
 };
@@ -93,6 +101,10 @@ export function validateUnitMeta(value: unknown): string[] {
   if (!GUIDANCE.includes(value.guidance as Guidance)) problems.push("guidance must be guided, half or independent");
   if (!isInt(value.minutes, 1, 6000)) problems.push("minutes must be a whole number");
   if (!isSlug(value.project)) problems.push("project must be the check id of the unit's lab");
+  const extras = value.extra_checks;
+  if (extras !== undefined && (!Array.isArray(extras) || !extras.every(kind => EXTRA_CHECKS.includes(kind)) || new Set(extras).size !== extras.length)) {
+    problems.push("extra_checks must list distinct names from debug, own, docker");
+  }
   if (!isText(value.gpis_part, 300)) problems.push("gpis_part is missing");
   if (!Array.isArray(value.requires) || !value.requires.every((r) => isSlug(r))) problems.push("requires must be a list of names");
   return problems;

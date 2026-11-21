@@ -86,6 +86,14 @@ m2-p1 · Grading scale · check v1.2.0
 Result: NOT PASSED · sent to platform (run 128)
 ```
 
+## Named checks
+
+The project page shows a terminal command and the latest recorded result for each check,
+in order from main to debugging lab, own build and Docker. Run a named check by its full
+id, for example `npx academy check m1-p1-own`. Progress keeps four separate facts:
+Done, the main checker result, self-review and on time. Beside the checker fact, each
+extra shows its latest current-version result or “not yet” until a run is recorded.
+
 ## How a check is defined
 
 Checks are **versioned files in this repo**, reviewed like any other change. A check lives

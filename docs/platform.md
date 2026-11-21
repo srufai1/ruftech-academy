@@ -46,6 +46,14 @@ flowchart LR
   classDef ref fill:#f1f1f1,stroke:#777,color:#222
 ```
 
+## Named checks
+
+The project page shows a terminal command and the latest recorded result for each check,
+in order from main to debugging lab, own build and Docker. Run a named check by its full
+id, for example `npx academy check m1-p1-own`. Progress keeps four separate facts:
+Done, the main checker result, self-review and on time. Beside the checker fact, each
+extra shows its latest current-version result or “not yet” until a run is recorded.
+
 ## MVP features
 
 | Feature | What the learner can do |

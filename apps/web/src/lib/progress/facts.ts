@@ -5,7 +5,9 @@
  */
 import type { ProgressState } from "./summary";
 
-export type ProjectRef = { slug: string; label: string; title: string; currentVersion: string };
+import type { ExtraCheck } from "@ruftech-academy/shared/content-schema";
+
+export type ProjectRef = { slug: string; label: string; title: string; currentVersion: string; extras?: { kind: ExtraCheck; id: string; version: string }[] };
 export type ProgressRow = { item_slug: string; state: ProgressState; due_on: string | null; updated_at: string };
 export type RunRow = { item_slug: string; version: string; passed: boolean };
 export type ReviewRow = { item_slug: string };
@@ -16,6 +18,7 @@ export type ProjectFacts = {
   done: Done;
   /** true: a passing run of the CURRENT check version; false: runs of it, none passing; null: no run of it. */
   checker: boolean | null;
+  extras: { kind: ExtraCheck; passed: boolean | null }[];
   /** The learner's own self-review exists (not a mentor's). */
   review: boolean | null;
   /** true: done by the due date; false: due date passed and not done; null: no due date or not due yet. */
@@ -34,5 +37,9 @@ export function projectFacts(project: ProjectRef, progress: ProgressRow[], runs:
     if (done === "done") onTime = new Date(row.updated_at).getTime() <= due;
     else if (now.getTime() > due) onTime = false;
   }
-  return { slug: project.slug, label: project.label, title: project.title, done, checker, review, onTime };
+  // The query returns newest first. Each extra has its own latest current-version result.
+  const extras = (project.extras ?? []).map(({ kind, id, version }) => ({
+    kind, passed: runs.find(r => r.item_slug === id && r.version === version)?.passed ?? null,
+  }));
+  return { extras, slug: project.slug, label: project.label, title: project.title, done, checker, review, onTime };
 }

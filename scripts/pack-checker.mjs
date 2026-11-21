@@ -10,6 +10,7 @@ import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statS
 import { spawnSync } from "node:child_process";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { isCheckFolder } from "../packages/shared/src/content-schema.ts";
 import { build } from "esbuild";
 
 const repo = fileURLToPath(new URL("..", import.meta.url));
@@ -42,7 +43,7 @@ const content = join(repo, "content");
 const walk = (dir) => readdirSync(dir).flatMap((name) => {
   const full = join(dir, name);
   if (!statSync(full).isDirectory()) return [];
-  return name === "check" && existsSync(join(full, "check.yaml")) ? [full] : walk(full);
+  return isCheckFolder(name) && existsSync(join(full, "check.yaml")) ? [full] : walk(full);
 });
 for (const dir of walk(content)) cpSync(dir, join(stage, "checks", relative(content, dir)), { recursive: true });
 

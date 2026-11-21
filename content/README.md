@@ -17,6 +17,14 @@ units exist. `module-01/unit-01/` is the **template**. Every later unit has the 
 | `review.md` | 7 Review and 8 Mastery check | Self-review checklist, GPIS comparison, questions to answer without notes |
 | `check/check.yaml` | (checker) | The check for the lab; `check/fixtures/` holds its seed and data |
 
+Each unit has a main `check/` whose id is the project id. A unit can also have
+`check-debug/`, `check-own/` and `check-docker/`. Declare exactly the folders present
+in the front matter of `unit.md`, for example `extra_checks: [debug, own]`. Each folder
+has its own `check.yaml`, tests and fixtures. Append the folder’s suffix to the project
+id (for example `m1-p1-own`) and use the same unit id throughout. Version each folder
+independently. The main check determines the project's checker result. Done remains the
+learner's progress state.
+
 Rules:
 
 - Plain English, short sentences. A new term is explained the first time it appears.

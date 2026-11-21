@@ -6,10 +6,10 @@
  *   3. content/ in this repository (development)
  */
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
-import { dirname, join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parse as parseYaml } from "yaml";
-import { validateCheck } from "@ruftech-academy/shared/content-schema";
+import { isCheckFolder, validateCheck } from "@ruftech-academy/shared/content-schema";
 import { folderHash } from "@ruftech-academy/shared/content-load";
 import { CheckerError } from "./errors.ts";
 
@@ -35,7 +35,7 @@ function findCheckFiles(dir: string, out: string[] = [], depth = 0): string[] {
     if (name === "node_modules" || name.startsWith(".")) continue;
     const full = join(dir, name);
     if (!statSync(full).isDirectory()) continue;
-    if (name === "check" && existsSync(join(full, "check.yaml"))) out.push(full);
+    if (isCheckFolder(name) && existsSync(join(full, "check.yaml"))) out.push(full);
     else findCheckFiles(full, out, depth + 1);
   }
   return out;
@@ -43,16 +43,24 @@ function findCheckFiles(dir: string, out: string[] = [], depth = 0): string[] {
 
 export function loadCheck(id: string): LoadedCheck {
   if (!/^[a-z0-9]+(-[a-z0-9]+)*$/.test(id)) throw new CheckerError(`"${id}" is not a check id. It looks like m1-p1.`);
+  const related = new Set<string>();
   for (const root of checksRoots()) {
     for (const dir of findCheckFiles(root)) {
       let def: unknown;
       try { def = parseYaml(readFileSync(join(dir, "check.yaml"), "utf8")); } catch { continue; }
-      if (typeof def !== "object" || def === null || (def as { id?: unknown }).id !== id) continue;
+      if (typeof def !== "object" || def === null) continue;
+      const candidate = def as { id?: unknown; unit?: unknown };
+      if (typeof candidate.id !== "string") continue;
+      if (candidate.id !== id) {
+        const base = basename(dir) === "check" ? candidate.id : candidate.id.replace(/-(debug|own|docker)$/, "");
+        if (id.startsWith(base + "-") || id === candidate.unit || id.startsWith(candidate.unit + "-")) related.add(candidate.id);
+        continue;
+      }
       const problems = validateCheck(def);
       if (problems.length) throw new CheckerError(`The check ${id} is not valid: ${problems.join("; ")}`);
       const d = def as LoadedCheck["def"] & { title: string; version: string };
       return { id, title: d.title, version: d.version, sha256: folderHash(dir), dir, def: d };
     }
   }
-  throw new CheckerError(`There is no check called ${id}. Update the checker if the course added it recently.`);
+  throw new CheckerError(`There is no check called ${id}. ${related.size ? `Available checks: ${[...related].join(", ")}. ` : ""}Update the checker if the course added it recently.`);
 }

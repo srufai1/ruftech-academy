@@ -10,6 +10,7 @@
  */
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { planPublish, applyPublish } from "./lib/publish.mjs";
 import { bearerToken } from "../packages/shared/src/device.ts";
 import { generateDeviceKeyPair, issueChallenge, recordStamp, sha256Hex, signResult } from "../packages/shared/src/signing.ts";
 import {
@@ -88,8 +89,8 @@ function buildResult(who, challenge, over = {}) {
   };
 }
 /** A complete, honest submission by `who`. */
-async function submission(who, over = {}) {
-  const issued = await askChallenge(who);
+async function submission(who, over = {}, checkId = CHECK.id) {
+  const issued = await askChallenge(who, { check_id: checkId });
   assert.equal(issued.status, 200, JSON.stringify(issued.body));
   const signed = signResult(buildResult(who, issued.body.challenge, over), who.privateSeed);
   return { challenge: issued.body.challenge, stamp: issued.body.stamp, payload: signed.payload, signature: signed.signature };
@@ -127,6 +128,20 @@ await test("an honest result is recorded once, as the learner, with the signed v
   // The learner sees it; another learner does not.
   assert.equal((await as(db, A.id, () => rows(db, "select id from public.check_runs"))).length, 1);
   assert.equal((await as(db, B.id, () => rows(db, "select id from public.check_runs"))).length, 0);
+});
+
+await test("a published own-build check records a signed run under its own definition", async () => {
+  const id = "m1-p1-own";
+  const index = { items: [{ slug: id, kind: "check", parent_slug: CHECK.id, position: 2, title: "Own build", content_hash: HASH }] };
+  const manifest = { checks: [{ ...CHECK, id }] };
+  const query = (sql, params) => db.query(sql, params);
+  await applyPublish(query, await planPublish(query, index, manifest));
+  const result = await submit(A, await submission(A, {}, id));
+  assert.equal(result.status, 201);
+  const recorded = await rows(db, `select d.item_slug, i.parent_slug from public.check_runs r
+    join public.check_definitions d on r.definition_id = d.id
+    join public.content_items i on i.slug = d.item_slug where r.id = $1`, [result.body.run_id]);
+  assert.deepEqual(recorded, [{ item_slug: id, parent_slug: CHECK.id }]);
 });
 
 await test("a failed check is recorded as not passed; a result with no commit is accepted", async () => {

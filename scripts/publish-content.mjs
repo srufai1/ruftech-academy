@@ -7,6 +7,8 @@
  *
  * ACADEMY_DATABASE_URL is the database owner's connection string (Supabase:
  * Project Settings → Database → Connection string). Keep it in your shell, never in a file.
+ * The index includes extra check rows after their parent project. The manifest supplies
+ * each definition under its own check id.
  * Run `npm run content` first so index.json and manifest.json are current.
  */
 import { readFileSync } from "node:fs";

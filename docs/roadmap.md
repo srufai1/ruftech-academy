@@ -446,6 +446,7 @@ content waits for T25 and T26.
   a recorded run for each appears on the progress page.
 
 ### T28 — Debugging-lab and own-build checks for built units
+- Use T27’s `check-debug/` and `check-own/` folders with ids `<project>-debug` and `<project>-own`.
 - **Needs.** T27, T32.
 - **Goal.** Units 1.1–2.6 get the two extra checks the owner asked for.
 - **Files.** `content/module-01/*/check-debug/`, `check-own/`, same for module 2; the unit

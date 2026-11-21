@@ -33,7 +33,13 @@ unit can still be designed; the question says what changes with each answer.
 | The portfolio site | `~/projects/portfolio` (unit 3.1) | |
 | Design documents | `~/projects/gpis-rebuild/docs/design/` (module 6) | |
 
-One unit = one project of `curriculum.md` = one `check/` folder. There are 58 units.
+Each unit has a main `check/` whose id is the project id. A unit can also have
+`check-debug/`, `check-own/` and `check-docker/`. Declare exactly the folders present
+in the front matter of `unit.md`, for example `extra_checks: [debug, own]`. Each folder
+has its own `check.yaml`, tests and fixtures. Append the folder’s suffix to the project
+id (for example `m1-p1-own`) and use the same unit id throughout. Version each folder
+independently. The main check determines the project's checker result. Done remains the
+learner's progress state.
 
 **Two kinds of project.**
 

@@ -8,7 +8,7 @@ import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { parse as parseYaml } from "yaml";
 import {
-  validateCheck, validateCourse, validateQuiz, validateUnitMeta,
+  EXTRA_CHECKS, isCheckFolder, type ExtraCheck, validateCheck, validateCourse, validateQuiz, validateUnitMeta,
   type CheckDefinition, type CourseModule, type Quiz, type UnitMeta,
 } from "./content-schema.ts";
 
@@ -26,6 +26,7 @@ export type Unit = {
   review: string;
   quiz: Quiz;
   check: CheckDefinition;
+  checks: { kind: "main" | ExtraCheck; definition: CheckDefinition; hash: string }[];
   hashes: { unit: string; quiz: string; project: string; check: string };
 };
 
@@ -76,26 +77,48 @@ function readUnit(contentRoot: string, dir: string, problems: string[]): Unit | 
   try { quiz = JSON.parse(text("quiz.json")); } catch { problems.push(`${rel("quiz.json")}: not valid JSON`); }
   if (quiz !== undefined) validateQuiz(quiz).forEach((p) => problems.push(`${rel("quiz.json")}: ${p}`));
 
-  let check: unknown;
-  try { check = parseYaml(text("check/check.yaml")); } catch { problems.push(`${rel("check/check.yaml")}: not valid YAML`); }
-  if (check !== undefined) validateCheck(check).forEach((p) => problems.push(`${rel("check/check.yaml")}: ${p}`));
   if (problems.length > before || !fm) return null;
-
   const meta = fm.data as UnitMeta;
-  const def = check as CheckDefinition;
-  if (def.unit !== meta.id) problems.push(`${rel("check/check.yaml")}: unit is "${def.unit}" but unit.md has id "${meta.id}"`);
-  if (def.id !== meta.project) problems.push(`${rel("unit.md")}: project is "${meta.project}" but check.yaml has id "${def.id}"`);
+  const folders = readdirSync(dir, { withFileTypes: true }).filter(entry => entry.isDirectory()).map(entry => entry.name);
+  for (const folder of folders) {
+    if (folder.startsWith("check-") && !isCheckFolder(folder)) problems.push(`${rel(folder)}: unknown check folder`);
+  }
+
+  const checks: Unit["checks"] = [];
+  for (const kind of ["main", ...EXTRA_CHECKS] as const) {
+    const folder = kind === "main" ? "check" : `check-${kind}`;
+    if (kind !== "main") {
+      const declared = meta.extra_checks?.includes(kind) ?? false;
+      const present = folders.includes(folder);
+      if (declared && !present) problems.push(`${rel(folder)}: folder is missing but listed in extra_checks`);
+      if (present && !declared) problems.push(`${rel("unit.md")}: extra_checks is missing "${kind}" for ${folder}`);
+      if (!present) continue;
+    }
+    const file = `${folder}/check.yaml`;
+    if (!existsSync(join(dir, file))) { problems.push(`${rel(file)}: file is missing`); continue; }
+    let value: unknown;
+    try { value = parseYaml(text(file)); } catch { problems.push(`${rel(file)}: not valid YAML`); continue; }
+    const errors = validateCheck(value);
+    if (errors.length) { errors.forEach(error => problems.push(`${rel(file)}: ${error}`)); continue; }
+    const definition = value as CheckDefinition;
+    const id = kind === "main" ? meta.project : `${meta.project}-${kind}`;
+    if (definition.id !== id) problems.push(`${rel(file)}: expected id "${id}", found "${definition.id}"`);
+    if (definition.unit !== meta.id) problems.push(`${rel(file)}: unit is "${definition.unit}" but unit.md has id "${meta.id}"`);
+    checks.push({ kind, definition, hash: folderHash(join(dir, folder)) });
+  }
+  const main = checks[0];
+  if (main?.kind !== "main") return null;
 
   const files = ["lesson.md", "example.md", "lab.md", "debugging-lab.md", "own-build.md", "review.md"].map(text);
   return {
     meta, dir, body: fm.body,
     lesson: files[0]!, example: files[1]!, lab: files[2]!, debuggingLab: files[3]!, ownBuild: files[4]!, review: files[5]!,
-    quiz: quiz as Quiz, check: def,
+    quiz: quiz as Quiz, check: main.definition, checks,
     hashes: {
       unit: sha256(["unit.md", "lesson.md", "example.md"].map(text).join("\0")),
       quiz: sha256(text("quiz.json")),
-      project: sha256([...["lab.md", "debugging-lab.md", "own-build.md", "review.md"].map(text), folderHash(join(dir, "check"))].join("\0")),
-      check: folderHash(join(dir, "check")),
+      project: sha256([...["lab.md", "debugging-lab.md", "own-build.md", "review.md"].map(text), main.hash].join("\0")),
+      check: main.hash,
     },
   };
 }
@@ -122,7 +145,7 @@ export function loadCourse(contentRoot: string): Course {
   const seen = new Map<string, string>(modules.map((m) => [m.slug, "course.yaml"]));
   for (const unit of units) {
     const where = relative(contentRoot, unit.dir).split("\\").join("/");
-    for (const id of [unit.meta.id, unit.quiz.id, unit.check.id]) {
+    for (const id of [unit.meta.id, unit.quiz.id, ...unit.checks.map(c => c.definition.id)]) {
       const first = seen.get(id);
       if (first) problems.push(`${where}: id "${id}" is already used in ${first}`);
       else seen.set(id, where);

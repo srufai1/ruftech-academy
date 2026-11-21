@@ -44,18 +44,15 @@ const run = (id, passed) => ({ id, passed, commit_sha: "a1b2c3d4", tree_clean: t
 async function project(runs, revisions) {
   const p = projectParts(read("lab.md"), "guided");
   const fold = (s) => (s ? { count: countItems(s.body), html: renderMarkdown(s.body) } : null);
-  let html = await renderView("components/views/project-view.tsx", "ProjectView", {
+  const shown = toRunViews(runs, new Map([["m1-p1", "1.0.0"]])).map((r) => ({ ...r, when: formatWhen(r.recordedAt, "Africa/Accra") }));
+  const passed = shown.some((r) => r.passed && r.currentVersion);
+  const html = await renderView("components/views/project-view.tsx", "ProjectView", {
     moduleHref: "/map/m1", moduleLabel: "Module 1", label: "1.1", title: "Find your way", guidanceLabel: "Guided",
+    checks: [{ id: "m1-p1", kind: "main", runs: shown }], passedNow: passed,
     introHtml: renderMarkdown(p.intro), task: p.task.map((s) => ({ heading: s.heading, html: renderMarkdown(s.body) })),
     steps: fold(p.steps), hints: fold(p.hints), debuggingHtml: renderMarkdown(read("debugging-lab.md")), ownBuildHtml: renderMarkdown(read("own-build.md")),
   });
-  const shown = toRunViews(runs, new Map([["m1-p1", "1.0.0"]])).map((r) => ({ ...r, when: formatWhen(r.recordedAt, "Africa/Accra") }));
-  const passed = shown.some((r) => r.passed && r.currentVersion);
-  const command = inner(await renderView("components/copy-command.tsx", "CopyCommand", { command: "npx academy check m1-p1", quiet: passed }));
-  const results = inner(await renderView("app/(app)/project/[id]/results.tsx", "Results", { runs: shown }));
   const review = inner(await renderView("app/(app)/project/[id]/review-link.tsx", "ReviewLink", { href: "/project/m1-p1/review", passed, revisions }));
-  html = insertAfter(html, 'Run in your terminal</h2>', command);
-  html = insertAfter(html, 'Last result</h2>', results);
   return insertAfter(html, 'After a pass</h2>', review);
 }
 const now = new Date("2026-12-10T12:00:00Z");

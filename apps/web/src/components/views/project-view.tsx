@@ -1,6 +1,10 @@
 import Link from "next/link";
 import type { Section } from "@/lib/content/sections";
 
+import { CopyCommand } from "@/components/copy-command";
+import { Results, type ShownRun } from "@/app/(app)/project/[id]/results";
+import { SITE } from "@/config/site";
+
 export type ProjectViewProps = {
   moduleHref: string;
   moduleLabel: string;
@@ -13,10 +17,8 @@ export type ProjectViewProps = {
   hints: { count: number; html: string } | null;
   debuggingHtml: string;
   ownBuildHtml: string;
-  /** The Copy command control (a Client Component), given by the page. */
-  command: React.ReactNode;
-  /** The checker results (T20), given by the page. */
-  results: React.ReactNode;
+  checks: { id: string; kind: keyof typeof SITE.checkLabels; runs: ShownRun[] }[];
+  passedNow: boolean;
   /** The link to the self-review (T22), given by the page. */
   review: React.ReactNode;
 };
@@ -48,15 +50,14 @@ export function ProjectView(p: ProjectViewProps) {
         </div>
       ) : null}
 
-      <section aria-labelledby="run" className="space-y-2">
-        <h2 id="run" className="font-semibold">Run in your terminal</h2>
-        {p.command}
-      </section>
-
-      <section aria-labelledby="result" className="space-y-2">
-        <h2 id="result" className="font-semibold">Last result</h2>
-        {p.results}
-      </section>
+      {p.checks.map(({ id, kind, runs }) => (
+        <section key={id} aria-labelledby={`run-${id}`} className="space-y-2">
+          <h2 id={`run-${id}`} className="font-semibold">{p.checks.length === 1 ? "Run in your terminal" : SITE.checkLabels[kind]}</h2>
+          <CopyCommand command={`npx academy check ${id}`} quiet={p.passedNow || kind !== "main"} />
+          <h3 className="font-semibold">Last result</h3>
+          <Results runs={runs} />
+        </section>
+      ))}
 
       <section aria-labelledby="after-pass" className="space-y-2">
         <h2 id="after-pass" className="font-semibold">After a pass</h2>

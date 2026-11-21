@@ -25,6 +25,7 @@ const props = (guidance) => {
   const p = projectParts(lab, guidance);
   const fold = (s) => (s ? { count: countItems(s.body), html: renderMarkdown(s.body) } : null);
   return {
+    checks: [{ kind: "main", id: "m1-p1", runs: [] }], passedNow: false,
     moduleHref: "/map/m1", moduleLabel: "Module 1", label: "1.1", title: "Find your way",
     guidanceLabel: { guided: "Guided", half: "Half guided", independent: "Independent" }[guidance],
     introHtml: renderMarkdown(p.intro), task: p.task.map((s) => ({ heading: s.heading, html: renderMarkdown(s.body) })),
@@ -36,8 +37,7 @@ const props = (guidance) => {
 await withPhone(async (page) => {
   for (const [guidance, steps, hints] of [["guided", true, true], ["half", false, true], ["independent", false, false]]) {
     const html = await renderView("components/views/project-view.tsx", "ProjectView", props(guidance));
-    const command = await renderView("components/copy-command.tsx", "CopyCommand", { command: "npx academy check m1-p1" });
-    await page.setContent(html.replace("</main>", `${command.slice(command.indexOf("<main"), command.lastIndexOf("</main>")).replace(/^<main[^>]*>/, "")}</main>`));
+    await page.setContent(html);
     assert.equal(await page.getByText(/^Steps \(\d+\)$/).count() === 1, steps, `${guidance}: Steps ${steps ? "shown" : "hidden"}`); checks++;
     assert.equal(await page.getByText(/^Hints \(\d+\)$/).count() === 1, hints, `${guidance}: Hints ${hints ? "shown" : "hidden"}`); checks++;
     assert.ok(await noSideways(page), `${guidance}: no sideways scroll`); checks++;

@@ -19,6 +19,7 @@ export const SITE = {
     courseMap: "See the course map",
     privacy: "Your code stays on your computer.",
   },
+  checkLabels: { main: "Main check", debug: "Debugging lab", own: "Own build", docker: "Docker" },
   nav: [
     { href: "/map", label: "Map" },
     { href: "/progress", label: "Progress" },
