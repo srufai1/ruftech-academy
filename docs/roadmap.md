@@ -515,8 +515,11 @@ content waits for T25 and T26.
   colour and type (Schibsted Grotesk for UI, Source Serif 4 for lesson text, IBM Plex Mono
   for code and checker output; cobalt accent only for "now", links and focus; pass/fail/needs
   colours only for state). Phones: bottom bar Map · Learn · Progress · Me; computers:
-  sidebar. Every screen works at 360px with 44px targets and no sideways scroll; light and
-  dark both follow the tokens. No behaviour, data or route changes. The existing browser
+  sidebar. Every screen works at 360px with 44px targets and no sideways scroll. Light mode
+  is the default for everyone; a switch (top bar and Me page) turns on dark mode, saved on
+  the device; the computer's own dark setting is not followed automatically. Lesson pages
+  show the "In simple words" box, glossary terms and "Learn more" links; project pages show
+  numbered steps with folded hints (`00-guide.md` section 0). No behaviour, data or route changes. The existing browser
   tests still pass; update only their visual expectations, never what they prove.
 - **Tests.** All browser tests at 360px; one new screenshot-free check that the four tab
   links exist on phones and the sidebar on computers.

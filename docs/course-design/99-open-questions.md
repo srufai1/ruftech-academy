@@ -39,6 +39,19 @@ Module 5 is next in sequence. Its first build decision is how a learner signs in
 
 The alternatives below describe build and maintenance costs. Interim treatments already used in designs are identified so an owner decision can be applied consistently.
 
+## Owner's teaching rules (22 November 2026)
+
+Four new owner decisions, written in full in `00-guide.md` section 0:
+1. Every idea in two layers: **in simple words** (as to a 10-year-old), then **the technical
+   way**; plus free **Learn more** links (docs, articles, videos) checked by the builder.
+2. **No unexplained codes**: project names before ids; GPIS rules in words before their
+   D-number; a course Glossary.
+3. **Numbered project steps at every level**; guidance fades by how much each step says, and
+   hints stay available (folded at higher levels).
+4. **Plan before you build** on eight milestone projects (1.6, 2.6, 3.5, 4.3, 5.4, 7.4, 8.2,
+   P.4): requirements, specification and decision log committed before code.
+Also: the platform's **light mode is the default**; dark mode is the learner's choice.
+
 ## Q1 — Which work gets an automatic check?
 
 **Gap.** The loader discovers one `check/` per unit. Unit 1.1 names `m1-p1-debug` and `m1-u1-own`, but neither is a distributable check. The builder seeds a debug subfolder or sibling for lab projects and prints scratch material for repo projects. Debugging and own builds are self-reviewed.

@@ -26,27 +26,28 @@ every report in short, plain English.
 
 | # | Task | Done when |
 | :--- | :--- | :--- |
-| 1 | **T32** — update the course-design files to the owner's 19 answers (roadmap T32) | Every "Accept" line of T32 is true; `npm test` green |
-| 2 | **T28** — debugging-lab and own-build checks for the 12 built units (1.1–2.6); fix unit 1.1's names to `m1-p1-debug` and `m1-p1-own` | Each new check fails on its start state and passes on a solved copy (kept outside the repo); `npm run content`; `npm test` green |
-| 3 | **T29** — unit time as a range | Roadmap T29 "Accept" is true |
-| 4 | **T30** — Docker labs: finish what T27 did not (the `-docker` check shows as its own badge; units 4.6 and 7.5 designs use it) | Roadmap T30 "Accept" is true |
-| 5 | **T31** — a person reviews the deployed site | Roadmap T31 "Accept" is true; migration file written, **not applied** |
-| 6 | **T33** — frontend restyle from `docs/mockups/ui/academy-ui.html` | Roadmap T33 "Accept" is true |
-| 7 | **Module 3 content** — build units 3.1–3.6 from `docs/course-design/03-frontend.md` | `00-guide.md` section 14 "unit is done" list true for each unit |
-| 8 | **Module 4 content** — units 4.1–4.6 from `04-databases.md` | same |
-| 9 | **Module 5 content** — units 5.1–5.6 from `05-backend.md` | same |
-| 10 | **Module 6 content** — from `06-system-design.md` | same |
-| 11 | **Module 7 content** — from `07-security-devops.md` | same |
-| 12 | **Module 8 content** — from `08-algorithms.md` | same |
-| 13 | **Module 9 content** — from `09-capstone.md` | same |
-| 14 | **Python track content** — from `10-python.md` (`content/module-10/`) | same |
+| 1 | **T32** — update the course-design files to the owner's 19 answers (roadmap T32) **and** to the owner's teaching rules in `00-guide.md` section 0 (simple words + technical, Learn more links, no unexplained codes, numbered steps with hints, milestone plans) | Every "Accept" line of T32 is true; every module file's lesson outlines, labs and check plans follow section 0; `npm test` green |
+| 2 | **T34** — rework the 12 built units (1.1–2.6) to `00-guide.md` section 0: add "In simple words" and "Learn more" to every lesson section, replace bare codes with names, numbered steps with hints in every lab, milestone plan steps in 1.6 and 2.6; add the course Glossary page; bump each changed check's version | Each unit's done-list in `00-guide.md` section 14 is true again; every link opened and working; `npm run content`; `npm test` green |
+| 3 | **T28** — debugging-lab and own-build checks for the 12 built units (1.1–2.6); fix unit 1.1's names to `m1-p1-debug` and `m1-p1-own` | Each new check fails on its start state and passes on a solved copy (kept outside the repo); `npm run content`; `npm test` green |
+| 4 | **T29** — unit time as a range | Roadmap T29 "Accept" is true |
+| 5 | **T30** — Docker labs: finish what T27 did not (the `-docker` check shows as its own badge; units 4.6 and 7.5 designs use it) | Roadmap T30 "Accept" is true |
+| 6 | **T31** — a person reviews the deployed site | Roadmap T31 "Accept" is true; migration file written, **not applied** |
+| 7 | **T33** — frontend restyle from `docs/mockups/ui/academy-ui.html` | Roadmap T33 "Accept" is true |
+| 8 | **Module 3 content** — build units 3.1–3.6 from `docs/course-design/03-frontend.md` | `00-guide.md` section 14 "unit is done" list true for each unit |
+| 9 | **Module 4 content** — units 4.1–4.6 from `04-databases.md` | same |
+| 10 | **Module 5 content** — units 5.1–5.6 from `05-backend.md` | same |
+| 11 | **Module 6 content** — from `06-system-design.md` | same |
+| 12 | **Module 7 content** — from `07-security-devops.md` | same |
+| 13 | **Module 8 content** — from `08-algorithms.md` | same |
+| 14 | **Module 9 content** — from `09-capstone.md` | same |
+| 15 | **Python track content** — from `10-python.md` (`content/module-10/`) | same |
 
 Content tasks follow `00-guide.md` section 14 exactly: one unit at a time, in position order;
 check first (seed, `check.yaml`, tests), prove it fails on the start state and passes on a
 solved copy, then the pages, then `npm run content`. One commit per unit:
 `Content: unit N.K <title>`.
 
-## The frontend (task 6)
+## The frontend (task 7)
 
 - The approved look is the file `docs/mockups/ui/academy-ui.html` (open it in a browser;
   it is self-contained). Copy its tokens, fonts, spacing and rules; do not copy its HTML
@@ -56,7 +57,11 @@ solved copy, then the pages, then `npm run content`. One commit per unit:
 - Minimal and calm: one main action per screen, colour only for state, reading text in the
   serif at 17–18px and about 65 characters wide.
 - Mobile first: 360px, 44px targets, no sideways scroll, bottom bar on phones, sidebar on
-  computers, light and dark from the same tokens.
+  computers. **Light mode is the default for everyone**; a switch (in the top bar and on the
+  Me page) turns on dark mode and the choice is saved on the device. Do not follow the
+  computer's dark setting automatically.
+- Lesson pages show the "In simple words" box, dotted glossary terms and the "Learn more"
+  links as in the mockup; project pages show numbered steps with folded hints.
 - Change appearance only. No route, data, auth or behaviour changes.
 
 ## Rules for every commit

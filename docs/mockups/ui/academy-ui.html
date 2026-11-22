@@ -3,7 +3,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
-/* Layout: a quiet canvas of phone-width (360px) screens, read left to right like a course; one token sheet at the end.
+/* Theme: light is the default for everyone. Dark only when the learner turns it on (saved per browser).
+   Layout: a quiet canvas of phone-width (360px) screens, read left to right like a course; one token sheet at the end.
    Direction: "lab notebook". Cool paper, ink, one cobalt accent. Grotesk for UI, serif for reading, mono for the checker. */
 :root{
   --bg:#F3F4F6; --paper:#FFFFFF; --ink:#13151B; --soft:#4A505C; --mute:#7A808C;
@@ -15,13 +16,7 @@
   --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   --r:14px; --r-s:10px;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#0D0F13; --paper:#15181F; --ink:#EEF0F4; --soft:#B5BAC4; --mute:#878D99;
-  --line:#242833; --line-2:#323745; --wash:#1B1F27;
-  --acc:#8C9BFF; --acc-ink:#0D0F13; --acc-wash:#1E2340;
-  --pass:#4CC489; --pass-wash:#12291D; --fail:#F08A78; --fail-wash:#2E1713; --needs:#E3B45A; --needs-wash:#2A2210;
-  color-scheme:dark}}
-:root[data-theme="dark"]{
+:root[data-mode="dark"]{
   --bg:#0D0F13; --paper:#15181F; --ink:#EEF0F4; --soft:#B5BAC4; --mute:#878D99;
   --line:#242833; --line-2:#323745; --wash:#1B1F27;
   --acc:#8C9BFF; --acc-ink:#0D0F13; --acc-wash:#1E2340;
@@ -166,6 +161,27 @@ body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-ui);-webki
 .toc li{padding:8px 10px;border-radius:8px;font-size:14px;color:var(--soft)}
 .toc li.on{background:var(--acc-wash);color:var(--acc);font-weight:600}
 
+/* theme switch */
+.mode{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px 0 6px;border:1px solid var(--line-2);border-radius:999px;background:var(--paper);color:var(--ink);font:600 13px/1 var(--f-ui);cursor:pointer}
+.mode i{width:34px;height:22px;border-radius:999px;background:var(--wash);position:relative;flex:none}
+.mode i::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:var(--ink);transition:transform .2s}
+:root[data-mode="dark"] .mode i::after{transform:translateX(12px)}
+.intro-side{display:flex;flex-direction:column;gap:14px;align-items:flex-start}
+
+/* simple-words layer */
+.simple{border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;font:400 15.5px/1.55 var(--f-ui)}
+.simple .tag{font:600 12px/1 var(--f-ui);color:var(--acc)}
+.term{border-bottom:1.5px dotted var(--acc);cursor:help}
+.more{display:flex;flex-direction:column;gap:6px}
+.more a{display:flex;justify-content:space-between;gap:8px;align-items:center;min-height:44px;padding:0 12px;border:1px solid var(--line);border-radius:10px;text-decoration:none;color:var(--ink);font:600 14px/1.2 var(--f-ui)}
+.more a small{font:500 11px/1 var(--f-mono);color:var(--mute)}
+.task-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px;counter-reset:s}
+.task-steps li{counter-increment:s;display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;font-size:14px}
+.task-steps li::before{content:counter(s);width:24px;height:24px;border-radius:50%;border:1px solid var(--line-2);display:grid;place-items:center;font:500 12px/1 var(--f-mono);color:var(--soft)}
+.task-steps li.done::before{background:var(--ink);color:var(--paper);border-color:var(--ink);content:"✓"}
+.hint{margin-top:6px;border-radius:10px;background:var(--needs-wash);color:var(--ink);padding:8px 10px;font-size:13px}
+.hint b{color:var(--needs)}
+
 /* tokens */
 .tokens{margin-top:56px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
 .tokens section{border-top:1px solid var(--line-2);padding-top:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
@@ -185,13 +201,17 @@ body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-ui);-webki
   <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
 </svg>
 
+<script>
+(function(){var m="light";try{var v=localStorage.getItem("ra-mode");if(v==="dark")m="dark"}catch(e){}document.documentElement.setAttribute("data-mode",m);})();
+</script>
 <main class="page">
   <header class="intro">
     <div>
       <div class="label">Ruftech Academy · UI mockups · v1</div>
       <h1>Learn by rebuilding <span>a real school system.</span></h1>
     </div>
-    <p>Six phone screens at 360px, one computer layout, and the token sheet. The learner's day: sign in, find the next unit, read, answer the quiz, run the checks, see progress. Built for reading first; colour is used only for state.</p>
+    <div class="intro-side"><button class="mode" type="button" id="mode-toggle" aria-pressed="false"><i aria-hidden="true"></i><span>Dark mode</span></button>
+    <p>Light mode is the default. Learners can switch to dark mode; the choice is saved on their device. Six phone screens at 360px, one computer layout, and the token sheet. The learner's day: sign in, find the next unit, read, answer the quiz, run the checks, see progress. Built for reading first; colour is used only for state.</p></div>
   </header>
 
   <div class="screens">
@@ -247,25 +267,26 @@ body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-ui);-webki
 
     <!-- 3 Lesson -->
     <article class="shot">
-      <div class="shot-h"><b>Lesson</b><span class="label">/learn/m2-u2</span></div>
+      <div class="shot-h"><b>Lesson: simple words, then the technical way</b><span class="label">/learn/2-2</span></div>
       <div class="phone">
-        <div class="top"><span class="crumbs">2.2 · Arrays, objects and sorting</span><span class="avatar">AB</span></div>
+        <div class="top"><span class="crumbs">Unit 2.2 · Sorting and ranking</span><span class="avatar">AB</span></div>
         <div class="body">
           <div class="steps" aria-label="Step 1 of 8"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-          <span class="label">Step 1 · Lesson · 25 min</span>
+          <span class="label">Step 1 · Lesson · about 25 min</span>
           <h2 class="h1">Ties share a position</h2>
+          <div class="simple"><span class="tag">In simple words</span>Three children run a race. Two cross the line together, so both are first. Nobody is second, because two people are already ahead of the next runner. That runner is third.</div>
           <div class="read">
-            <p>When two pupils have the same total, they get the same position. The next position is skipped, so the count of pupils ahead stays true.</p>
-            <div class="rule"><span class="mono">GPIS D-02</span>Standard competition ranking. 90, 90, 80 gives 1, 1, 3. Not dense ranking.</div>
-            <table class="table"><thead><tr><th>Total</th><th>Position</th><th>Dense</th></tr></thead>
-              <tbody><tr><td class="num">90</td><td class="num">1</td><td class="num">1</td></tr><tr><td class="num">90</td><td class="num">1</td><td class="num">1</td></tr><tr><td class="num">80</td><td class="num">3</td><td class="num" style="color:var(--fail)">2</td></tr></tbody></table>
-            <h3>Position from a count</h3>
-            <p>A pupil's position is one more than the number of pupils with a strictly higher total.</p>
+            <p><b style="font-family:var(--f-ui)">The technical way.</b> This is called <span class="term" title="A way of numbering places where equal scores share a place and the next place is skipped.">competition ranking</span>. A pupil's position is 1 + the number of pupils with a strictly higher total.</p>
+            <div class="rule"><span class="mono">School rule · GPIS decision D-02</span>Pupils with the same total share a position, and the next position is skipped: 90, 90, 80 → 1st, 1st, 3rd.<br><a href="#" style="color:var(--acc);font-size:13px;font-weight:600">What is a GPIS decision?</a></div>
+          </div>
+          <div class="more"><span class="label">Learn more (free)</span>
+            <a href="#">Array.prototype.sort() <small>MDN · read</small></a>
+            <a href="#">Ranking explained in 5 minutes <small>video</small></a>
           </div>
         </div>
-        <div class="bottomnext"><a class="btn ghost" href="#" style="width:auto">Back</a><a class="btn" href="#">Next: guided example</a></div>
+        <div class="bottomnext"><a class="btn ghost" href="#" style="width:auto">Back</a><a class="btn" href="#">Next: try it</a></div>
       </div>
-      <p class="note">Reading text is a serif at 17px with a 65-character measure on computers. GPIS rules always carry their D-number.</p>
+      <p class="note">Every idea has two layers: "In simple words" (an everyday picture) and "The technical way" (the real terms). New words are dotted and explained on tap. A school rule is written in words first; its number comes second.</p>
     </article>
 
     <!-- 4 Quiz -->
@@ -291,34 +312,29 @@ body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-ui);-webki
 
     <!-- 5 Project task -->
     <article class="shot">
-      <div class="shot-h"><b>Project and its checks</b><span class="label">/project/m2-p2</span></div>
+      <div class="shot-h"><b>Project: clear steps, hints when stuck</b><span class="label">/project/2-2</span></div>
       <div class="phone">
-        <div class="top"><span class="crumbs">2.2 · Project · Class ranking</span><span class="avatar">AB</span></div>
+        <div class="top"><span class="crumbs">Project 2.2 · Class ranking</span><span class="avatar">AB</span></div>
         <div class="body">
-          <div style="display:flex;flex-direction:column;gap:6px"><h2 class="h1">Class ranking</h2><p class="sub">Rank a class on total score. Ties share a position. Missing subjects still get one.</p></div>
-          <div class="checks">
-            <div class="check">
-              <div class="check-h"><div><b>Main check</b><small>m2-p2 · v1.0.0</small></div><span class="chip fail">Not passed</span></div>
-              <div class="cmd"><span>npx academy check m2-p2</span><button class="copy" type="button">Copy</button></div>
-              <div class="run">
-                <div><span class="p">PASS</span>  files   ranking.ts exists</div>
-                <div><span class="f">FAIL</span>  tests   6 of 8 passed</div>
-                <div style="padding-left:6ch">ties: 90, 90, 80 gave 1, 2, 3</div>
-                <div><span class="n">NEEDS</span> page    start your app (npm run dev)</div>
-              </div>
-            </div>
-            <div class="check">
-              <div class="check-h"><div><b>Debugging lab</b><small>m2-p2-debug</small></div><span class="chip pass">Passed</span></div>
-            </div>
-            <div class="check">
-              <div class="check-h"><div><b>Own build</b><small>m2-p2-own</small></div><span class="chip">Not yet</span></div>
-              <div class="cmd"><span>npx academy check m2-p2-own</span><button class="copy" type="button">Copy</button></div>
-            </div>
+          <div style="display:flex;flex-direction:column;gap:6px"><h2 class="h1">Class ranking</h2><p class="sub">Write a function that gives every pupil their position in class. You will use it on report cards later.</p></div>
+          <ol class="task-steps">
+            <li class="done">Write a test: 90, 90, 80 gives 1, 1, 3.</li>
+            <li class="done">Make the test pass with the smallest code.</li>
+            <li>Add tests for an empty class and one pupil.
+              <div class="hint"><b>Hint.</b> An empty class has no positions, so the answer is an empty list.</div></li>
+            <li>Leave out pupils who have left the school.</li>
+            <li>Run the check below.</li>
+          </ol>
+          <div class="check">
+            <div class="check-h"><div><b>Check your work</b><small>runs on your computer</small></div><span class="chip fail">Not passed</span></div>
+            <div class="cmd"><span>npx academy check m2-p2</span><button class="copy" type="button">Copy</button></div>
+            <div class="run"><div><span class="f">FAIL</span>  ties: 90, 90, 80 gave 1, 2, 3</div></div>
           </div>
+          <p class="sub" style="font-size:13px">Also in this project: Debugging lab (passed) · Own build (not yet)</p>
         </div>
         <nav class="tabbar" aria-label="Main"><a href="#"><svg><use href="#i-map"/></svg>Map</a><a href="#" aria-current="page"><svg><use href="#i-book"/></svg>Learn</a><a href="#"><svg><use href="#i-chart"/></svg>Progress</a><a href="#"><svg><use href="#i-user"/></svg>Me</a></nav>
       </div>
-      <p class="note">One block per check (T27). The terminal's own words appear as-is in mono, so the page and the CLI read the same.</p>
+      <p class="note">The page speaks in project names ("Project 2.2 · Class ranking"). The code "m2-p2" appears only inside the command the learner copies.</p>
     </article>
 
     <!-- 6 Progress -->
@@ -408,8 +424,15 @@ body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-ui);-webki
         <li>360px first. Touch targets 44px or more. Tables scroll inside their card.</li>
         <li>Phones: bottom bar Map · Learn · Progress · Me. Computers: sidebar.</li>
         <li>No shadows. Borders separate objects; space separates groups.</li>
-        <li>Light and dark from the same tokens; dark is not an inversion.</li>
+        <li>Light is the default. Dark mode is the learner's choice (switch in Me and in the top bar), saved on their device.</li>
+        <li>Words before codes: show "Project 2.2 · Class ranking", not "m2-p2"; a school rule in words, then "GPIS decision D-02".</li>
       </ul>
     </section>
   </div>
 </main>
+<script>
+(function(){var b=document.getElementById("mode-toggle");if(!b)return;
+function set(m){document.documentElement.setAttribute("data-mode",m);b.setAttribute("aria-pressed",m==="dark"?"true":"false");try{localStorage.setItem("ra-mode",m)}catch(e){}}
+b.setAttribute("aria-pressed",document.documentElement.getAttribute("data-mode")==="dark"?"true":"false");
+b.addEventListener("click",function(){set(document.documentElement.getAttribute("data-mode")==="dark"?"light":"dark")});})();
+</script>

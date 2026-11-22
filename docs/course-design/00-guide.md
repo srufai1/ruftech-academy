@@ -1,5 +1,65 @@
 # Course design — the guide every unit follows
 
+## 0. Owner's teaching rules (22 November 2026) — these override anything below
+
+**0.1 Two layers for every idea.** Each lesson section has, in this order:
+1. **In simple words** — the idea as you would explain it to a 10-year-old, with one everyday
+   picture (a race, a register, a school bag). Three to five short sentences. No jargon.
+2. **The technical way** — the real terms and the precise rule, as before. Nothing technical
+   is removed; it comes second.
+3. **See it** — one tiny example (code, command or table) the learner can run or read.
+4. **Learn more (free)** — 1–3 links: official docs first (MDN, Node.js, TypeScript,
+   Next.js, PostgreSQL, Supabase, Python docs), then well-known free teaching sources
+   (freeCodeCamp, The Odin Project, web.dev, a YouTube video from an established channel).
+   Each link says what it is ("read · 10 min" or "video · 8 min"). The builder opens every
+   link before publishing and replaces dead ones. Never ALX material (ADR-5). Links are
+   extra help; the lesson must make sense without them.
+
+**0.2 No unexplained codes.** A learner must never meet a code without words.
+- Projects are shown as **"Project 2.2 · Class ranking"**. The check id (`m2-p2`) appears only
+  inside the command to copy, with one line the first time: "m2-p2 is this project's code;
+  the checker uses it."
+- A GPIS rule is written **in words first**, then its source: "Pupils with the same total
+  share a position … — *GPIS decision D-02*". The first lesson that cites a rule explains:
+  "GPIS keeps a numbered rule book of decisions the school made (D-01, D-02 …). We quote the
+  number so you can look the rule up in the real project."
+- New terms are explained where they first appear, and collected in a course **Glossary**
+  page (term, simple meaning, technical meaning, unit where it is taught). The platform links
+  each term to it.
+
+**0.3 Project instructions are always numbered steps, at every level.** Guidance still fades
+(ADR-4), but by *how much* each step tells, never by removing the steps:
+| Level | Each step says | Hints |
+| :--- | :--- | :--- |
+| Guided | what to do **and** how (the command, the file, the idea) | Inline, under the step |
+| Half guided | what to do, and where to look | Folded under the step: "Show a hint" |
+| Independent | what must be true when the step is done | Folded, and the page suggests trying for 30 minutes first |
+Every project page also starts with one short paragraph "What you are building and why" and
+ends with "How to check your work" (the command, and what a pass looks like).
+
+**0.4 Plan before you build — milestone projects only.** One project per module is a
+**milestone**. Before writing code, the learner writes three short documents in
+`docs/plans/<unit>/` of their repository and commits them **before** the first code commit:
+| File | Headings |
+| :--- | :--- |
+| `requirements.md` (product requirements) | `## Problem`, `## Users`, `## Must have`, `## Not now`, `## How we will know it works` |
+| `spec.md` (specification) | `## Screens or commands`, `## Data`, `## Rules` (each GPIS rule quoted with its D-number), `## Edge cases`, `## Tests I will write` |
+| `decisions.md` (decision log) | one `## D-<n>: <title>` per decision with `Context`, `Options`, `Choice`, `Why` (at least two decisions) |
+A milestone unit gets one extra lesson section "Planning a project" (first milestone only in
+full; later ones a short reminder), and its main check gains a `doc` step for each file and a
+`tests` step proving the plan commit came first
+(`git log --diff-filter=A --format=%H -- docs/plans/<unit>/spec.md` is older than the first
+commit touching `src/`). Guided milestones give a filled example plan for a *different*
+project; later ones give only the headings.
+Milestones: **1.6** Project home · **2.6** Typed data shapes · **3.5** Score entry screen ·
+**4.3** Scores that explain themselves · **5.4** Submit scores · **7.4** Deploy and configure ·
+**8.2** BECE aggregate · **P.4** FastAPI service. Modules 6 and 9 are planning modules already;
+they need no extra plan.
+
+**0.5 Platform look.** Light mode is the default; dark mode is the learner's choice, saved on
+their device (`docs/mockups/ui/academy-ui.html`).
+
+
 This folder is the design of the whole course. It is written for the builder: build one module
 at a time from its file, and make no course decisions of your own. If something is missing,
 it belongs in `99-open-questions.md`, not in a guess.
