@@ -48,7 +48,7 @@ npm test
 | 3 Checker | T12–T17 | `academy` runs the sample check locally |
 | 4 Results | T18–T21 | Signed results reach the platform and show on the task page |
 | 5 Finish | T22–T24 | Self-review, quality pass, deployment |
-| 6 Course decisions | T25–T32 | The checker and platform follow the owner's answers to the 19 course-design questions |
+| 6 Course decisions | T25–T33 | The checker and platform follow the owner's answers to the 19 course-design questions |
 
 **ARCHITECT tasks: T04, T12, T19, T26, T27.**
 
@@ -502,6 +502,24 @@ content waits for T25 and T26.
   and offerings. Q15, Q17, Q19: tests and the ID allocation table as decided. Nothing else
   changes.
 - **Tests.** `npm test`.
+
+---
+
+### T33 — Frontend restyle from the approved mockups
+- **Needs.** T27 (the project page shows several checks), T29 (time ranges) if done; otherwise
+  show the single number.
+- **Goal.** The platform's screens look and behave like `docs/mockups/ui/academy-ui.html`.
+- **Files.** `apps/web/src/app/globals.css` (tokens), layouts, `components/views/*`, the
+  sign-in pages.
+- **Accept.** The tokens, fonts and rules in the mockup's token sheet are the only source of
+  colour and type (Schibsted Grotesk for UI, Source Serif 4 for lesson text, IBM Plex Mono
+  for code and checker output; cobalt accent only for "now", links and focus; pass/fail/needs
+  colours only for state). Phones: bottom bar Map · Learn · Progress · Me; computers:
+  sidebar. Every screen works at 360px with 44px targets and no sideways scroll; light and
+  dark both follow the tokens. No behaviour, data or route changes. The existing browser
+  tests still pass; update only their visual expectations, never what they prove.
+- **Tests.** All browser tests at 360px; one new screenshot-free check that the four tab
+  links exist on phones and the sidebar on computers.
 
 ---
 

@@ -1,0 +1,415 @@
+<title>Ruftech Academy Screens</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a quiet canvas of phone-width (360px) screens, read left to right like a course; one token sheet at the end.
+   Direction: "lab notebook". Cool paper, ink, one cobalt accent. Grotesk for UI, serif for reading, mono for the checker. */
+:root{
+  --bg:#F3F4F6; --paper:#FFFFFF; --ink:#13151B; --soft:#4A505C; --mute:#7A808C;
+  --line:#E3E5EA; --line-2:#CDD1D8; --wash:#ECEEF2;
+  --acc:#2F45D8; --acc-ink:#FFFFFF; --acc-wash:#E8EBFC;
+  --pass:#17804F; --pass-wash:#E3F3EA; --fail:#B93A27; --fail-wash:#FBE9E5; --needs:#9A6A12; --needs-wash:#F8EFD9;
+  --f-ui:"Schibsted Grotesk","Helvetica Neue",Arial,sans-serif;
+  --f-read:"Source Serif 4",Georgia,"Times New Roman",serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --r:14px; --r-s:10px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0D0F13; --paper:#15181F; --ink:#EEF0F4; --soft:#B5BAC4; --mute:#878D99;
+  --line:#242833; --line-2:#323745; --wash:#1B1F27;
+  --acc:#8C9BFF; --acc-ink:#0D0F13; --acc-wash:#1E2340;
+  --pass:#4CC489; --pass-wash:#12291D; --fail:#F08A78; --fail-wash:#2E1713; --needs:#E3B45A; --needs-wash:#2A2210;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0D0F13; --paper:#15181F; --ink:#EEF0F4; --soft:#B5BAC4; --mute:#878D99;
+  --line:#242833; --line-2:#323745; --wash:#1B1F27;
+  --acc:#8C9BFF; --acc-ink:#0D0F13; --acc-wash:#1E2340;
+  --pass:#4CC489; --pass-wash:#12291D; --fail:#F08A78; --fail-wash:#2E1713; --needs:#E3B45A; --needs-wash:#2A2210;
+  color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 15px/1.55 var(--f-ui);-webkit-font-smoothing:antialiased}
+.page{max-width:1320px;margin:0 auto;padding-block:40px 72px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px;border-radius:6px}
+.mono{font-family:var(--f-mono)}
+.label{font:500 11px/1.2 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+
+/* intro */
+.intro{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:32px;align-items:end;margin-bottom:40px}
+.intro h1{font:800 clamp(2.1rem,4.6vw,3.6rem)/1 var(--f-ui);letter-spacing:-.035em;margin:10px 0 0;text-wrap:balance}
+.intro h1 span{color:var(--acc)}
+.intro p{margin:0;color:var(--soft);max-width:52ch}
+@media (max-width:820px){.intro{grid-template-columns:1fr}}
+
+/* canvas of screens */
+.screens{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,372px),1fr));gap:36px 28px}
+.shot{display:flex;flex-direction:column;gap:12px;min-width:0}
+.shot-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.shot-h b{font:700 15px/1.2 var(--f-ui)}
+.phone{width:100%;max-width:372px;border:1px solid var(--line-2);border-radius:26px;background:var(--paper);overflow:hidden;display:flex;flex-direction:column;height:760px;position:relative}
+.note{font-size:13px;color:var(--soft);margin:0;max-width:44ch}
+
+/* app chrome inside a phone */
+.top{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:14px 16px;border-bottom:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:8px;font:800 15px/1 var(--f-ui);letter-spacing:-.02em}
+.mark{width:22px;height:22px;border-radius:6px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font:700 11px/1 var(--f-mono)}
+.avatar{width:32px;height:32px;border-radius:50%;background:var(--acc-wash);color:var(--acc);display:grid;place-items:center;font:700 12px/1 var(--f-ui)}
+.body{flex:1;overflow:hidden;padding:18px 16px;display:flex;flex-direction:column;gap:16px;min-height:0}
+.tabbar{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);background:var(--paper)}
+.tabbar a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-height:56px;text-decoration:none;color:var(--mute);font:600 11px/1 var(--f-ui)}
+.tabbar a svg{width:20px;height:20px}
+.tabbar a[aria-current]{color:var(--ink)}
+.tabbar a[aria-current]::before{content:"";width:18px;height:2px;border-radius:2px;background:var(--acc);margin-bottom:2px}
+
+/* type */
+.h1{font:800 26px/1.05 var(--f-ui);letter-spacing:-.03em;margin:0;text-wrap:balance}
+.h2{font:700 18px/1.2 var(--f-ui);letter-spacing:-.015em;margin:0}
+.sub{color:var(--soft);font-size:14px;margin:0}
+
+/* controls */
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border-radius:12px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);font:700 15px/1 var(--f-ui);text-decoration:none;width:100%}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line-2)}
+.field{display:flex;flex-direction:column;gap:6px}
+.field span{font:600 13px/1 var(--f-ui)}
+.input{min-height:48px;border:1px solid var(--line-2);border-radius:12px;padding:0 14px;display:flex;align-items:center;color:var(--ink);font:400 15px/1 var(--f-ui);background:var(--paper)}
+.input.focus{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-wash)}
+.code{border-radius:var(--r-s);background:var(--wash);padding:12px;font:400 12.5px/1.6 var(--f-mono);color:var(--ink);overflow-x:auto;white-space:pre}
+.chip{display:inline-flex;align-items:center;gap:6px;font:600 12px/1 var(--f-ui);padding:6px 9px;border-radius:999px;background:var(--wash);color:var(--soft);white-space:nowrap}
+.chip.pass{background:var(--pass-wash);color:var(--pass)}
+.chip.fail{background:var(--fail-wash);color:var(--fail)}
+.chip.needs{background:var(--needs-wash);color:var(--needs)}
+.chip.acc{background:var(--acc-wash);color:var(--acc)}
+.chip::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.chip.plain::before{display:none}
+
+/* sign in */
+.signin{justify-content:center;gap:22px}
+.signin .lede{font:400 17px/1.5 var(--f-read);color:var(--soft);margin:0}
+
+/* course map */
+.progressline{display:flex;flex-direction:column;gap:8px}
+.meter{height:6px;border-radius:6px;background:var(--wash);overflow:hidden}
+.meter i{display:block;height:100%;width:21%;background:var(--acc)}
+.mods{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.mods li{display:grid;grid-template-columns:34px minmax(0,1fr) auto;gap:12px;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}
+.mods .n{font:500 13px/1 var(--f-mono);color:var(--mute)}
+.mods .t{font:600 15px/1.25 var(--f-ui)}
+.mods .m{font-size:12.5px;color:var(--mute);margin-top:2px}
+.mods li.now{margin-inline:-16px;padding-inline:16px;background:var(--acc-wash);border-bottom-color:transparent}
+.mods li.now .n{color:var(--acc)}
+.mods li.lock .t{color:var(--mute)}
+.continue{border:1px solid var(--line);border-radius:var(--r);padding:14px;display:flex;flex-direction:column;gap:10px}
+
+/* lesson */
+.crumbs{font:500 12px/1.3 var(--f-mono);color:var(--mute)}
+.steps{display:flex;gap:4px}
+.steps i{flex:1;height:4px;border-radius:4px;background:var(--line)}
+.steps i.done{background:var(--ink)}
+.steps i.on{background:var(--acc)}
+.read{font:400 17px/1.65 var(--f-read);color:var(--ink);display:flex;flex-direction:column;gap:12px}
+.read p{margin:0}
+.read h3{font:700 17px/1.3 var(--f-ui);letter-spacing:-.01em;margin:6px 0 0}
+.rule{border-left:3px solid var(--acc);padding:10px 12px;background:var(--acc-wash);border-radius:0 var(--r-s) var(--r-s) 0;font:400 15px/1.55 var(--f-ui)}
+.rule .mono{font-size:12px;color:var(--acc);display:block;margin-bottom:4px}
+.table{width:100%;border-collapse:collapse;font:400 13px/1.4 var(--f-ui)}
+.table th,.table td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line)}
+.table th{font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.table td.num{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.bottomnext{padding:12px 16px;border-top:1px solid var(--line);display:flex;gap:10px}
+
+/* quiz */
+.q{font:600 17px/1.4 var(--f-ui);margin:0}
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line-2);border-radius:12px;padding:13px 14px;min-height:48px;font-size:15px}
+.opt .k{font:500 12px/1.6 var(--f-mono);color:var(--mute);flex:none}
+.opt.right{border-color:var(--pass);background:var(--pass-wash)}
+.opt.wrong{border-color:var(--fail);background:var(--fail-wash)}
+.why{border-radius:12px;background:var(--wash);padding:12px 14px;font-size:14px;color:var(--soft)}
+.why b{color:var(--ink)}
+
+/* project task */
+.checks{display:flex;flex-direction:column;gap:10px}
+.check{border:1px solid var(--line);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;gap:10px}
+.check-h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.check-h b{font:700 14px/1.2 var(--f-ui)}
+.check-h small{display:block;font:500 11.5px/1.2 var(--f-mono);color:var(--mute);margin-top:3px}
+.cmd{display:flex;align-items:center;justify-content:space-between;gap:8px;border-radius:var(--r-s);background:var(--wash);padding:8px 8px 8px 12px;font:400 12.5px/1.3 var(--f-mono);min-width:0}
+.cmd span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.copy{flex:none;min-height:32px;padding:0 10px;border-radius:8px;border:1px solid var(--line-2);background:var(--paper);color:var(--ink);font:600 12px/1 var(--f-ui)}
+.run{font:400 12px/1.7 var(--f-mono);color:var(--soft)}
+.run .p{color:var(--pass)} .run .f{color:var(--fail)} .run .n{color:var(--needs)}
+
+/* progress */
+.facts{width:100%;border-collapse:collapse;font-size:13.5px}
+.facts th{font:500 10.5px/1.2 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--mute);text-align:left;padding:0 4px 8px}
+.facts td{padding:11px 4px;border-top:1px solid var(--line);vertical-align:middle}
+.facts td:first-child{font-weight:600}
+.facts .dash{color:var(--mute);font-family:var(--f-mono)}
+.sum{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sum div{border:1px solid var(--line);border-radius:12px;padding:10px}
+.sum b{display:block;font:800 22px/1 var(--f-ui);letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.sum span{font-size:12px;color:var(--mute)}
+
+/* desktop */
+.desk-wrap{margin-top:56px;display:flex;flex-direction:column;gap:12px}
+.desk{border:1px solid var(--line-2);border-radius:18px;background:var(--paper);overflow-x:auto}
+.desk-in{min-width:980px;display:grid;grid-template-columns:232px minmax(0,1fr) 300px;min-height:520px}
+.side{border-right:1px solid var(--line);padding:18px 14px;display:flex;flex-direction:column;gap:4px}
+.side a{display:flex;align-items:center;gap:10px;min-height:40px;padding:0 10px;border-radius:10px;text-decoration:none;color:var(--soft);font:600 14px/1 var(--f-ui)}
+.side a[aria-current]{background:var(--wash);color:var(--ink)}
+.side a svg{width:18px;height:18px}
+.side .brand{padding:4px 10px 18px}
+.main{padding:32px 48px;display:flex;flex-direction:column;gap:16px}
+.main .read{max-width:62ch}
+.aside{border-left:1px solid var(--line);padding:24px 20px;display:flex;flex-direction:column;gap:14px}
+.toc{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+.toc li{padding:8px 10px;border-radius:8px;font-size:14px;color:var(--soft)}
+.toc li.on{background:var(--acc-wash);color:var(--acc);font-weight:600}
+
+/* tokens */
+.tokens{margin-top:56px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:28px}
+.tokens section{border-top:1px solid var(--line-2);padding-top:16px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
+.sw div{display:flex;flex-direction:column;gap:6px;font:500 11.5px/1.3 var(--f-mono);color:var(--soft)}
+.sw i{height:48px;border-radius:10px;border:1px solid var(--line)}
+.type-row{display:flex;flex-direction:column;gap:2px;border-bottom:1px solid var(--line);padding-bottom:12px}
+.rules-list{margin:0;padding-left:18px;color:var(--soft);font-size:14px;display:flex;flex-direction:column;gap:6px}
+@media (max-width:820px){.tokens{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"/><path d="M9 4v14M15 6v14"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2V5z"/><path d="M4 19a2 2 0 0 1 2-2h13"/></symbol>
+  <symbol id="i-chart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></symbol>
+  <symbol id="i-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
+</svg>
+
+<main class="page">
+  <header class="intro">
+    <div>
+      <div class="label">Ruftech Academy · UI mockups · v1</div>
+      <h1>Learn by rebuilding <span>a real school system.</span></h1>
+    </div>
+    <p>Six phone screens at 360px, one computer layout, and the token sheet. The learner's day: sign in, find the next unit, read, answer the quiz, run the checks, see progress. Built for reading first; colour is used only for state.</p>
+  </header>
+
+  <div class="screens">
+
+    <!-- 1 Sign in -->
+    <article class="shot">
+      <div class="shot-h"><b>Sign in</b><span class="label">/sign-in</span></div>
+      <div class="phone">
+        <div class="body signin">
+          <div class="brand"><span class="mark">RA</span>Ruftech Academy</div>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <h2 class="h1">Welcome back.</h2>
+            <p class="lede">You are rebuilding GPIS, one unit at a time. Pick up where you stopped.</p>
+          </div>
+          <label class="field"><span>Email</span><div class="input focus">ama.birikran@example.com</div></label>
+          <label class="field"><span>Password</span><div class="input">••••••••••</div></label>
+          <a class="btn" href="#">Sign in</a>
+          <a class="btn ghost" href="#">Forgot password</a>
+          <p class="sub" style="text-align:center">New here? <a href="#" style="color:var(--acc);font-weight:600">Create an account</a></p>
+        </div>
+      </div>
+      <p class="note">One column, one main action. No illustration: the promise is in the sentence.</p>
+    </article>
+
+    <!-- 2 Course map -->
+    <article class="shot">
+      <div class="shot-h"><b>Course map</b><span class="label">/map</span></div>
+      <div class="phone">
+        <div class="top"><div class="brand"><span class="mark">RA</span>Academy</div><span class="avatar">AB</span></div>
+        <div class="body">
+          <div class="progressline">
+            <div style="display:flex;justify-content:space-between;align-items:baseline"><h2 class="h2">Your course</h2><span class="mono" style="font-size:12px;color:var(--mute)">12 of 58 units</span></div>
+            <div class="meter"><i></i></div>
+          </div>
+          <div class="continue">
+            <span class="label">Next up</span>
+            <b style="font:700 16px/1.25 var(--f-ui)">3.1 HTML, CSS and a first Next.js site</b>
+            <span class="sub">Guided · about 12–18 hours · project m3-p1</span>
+            <a class="btn" href="#">Continue</a>
+          </div>
+          <ul class="mods">
+            <li><span class="n">01</span><div><div class="t">Command line, Git and the web</div><div class="m">6 of 6 units</div></div><span class="chip pass">Done</span></li>
+            <li><span class="n">02</span><div><div class="t">JavaScript and TypeScript</div><div class="m">6 of 6 units</div></div><span class="chip pass">Done</span></li>
+            <li class="now"><span class="n">03</span><div><div class="t">Frontend with Next.js</div><div class="m">0 of 6 units · guided → half</div></div><span class="chip acc">Now</span></li>
+            <li class="lock"><span class="n">04</span><div><div class="t">Databases</div><div class="m">6 units · half guided</div></div><span class="chip plain">Later</span></li>
+            <li class="lock"><span class="n">05</span><div><div class="t">Backend and auth</div><div class="m">6 units · half guided</div></div><span class="chip plain">Later</span></li>
+          </ul>
+        </div>
+        <nav class="tabbar" aria-label="Main"><a href="#" aria-current="page"><svg><use href="#i-map"/></svg>Map</a><a href="#"><svg><use href="#i-book"/></svg>Learn</a><a href="#"><svg><use href="#i-chart"/></svg>Progress</a><a href="#"><svg><use href="#i-user"/></svg>Me</a></nav>
+      </div>
+      <p class="note">Module numbers are real order, so they earn the mono numerals. The current module is the only tinted row.</p>
+    </article>
+
+    <!-- 3 Lesson -->
+    <article class="shot">
+      <div class="shot-h"><b>Lesson</b><span class="label">/learn/m2-u2</span></div>
+      <div class="phone">
+        <div class="top"><span class="crumbs">2.2 · Arrays, objects and sorting</span><span class="avatar">AB</span></div>
+        <div class="body">
+          <div class="steps" aria-label="Step 1 of 8"><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <span class="label">Step 1 · Lesson · 25 min</span>
+          <h2 class="h1">Ties share a position</h2>
+          <div class="read">
+            <p>When two pupils have the same total, they get the same position. The next position is skipped, so the count of pupils ahead stays true.</p>
+            <div class="rule"><span class="mono">GPIS D-02</span>Standard competition ranking. 90, 90, 80 gives 1, 1, 3. Not dense ranking.</div>
+            <table class="table"><thead><tr><th>Total</th><th>Position</th><th>Dense</th></tr></thead>
+              <tbody><tr><td class="num">90</td><td class="num">1</td><td class="num">1</td></tr><tr><td class="num">90</td><td class="num">1</td><td class="num">1</td></tr><tr><td class="num">80</td><td class="num">3</td><td class="num" style="color:var(--fail)">2</td></tr></tbody></table>
+            <h3>Position from a count</h3>
+            <p>A pupil's position is one more than the number of pupils with a strictly higher total.</p>
+          </div>
+        </div>
+        <div class="bottomnext"><a class="btn ghost" href="#" style="width:auto">Back</a><a class="btn" href="#">Next: guided example</a></div>
+      </div>
+      <p class="note">Reading text is a serif at 17px with a 65-character measure on computers. GPIS rules always carry their D-number.</p>
+    </article>
+
+    <!-- 4 Quiz -->
+    <article class="shot">
+      <div class="shot-h"><b>Quiz, after answering</b><span class="label">/learn/m2-u2/quiz</span></div>
+      <div class="phone">
+        <div class="top"><span class="crumbs">2.2 · Quiz · question 2 of 8</span><span class="avatar">AB</span></div>
+        <div class="body">
+          <div class="steps"><i class="done"></i><i class="done"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="q">Totals are 88, 88, 88 and 60. What is the position of 60?</p>
+          <div class="opts">
+            <div class="opt"><span class="k">A</span>2nd</div>
+            <div class="opt wrong"><span class="k">B</span>3rd · your answer</div>
+            <div class="opt right"><span class="k">C</span>4th</div>
+            <div class="opt"><span class="k">D</span>1st</div>
+          </div>
+          <div class="why"><b>Why 4th.</b> Three pupils have a higher total, so the position is 3 + 1. <b>Why not 3rd:</b> that counts the three equal totals as two places.</div>
+        </div>
+        <div class="bottomnext"><a class="btn" href="#">Next question</a></div>
+      </div>
+      <p class="note">Every wrong option has its own reason. Right and wrong use the state colours, never the accent.</p>
+    </article>
+
+    <!-- 5 Project task -->
+    <article class="shot">
+      <div class="shot-h"><b>Project and its checks</b><span class="label">/project/m2-p2</span></div>
+      <div class="phone">
+        <div class="top"><span class="crumbs">2.2 · Project · Class ranking</span><span class="avatar">AB</span></div>
+        <div class="body">
+          <div style="display:flex;flex-direction:column;gap:6px"><h2 class="h1">Class ranking</h2><p class="sub">Rank a class on total score. Ties share a position. Missing subjects still get one.</p></div>
+          <div class="checks">
+            <div class="check">
+              <div class="check-h"><div><b>Main check</b><small>m2-p2 · v1.0.0</small></div><span class="chip fail">Not passed</span></div>
+              <div class="cmd"><span>npx academy check m2-p2</span><button class="copy" type="button">Copy</button></div>
+              <div class="run">
+                <div><span class="p">PASS</span>  files   ranking.ts exists</div>
+                <div><span class="f">FAIL</span>  tests   6 of 8 passed</div>
+                <div style="padding-left:6ch">ties: 90, 90, 80 gave 1, 2, 3</div>
+                <div><span class="n">NEEDS</span> page    start your app (npm run dev)</div>
+              </div>
+            </div>
+            <div class="check">
+              <div class="check-h"><div><b>Debugging lab</b><small>m2-p2-debug</small></div><span class="chip pass">Passed</span></div>
+            </div>
+            <div class="check">
+              <div class="check-h"><div><b>Own build</b><small>m2-p2-own</small></div><span class="chip">Not yet</span></div>
+              <div class="cmd"><span>npx academy check m2-p2-own</span><button class="copy" type="button">Copy</button></div>
+            </div>
+          </div>
+        </div>
+        <nav class="tabbar" aria-label="Main"><a href="#"><svg><use href="#i-map"/></svg>Map</a><a href="#" aria-current="page"><svg><use href="#i-book"/></svg>Learn</a><a href="#"><svg><use href="#i-chart"/></svg>Progress</a><a href="#"><svg><use href="#i-user"/></svg>Me</a></nav>
+      </div>
+      <p class="note">One block per check (T27). The terminal's own words appear as-is in mono, so the page and the CLI read the same.</p>
+    </article>
+
+    <!-- 6 Progress -->
+    <article class="shot">
+      <div class="shot-h"><b>Progress</b><span class="label">/progress</span></div>
+      <div class="phone">
+        <div class="top"><div class="brand"><span class="mark">RA</span>Progress</div><span class="avatar">AB</span></div>
+        <div class="body">
+          <div class="sum"><div><b>12</b><span>units done</span></div><div><b>11</b><span>quizzes passed</span></div><div><b>9</b><span>checks passed</span></div></div>
+          <div style="overflow-x:auto">
+            <table class="facts">
+              <thead><tr><th>Project</th><th>Done</th><th>Checker</th><th>Review</th><th>On time</th></tr></thead>
+              <tbody>
+                <tr><td>2.1 Grading</td><td>Yes</td><td><span class="chip pass">Pass</span></td><td>Yes</td><td>Yes</td></tr>
+                <tr><td>2.2 Ranking</td><td>—</td><td><span class="chip fail">Fail</span></td><td class="dash">–</td><td class="dash">–</td></tr>
+                <tr><td>2.3 Score rules</td><td class="dash">–</td><td><span class="chip">Not yet</span></td><td class="dash">–</td><td class="dash">–</td></tr>
+                <tr><td>4.6 Backup</td><td class="dash">–</td><td><span class="chip needs">Docker part</span></td><td class="dash">–</td><td class="dash">–</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="sub">Four facts, never one score. A dash means not yet, never zero.</p>
+          <a class="btn" href="#">Continue: 2.2 Class ranking</a>
+        </div>
+        <nav class="tabbar" aria-label="Main"><a href="#"><svg><use href="#i-map"/></svg>Map</a><a href="#"><svg><use href="#i-book"/></svg>Learn</a><a href="#" aria-current="page"><svg><use href="#i-chart"/></svg>Progress</a><a href="#"><svg><use href="#i-user"/></svg>Me</a></nav>
+      </div>
+      <p class="note">The table scrolls inside its card at 360px; the page never scrolls sideways.</p>
+    </article>
+  </div>
+
+  <!-- Desktop -->
+  <section class="desk-wrap">
+    <div class="shot-h"><b>Lesson on a computer</b><span class="label">≥ 1024px · sidebar, reading column, step list</span></div>
+    <div class="desk">
+      <div class="desk-in">
+        <nav class="side" aria-label="Main">
+          <div class="brand"><span class="mark">RA</span>Ruftech Academy</div>
+          <a href="#"><svg><use href="#i-map"/></svg>Course map</a>
+          <a href="#" aria-current="page"><svg><use href="#i-book"/></svg>Learn</a>
+          <a href="#"><svg><use href="#i-chart"/></svg>Progress</a>
+          <a href="#"><svg><use href="#i-user"/></svg>Account</a>
+        </nav>
+        <div class="main">
+          <span class="crumbs">Module 2 · Unit 2.2 · Arrays, objects and sorting</span>
+          <h2 class="h1" style="font-size:38px">Ties share a position</h2>
+          <div class="read">
+            <p>When two pupils have the same total, they get the same position. The next position is skipped, so the count of pupils ahead stays true. This is how every GPIS report card prints a position.</p>
+            <div class="rule"><span class="mono">GPIS D-02</span>Standard competition ranking. 75, 70, 70, 65 gives 1, 2, 2, 4. Not dense ranking.</div>
+            <div class="code">competitionRanks([75, 70, 70, 65])
+// → [1, 2, 2, 4]</div>
+            <p>Rank inside one class at a time (D-03). A pupil with a missing subject is still ranked: the missing subject adds nothing (Q-07).</p>
+          </div>
+        </div>
+        <aside class="aside">
+          <span class="label">This unit · 8 steps</span>
+          <ol class="toc">
+            <li class="on">1 · Lesson</li><li>2 · Guided example</li><li>3 · Quiz</li><li>4 · Lab and checks</li><li>5 · Debugging lab</li><li>6 · Own build</li><li>7 · Review</li><li>8 · Mastery</li>
+          </ol>
+          <a class="btn" href="#">Next: guided example</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Tokens -->
+  <div class="tokens">
+    <section>
+      <span class="label">Colour tokens (light shown; dark is in the CSS)</span>
+      <div class="sw">
+        <div><i style="background:var(--bg)"></i>--bg</div>
+        <div><i style="background:var(--paper)"></i>--paper</div>
+        <div><i style="background:var(--ink)"></i>--ink</div>
+        <div><i style="background:var(--soft)"></i>--soft</div>
+        <div><i style="background:var(--acc)"></i>--acc (links, now, focus)</div>
+        <div><i style="background:var(--pass)"></i>--pass</div>
+        <div><i style="background:var(--fail)"></i>--fail</div>
+        <div><i style="background:var(--needs)"></i>--needs</div>
+      </div>
+    </section>
+    <section>
+      <span class="label">Type</span>
+      <div class="type-row"><span style="font:800 28px/1.1 var(--f-ui);letter-spacing:-.03em">Schibsted Grotesk 800</span><span class="sub">Headings and UI. 26–38px titles, tight tracking.</span></div>
+      <div class="type-row"><span style="font:400 18px/1.5 var(--f-read)">Source Serif 4 for lesson reading</span><span class="sub">17px on phones, 18px on computers, 65 characters wide.</span></div>
+      <div class="type-row"><span class="mono" style="font-size:14px">IBM Plex Mono · npx academy check m2-p2</span><span class="sub">Code, commands, ids, checker output, labels.</span></div>
+      <span class="label" style="margin-top:6px">Rules</span>
+      <ul class="rules-list">
+        <li>Colour carries state only: pass, fail, needs. The accent marks "now", links and focus.</li>
+        <li>360px first. Touch targets 44px or more. Tables scroll inside their card.</li>
+        <li>Phones: bottom bar Map · Learn · Progress · Me. Computers: sidebar.</li>
+        <li>No shadows. Borders separate objects; space separates groups.</li>
+        <li>Light and dark from the same tokens; dark is not an inversion.</li>
+      </ul>
+    </section>
+  </div>
+</main>
