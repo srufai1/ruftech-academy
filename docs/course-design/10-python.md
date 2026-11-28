@@ -557,7 +557,7 @@ In a scratch folder.
 3. Prove write refusal.
 4. Stop and restart the WSL service.
 
-### Check plan (`py-p4`, version 1.0.0, no `lab:`, requires [wsl, node, git, python, supabase, lab-db, docker])
+### Check plan (`py-p4`, version 1.0.0, no `lab:`, requires [wsl, node, git, python, supabase, lab-db])
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
@@ -566,7 +566,6 @@ In a scratch folder.
 | contract | tests | yes | `tests/contract.test.mjs` via files. Learner starts python -m uvicorn app:app --host 127.0.0.1 --port 8000 inside services/results. Use synthetic lab class 900001, term 900001 with two persistent demo members and published totals 75.25 and null. GET /results/class/900001?term=900001 with server token → 200 {class_id:900001,term_id:900001,rows:[{student_id:900001,total:'75.25'},{student_id:900002,total:null}]}. Ascending student_id. Missing/wrong bearer → 401, unknown class → 404, invalid int → 422. No internal DB detail in response. |
 | readonly | sql | yes | Forward migration creates results_reader with no elevated role memberships and no BYPASSRLS, grants only select on public.published_class_results (class_id,term_id,student_id,total). As results_reader select rows of persistent fixture ordered by student_id; expect 900001/75.25 and 900002/null with numerics cast to text. UPDATE public.scores SET id=id WHERE false → expect_error true. SELECT has_table_privilege('results_reader','public.scores','insert') AS allowed → false. Service DSN uses this restricted identity; supply connection and token through ignored local configuration. |
 | python-tests | tests | yes | Run cd services/results && python -m pytest -q tests/test_api.py; exit 0 with passed cases including database unavailable → 503, no exception detail in response. |
-| container | tests | no | `tests/container.test.mjs` via files. Learner starts optional Docker packaging at loopback 8001. Repeat authorised and wrong-token GET and compare status and JSON to the WSL service. WSL path alone meets required checks. |
 
 **Messages for required steps**
 
@@ -575,6 +574,17 @@ In a scratch folder.
 - `contract` — The reporting service broke its response or access contract.
 - `readonly` — Reader permissions or published fixture rows differ from contract.
 - `python-tests` — The API tests failed their error contract.
+
+### Live Docker check
+
+Include `docker` in the unit’s `extra_checks`. Put these required live steps in
+`check-docker/check.yaml` with id `py-p4-docker` and version `1.0.0`. Run it from the same project folder as the main check.
+Run `npx academy check py-p4-docker` after starting the containers. The main check
+can pass on its own. Progress shows “Docker · not yet” until the first live result.
+
+| Step id | Kind | Required | Exactly what it verifies |
+| :--- | :--- | :--- | :--- |
+| container | tests | yes | `tests/container.test.mjs` via files. Learner starts optional Docker packaging at loopback 8001. Repeat authorised and wrong-token GET and compare status and JSON to the WSL service. |
 
 ### Needs
 

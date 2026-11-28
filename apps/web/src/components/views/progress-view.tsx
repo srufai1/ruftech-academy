@@ -41,7 +41,7 @@ export function ProgressView({ modules, projectsDone, quizzesPassed, next }: {
                     <td className="px-3 py-1"><Link href={`/project/${p.slug}`} className="flex min-h-11 items-center font-medium hover:underline">{p.label} {p.title}</Link></td>
                     <td className="px-2 text-center"><span aria-hidden="true">{DONE[p.done]}</span><span className="sr-only">{DONE_TEXT[p.done]}</span></td>
                     <td className="px-2 text-center"><span aria-hidden="true">{fact(p.checker)}</span><span className="sr-only">checker {factText(p.checker, "passed", "not passed")}</span>
-                      {p.extras.map(extra => <small key={extra.kind} className="block">{SITE.checkLabels[extra.kind]} · {factText(extra.passed, "passed", "not passed")}</small>)}
+                      {p.extras.map(extra => <small key={extra.kind} className="mx-auto mt-1 block w-fit rounded-md border px-1.5 py-0.5">{SITE.checkLabels[extra.kind]} · {factText(extra.passed, "passed", "not passed")}</small>)}
                     </td>
                     <td className="px-2 text-center"><span aria-hidden="true">{fact(p.review)}</span><span className="sr-only">self-review {factText(p.review, "written", "not written")}</span></td>
                     <td className="px-2 text-center"><span aria-hidden="true">{fact(p.onTime)}</span><span className="sr-only">{factText(p.onTime, "on time", "late")}</span></td>

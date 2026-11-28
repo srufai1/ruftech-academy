@@ -19,14 +19,14 @@ await withPhone(async page => {
   }
   assert.ok(await noSideways(page));
 
-  const ref = { slug, title: "Practice", label: "1.1", currentVersion: version, extras: checks.slice(1) };
+  const ref = { slug, title: "Practice", label: "1.1", currentVersion: version, extras: [...checks.slice(1), { kind: "docker", id: slug + "-docker", version }] };
   const runs = [ { item_slug: slug, version, passed: true }, { item_slug: checks[1].id, version, passed: false },
     { item_slug: checks[1].id, version, passed: true } ];
   const facts = projectFacts(ref, [], runs, [], new Date());
   await page.setContent(await renderView("components/views/progress-view.tsx", "ProgressView", {
     modules: [{ slug: "m1", title: "Practice", label: "1", projects: [facts] }], projectsDone: 0, quizzesPassed: 0, next: null,
   }));
-  for (const text of ["not started", "checker passed", "Debugging lab · not passed", "Own build · not yet"]) {
+  for (const text of ["not started", "checker passed", "Debugging lab · not passed", "Own build · not yet", "Docker · not yet"]) {
     assert.equal(await page.getByText(text, { exact: true }).count(), 1);
   }
   assert.ok(await noSideways(page));

@@ -285,7 +285,7 @@ In a scratch folder.
 3. Explain inherited execute.
 4. Redact a finding and retain enough to retest.
 
-### Check plan (`m7-p2`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db, docker])
+### Check plan (`m7-p2`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db])
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
@@ -293,7 +293,6 @@ In a scratch folder.
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
 | review | doc | yes | docs/security/review.md headings RLS, Definer functions, Actions, Storage, Secrets, Retest. Each finding names evidence, expected rule and retest. |
 | anon | sql | yes | SELECT DISTINCT p.proname FROM pg_proc p WHERE p.pronamespace='public'::regnamespace AND p.proname IN ('move_student','withdraw_student','admit_student','submit_subject','return_subject','issue_document','issue_updated') AND has_function_privilege('anon',p.oid,'execute') ORDER BY 1 → []. Inventory deliberately public entry points separately in anon-functions.txt, including signatures and rationale; compare effective inventory manually. |
-| traffic | tests | no | `tests/traffic.test.mjs` via files. Optional Docker loopback teaching service: compare supplied HTTP/TLS transcripts carrying synthetic ZZ-DEMO. docs/security/traffic.csv must contain http,visible and tls,encrypted. Reproduce the comparison with the learner-started simulator. |
 
 **Messages for required steps**
 
@@ -301,6 +300,17 @@ In a scratch folder.
 - `history` — The committed history is missing or contains a credential pattern.
 - `review` — The review missed a boundary or retest.
 - `anon` — Anonymous callers have an unintended private operation.
+
+### Live Docker check
+
+Include `docker` in the unit’s `extra_checks`. Put these required live steps in
+`check-docker/check.yaml` with id `m7-p2-docker` and version `1.0.0`. Run it from the same project folder as the main check.
+Run `npx academy check m7-p2-docker` after starting the containers. The main check
+can pass on its own. Progress shows “Docker · not yet” until the first live result.
+
+| Step id | Kind | Required | Exactly what it verifies |
+| :--- | :--- | :--- | :--- |
+| traffic | tests | yes | `tests/traffic.test.mjs` via files. Optional Docker loopback teaching service: compare supplied HTTP/TLS transcripts carrying synthetic ZZ-DEMO. docs/security/traffic.csv must contain http,visible and tls,encrypted. Reproduce the comparison with the learner-started simulator. |
 
 ### Needs
 
@@ -649,7 +659,7 @@ In a scratch folder.
 | 1 | `diagnosis.md`, `compose.yaml`, `start.sh`, `repaired-map.csv` | `deliverables` |
 | 2 | diagnosis.md: Observe, Possible causes, Tests, Cause, Fix. Include evidence for all three supplied failures and expected result after restart. | `diagnosis` |
 | 3 | Read repaired-map.csv, header symptom,layer,fixed; require 404,proxy,/health; EACCES,config,readable; pool_timeout,database,released. Required on either path. | `logs` |
-| 4 | Learner runs start.sh (0755) then restarts compose. At loopback port 3185, three GET /health requests must return HTTP 200 JSON {route:true,config:true,query:1}. Verify recorded distinct service start times. Manual no-Docker path uses supplied logs [Q8]. | `health` |
+| 4 | Learner runs start.sh (0755) then restarts compose. At loopback port 3185, three GET /health requests must return HTTP 200 JSON {route:true,config:true,query:1}. Verify recorded distinct service start times. Use the supplied logs for the main check when Docker is unavailable. | `health` |
 
 **Finished state.** Read the query result after a full restart. A listening socket alone is insufficient. Check with `npx academy check m7-p5`.
 
@@ -690,20 +700,30 @@ In a scratch folder.
 3. Trace a borrowed connection.
 4. Prove a second start works.
 
-### Check plan (`m7-p5`, version 1.0.0, lab root `stack`, seed `fixtures/seed.sh`, requires [wsl, node, docker])
+### Check plan (`m7-p5`, version 1.0.0, lab root `stack`, seed `fixtures/seed.sh`, requires [wsl, node])
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
 | deliverables | files | yes | `diagnosis.md`, `compose.yaml`, `start.sh`, `repaired-map.csv` |
 | diagnosis | doc | yes | diagnosis.md: Observe, Possible causes, Tests, Cause, Fix. Include evidence for all three supplied failures and expected result after restart. |
 | logs | tests | yes | `tests/logs.test.mjs` via files. Read repaired-map.csv, header symptom,layer,fixed; require 404,proxy,/health; EACCES,config,readable; pool_timeout,database,released. Required on either path. |
-| health | tests | no | `tests/health.test.mjs` via files. Learner runs start.sh (0755) then restarts compose. At loopback port 3185, three GET /health requests must return HTTP 200 JSON {route:true,config:true,query:1}. Verify recorded distinct service start times. Manual no-Docker path uses supplied logs [Q8]. |
 
 **Messages for required steps**
 
 - `deliverables` — A named deliverable is missing.
 - `diagnosis` — The diagnosis omits a fault or its proof.
 - `logs` — A symptom was assigned to the wrong layer.
+
+### Live Docker check
+
+Include `docker` in the unit’s `extra_checks`. Put these required live steps in
+`check-docker/check.yaml` with id `m7-p5-docker` and version `1.0.0`. Run it in the stack folder created by the main lab seed.
+Run `npx academy check m7-p5-docker` after starting the containers. The main check
+can pass on its own. Progress shows “Docker · not yet” until the first live result.
+
+| Step id | Kind | Required | Exactly what it verifies |
+| :--- | :--- | :--- | :--- |
+| health | tests | yes | `tests/health.test.mjs` via files. Learner runs start.sh (0755) then restarts compose. At loopback port 3185, three GET /health requests must return HTTP 200 JSON {route:true,config:true,query:1}. Verify recorded distinct service start times. Use the supplied logs for the main check when Docker is unavailable. |
 
 ### Needs
 

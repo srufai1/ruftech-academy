@@ -911,8 +911,7 @@ Units 4.1–4.4. Lab database.
 
 **[Docker]** The replica half needs Docker Desktop with WSL integration. **Without Docker:**
 do the backup-and-restore half on the cloud project and read the replica half as a worked
-example (given in `lab.md`, with real captured output). How the checker shows "partly done"
-is open **[Q8]**; the plan below uses optional steps.
+example (given in `lab.md`, with real captured output). Run the main check for this evidence. Run the separate Docker check for a live replica.
 
 ### Outcomes
 
@@ -1021,7 +1020,7 @@ after gives your timestamps. (4) On the replica, `select pg_is_in_recovery()` is
 - **Compare with GPIS:** (1) Find the backup runbook in GPIS's `docs/` (search for "backup"). How are backups encrypted, and where is the key kept? (2) GPIS's rule 5 names the lost test database. What three safeguards in this course play the same part (think of the marker table, the lab-only project, and one more)? (3) Why does GPIS test restores instead of trusting the provider's daily backup?
 - **Mastery:** (1) In 20 minutes: dump one table, delete half, restore beside, copy back, prove the counts. (2) Explain "data-loss window" and "restore time" to a head teacher with yesterday as the example. (3) Say in two sentences why a replica is not a backup. (4) List what must be true before you would run a restore on a live system.
 
-### Check plan (`m4-p6`, version 1.0.0, no `lab:`, `requires [wsl, node, git, supabase, lab-db, docker]`)
+### Check plan (`m4-p6`, version 1.0.0, no `lab:`, `requires [wsl, node, git, supabase, lab-db]`)
 
 | Step id | Kind | Req. | Verifies |
 | :--- | :--- | :--- | :--- |
@@ -1032,8 +1031,6 @@ after gives your timestamps. (4) On the replica, `select pg_is_in_recovery()` is
 | `drill-table` | sql | yes | `select count(*)::int as n from information_schema.tables where table_schema = 'public' and table_name = 'recovery_drill'` → 1 (**this unit's `sql` steps read the learner's own rows**: the one exception to the module rule, because the rows are the evidence) |
 | `restored-rows` | sql | yes | `select id::int, note from recovery_drill where id between 1 and 10 order by id` → the ten rows |
 | `lost-rows-honest` | sql | yes | `select count(*)::int as n from recovery_drill where id in (11, 12)` → 0 |
-| `replica-running` | tests (run) | no | `docker compose -f labs/replica/docker-compose.yml exec -T replica psql -U postgres -tAc 'select pg_is_in_recovery()'` → `"t\n"`, `timeout_seconds: 30` |
-| `replica-follows` | tests (run) | no | Primary: `create table if not exists check_probe as select 1 as n` then on the replica `select count(*) from check_probe` → `"1\n"` after `sleep 2` (one command line with `&&`); the probe is dropped afterwards |
 
 Messages: `backups-ignored` "The backups folder is not ignored by Git, or a backup file is
 tracked." `backup-script` "scripts/backup.sh is missing or cannot be run."
@@ -1045,6 +1042,18 @@ section is too short." `drill-table` "The recovery_drill table is missing." `res
 bring them back, and typing them in again is not a restore." `replica-running` "The replica
 container is not running in recovery mode." `replica-follows` "A change on the primary did
 not reach the replica."
+
+### Live Docker check
+
+Include `docker` in the unit’s `extra_checks`. Put these required live steps in
+`check-docker/check.yaml` with id `m4-p6-docker` and version `1.0.0`. Run it from the same project folder as the main check.
+Run `npx academy check m4-p6-docker` after starting the containers. The main check
+can pass on its own. Progress shows “Docker · not yet” until the first live result.
+
+| Step id | Kind | Req. | Verifies |
+| :--- | :--- | :--- | :--- |
+| `replica-running` | tests (run) | yes | `docker compose -f labs/replica/docker-compose.yml exec -T replica psql -U postgres -tAc 'select pg_is_in_recovery()'` → `"t\n"`, `timeout_seconds: 30` |
+| `replica-follows` | tests (run) | yes | Primary: `create table if not exists check_probe as select 1 as n` then on the replica `select count(*) from check_probe` → `"1\n"` after `sleep 2` (one command line with `&&`); the probe is dropped afterwards |
 
 ### Needs
 
