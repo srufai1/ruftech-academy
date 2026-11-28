@@ -5,15 +5,15 @@
   "questions": [
     {
       "id": "q1",
-      "prompt": "You are in /home/sani/projects/gpis-rebuild/src. Where does `cd ../../notes` take you?",
+      "prompt": "You are in /home/sani/projects/school-system/src. Where does `cd ../../notes` take you?",
       "options": [
         "/home/sani/projects/notes",
         "/home/sani/notes",
-        "/home/sani/projects/gpis-rebuild/notes",
+        "/home/sani/projects/school-system/notes",
         "/notes"
       ],
       "answer": 0,
-      "why": "Each `..` goes up one level: src → gpis-rebuild → projects. Then down into notes.",
+      "why": "Each `..` goes up one level: src → school-system → projects. Then down into notes.",
       "wrong": {
         "1": "That needs three `..`, not two.",
         "2": "That is one `..` only.",

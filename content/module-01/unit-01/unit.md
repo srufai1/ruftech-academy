@@ -4,7 +4,7 @@ title: The terminal and the filesystem
 module: 1
 position: 1
 guidance: guided
-minutes: 360
+minutes: { min: 300, max: 420 }
 project: m1-p1
 gpis_part: The folder layout of the GPIS repository
 requires: [wsl]

@@ -56,7 +56,8 @@ try {
   const meta = join(unit(rangeCopy), "unit.md");
   const original = readFileSync(meta, "utf8");
   const minutes = value => writeFileSync(meta, original.replace(/^minutes:.*$/m, "minutes: " + value));
-  assert.equal(course.units[0].meta.minutes, 360); checks++;
+  minutes("360");
+  assert.equal(buildContent(rangeCopy).course.units[0].meta.minutes, 360); checks++;
   minutes("{ min: 720, max: 1080 }");
   assert.deepEqual(buildContent(rangeCopy).course.units[0].meta.minutes, { min: 720, max: 1080 }); checks++;
   for (const bad of ["{ min: 12, max: 6 }", "{ max: 18 }", "{ min: 1, max: 6001 }", "0", "1.5"]) {

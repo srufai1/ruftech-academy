@@ -74,7 +74,7 @@ await test("the unit's review.md gives the checklist and the GPIS questions", ()
   const content = reviewContent(readFileSync(new URL("../content/module-01/unit-01/review.md", import.meta.url), "utf8"));
   assert.equal(content.checklist.length, 6);
   assert.ok(content.checklist[1].startsWith("I typed the commands myself."));
-  assert.ok(content.compare.includes("gpis-rebuild"), "the comparison questions");
+  assert.ok(content.compare.includes("school-system"), "the comparison questions");
   assert.ok(content.mastery.includes("You have mastered this unit when"), "the mastery check");
   assert.ok(content.reflection.includes("What surprised me?"), "the reflection");
   assert.ok(!content.intro.startsWith("#") && content.intro.includes("self-assessed"), "the intro, without the title line");

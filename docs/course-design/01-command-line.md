@@ -33,7 +33,16 @@ newer, VS Code with the WSL extension, `npx academy doctor` passes.
 
 ### Lesson
 
-Teach each idea below in the four layers of guide §0.1. Start with a cupboard with named drawers; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://www.gnu.org/software/bash/manual/bash.html) (read · 10 min). Teach every quiz concept before the quiz.
+Use these readings with the matching lesson sections. Lengths count words in the linked passage. Reading times assume 200 words a minute.
+
+- 1. Why the terminal — [What pwd prints](https://man7.org/linux/man-pages/man1/pwd.1.html#DESCRIPTION) (read · 74 words · about 1 min)
+- 2. The filesystem is a tree — [How Linux finds a path](https://man7.org/linux/man-pages/man7/path_resolution.7.html#DESCRIPTION) (read · 1373 words · about 7 min)
+- 3. Moving and looking — [Listing a directory](https://man7.org/linux/man-pages/man1/ls.1.html#DESCRIPTION) (read · 882 words · about 5 min)
+- 4. Making, copying, moving, removing — [Copying files and folders](https://man7.org/linux/man-pages/man1/cp.1.html#DESCRIPTION) (read · 692 words · about 4 min)
+- 5. Permissions — [Reading and setting access modes](https://man7.org/linux/man-pages/man1/chmod.1.html#DESCRIPTION) (read · 482 words · about 3 min)
+- 6. Links — [What a symbolic link contains](https://man7.org/linux/man-pages/man7/symlink.7.html#DESCRIPTION) (read · 2379 words · about 12 min)
+- 7. Editing in the terminal — [GNU nano keyboard shortcuts](https://www.nano-editor.org/dist/latest/cheatsheet.html) (read · 411 words · about 3 min)
+- 8. Getting help — [Opening a manual page](https://man7.org/linux/man-pages/man1/man.1.html#EXAMPLES) (read · 281 words · about 2 min)
 
 
 Use the existing lesson and guided example as the technical outline. Introduce paths using named drawers before asking learners to navigate the directory tree.

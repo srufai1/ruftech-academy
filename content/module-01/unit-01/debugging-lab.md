@@ -49,6 +49,6 @@ changed, and that `diagnosis.md` has the five headings.
 
 ## The habit to keep
 
-OBSERVE → ISOLATE → TEST → PROVE → DOCUMENT → MOVE ON. GPIS's own rules file (`AGENTS.md`)
+OBSERVE → ISOLATE → TEST → PROVE → DOCUMENT → MOVE ON. GPIS AGENTS.md, “Engineering discipline”,
 asks the same of everyone who works on it. Changing permissions to `777` "to make the error
 go away" would hide the fault and open the folder to everyone.

@@ -1,11 +1,15 @@
 # Lab — Project 1.1: Find your way
 
-**Level:** guided. **Checker:** `m1-p1`. **Time:** about 90 minutes.
+**Level:** guided. **Time:** about 90 minutes.
+
+## What you are building and why
 
 A school office folder has been left in a mess. Paths are wrong, a link is broken, and
 permissions let the wrong people read private files. Repair it using only the terminal.
 
 ## Start
+
+The checker uses `m1-p1` as the code for Project 1.1 · Find your way.
 
 ```bash
 npx academy init m1-p1
@@ -36,16 +40,45 @@ To start again at any time, run the `init` command again with `--reset`.
 ## Steps (guided)
 
 1. Look first. Run `ls -la`, then `ls -lR | less` to see everything, including hidden names.
+
+   **Hint.** Use the space bar to advance in the long listing.
+
 2. Find the lost class list: `find . -name "class-list.txt"`. Move it with `mv`.
+
+   **Hint.** Check the destination folder before moving the file.
+
 3. Move `term 2 notes.txt`. Remember the quotes.
+
+   **Hint.** Keep the whole name between one pair of quotes.
+
 4. Look at the link: `ls -l current`. Remove it with `rm current` and make it again with
    `ln -s`.
+
+   **Hint.** Read the name after the arrow in the listing.
+
 5. Fix `finance/fees.csv` with `chmod` and a number. Check with `stat -c "%a" finance/fees.csv`.
+
+   **Hint.** Add 4 for read and 2 for write in each group.
+
 6. Fix the `finance` directory. Think about what `x` means on a directory.
+
+   **Hint.** Entering a directory needs execute permission.
+
 7. Fix `scripts/backup.sh`. Run it: `./scripts/backup.sh` should print `backup ok`.
+
+   **Hint.** Inspect the three groups separately in the long listing.
+
 8. Edit `settings.conf` in a terminal editor. Change one line only.
+
+   **Hint.** Save the file before you leave the editor.
+
 9. Find the temporary files: `find . -name "*.tmp"`. Remove them.
+
+   **Hint.** Look for a hidden name as well as visible names.
+
 10. Write `answers.md`.
+
+   **Hint.** Copy the three headings exactly, then explain the evidence under each.
 
 ## Questions for `answers.md`
 
@@ -57,15 +90,15 @@ Use these three headings exactly. Two or three sentences each, in your own words
 ## Why the link was broken
 ```
 
-## Check your work
+## Compare with GPIS
+
+In your read-only copy of GPIS, run `stat -c "%a %n" scripts/*.sh | head`. Which scripts can
+be run? Who may change them? Write one sentence about it at the end of `answers.md`.
+
+## How to check your work
 
 ```bash
 npx academy check m1-p1
 ```
 
-Fix what fails and run it again. Every run is recorded; a failed run costs nothing.
-
-## Compare with GPIS
-
-In your read-only copy of GPIS, run `stat -c "%a %n" scripts/*.sh | head`. Which scripts can
-be run? Who may change them? Write one sentence about it at the end of `answers.md`.
+Fix what fails and run it again. Every run is recorded; a failed run costs nothing. A pass shows that all ten office checks succeeded.

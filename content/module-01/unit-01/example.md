@@ -81,8 +81,7 @@ An absolute path works from anywhere.
 less AGENTS.md
 ```
 
-Press Space to go down, `q` to leave. Find the section "The temporal model". You will
-rebuild that in Module 4.
+Press Space to go down, `q` to leave. Find the section "The temporal model". Module 4 uses class membership in your School Management System.
 
 ## Step 5 — Read permissions
 
@@ -97,7 +96,7 @@ the group and others may do with each. Then check one by number:
 stat -c "%a %n" README.md
 ```
 
-Expected: `644 README.md` — the owner reads and writes; everyone else only reads.
+Read the number your terminal prints. A typical result is `644 README.md`. A private setup can show `600 README.md`, giving only the owner access.
 
 ## Step 6 — Count and find
 

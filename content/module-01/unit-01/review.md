@@ -6,7 +6,7 @@ This is **self-assessed**. Nobody else checks it. Be honest; it is for you.
 
 Tick only what is true.
 
-- [ ] `m1-p1`, `m1-p1-debug` and `m1-u1-own` pass in the checker.
+- [ ] The Find your way project, the debugging lab and the own build pass in the checker.
 - [ ] I typed the commands myself. I did not paste them.
 - [ ] I never used `chmod 777`, and I can say why.
 - [ ] In the debugging lab I wrote the cause before I changed anything.
@@ -17,7 +17,7 @@ Tick only what is true.
 
 Write three to five sentences on the platform:
 
-- What is the same in your `gpis-rebuild` folder and the GPIS repository?
+- What is the same in your `school-system` folder and the GPIS repository?
 - What is different, and is the difference a gap or a choice?
 
 ## Mastery check
