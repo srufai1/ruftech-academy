@@ -13,7 +13,7 @@ export function courseOutline(): OutlineModule[] {
     guidanceLabel: m.guidance_label,
     weeks: m.weeks,
     units: units.filter((u) => u.meta.module === m.number).map((u) => ({
-      id: u.meta.id,
+      id: u.meta.id, minutes: u.meta.minutes,
       label: `${m.label ?? m.number}.${u.meta.position}`,
       title: u.meta.title,
       quizId: u.quiz.id,

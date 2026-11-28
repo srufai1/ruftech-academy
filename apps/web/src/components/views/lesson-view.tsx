@@ -1,6 +1,9 @@
+import { unitEstimate } from "@/lib/content/time";
+import type { UnitMinutes } from "@ruftech-academy/shared/content-schema";
 import Link from "next/link";
 
 export type LessonViewProps = {
+  minutes: UnitMinutes;
   moduleHref: string;
   moduleLabel: string;
   title: string;
@@ -26,7 +29,7 @@ export function LessonView(props: LessonViewProps) {
       <header className="space-y-1">
         <Link href={props.moduleHref} className="inline-flex min-h-11 items-center text-sm text-muted-foreground hover:text-foreground">‹ {props.moduleLabel}</Link>
         <h1 className="text-xl font-semibold">{props.label} {props.title}</h1>
-        <p className="text-sm text-muted-foreground">Lesson{props.read ? " · read" : ""}</p>
+        <p className="text-sm text-muted-foreground">Lesson{props.read ? " · read" : ""} · Unit {unitEstimate(props.minutes)}</p>
       </header>
       <section aria-label="Lesson" className="md" dangerouslySetInnerHTML={{ __html: props.lessonHtml }} />
       <section aria-label="Guided example" className="md border-t pt-6" dangerouslySetInnerHTML={{ __html: props.exampleHtml }} />

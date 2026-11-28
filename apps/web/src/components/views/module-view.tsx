@@ -1,3 +1,4 @@
+import { moduleEstimate, unitEstimate } from "@/lib/content/time";
 import Link from "next/link";
 import { CheckCircle2, Circle } from "lucide-react";
 import { RaisedRow } from "@/components/raised-row";
@@ -12,13 +13,13 @@ export function ModuleView({ module, progress }: { module: OutlineModule; progre
       <div className="space-y-1">
         <Link href="/map" className="inline-flex min-h-11 items-center text-sm text-muted-foreground hover:text-foreground">‹ Course map</Link>
         <h1 className="text-xl font-semibold">{module.label} {module.title}</h1>
-        <p className="text-sm text-muted-foreground">{module.guidanceLabel} · {module.weeks} weeks</p>
+        <p className="text-sm text-muted-foreground">{module.guidanceLabel} · {module.weeks} weeks{module.units.length > 0 && ` · ${moduleEstimate(module.units)}`}</p>
       </div>
       {module.units.length === 0 ? (
         <p className="rounded-xl border bg-card p-4 shadow-sm">This module&apos;s units are not written yet. You can read the plan in the curriculum.</p>
       ) : module.units.map((unit) => (
         <section key={unit.id} aria-labelledby={`unit-${unit.id}`} className="space-y-2">
-          <h2 id={`unit-${unit.id}`} className="text-sm font-semibold text-muted-foreground">{unit.label} {unit.title}</h2>
+          <h2 id={`unit-${unit.id}`} className="text-sm font-semibold text-muted-foreground">{unit.label} {unit.title} · {unitEstimate(unit.minutes)}</h2>
           <ul className="grid grid-cols-1 gap-2">
             {unitItems(module.slug, unit).map((item) => {
               const done = isFinished(item, progress);

@@ -28,6 +28,9 @@ await withPhone(async (page) => {
   assert.equal(await page.getByRole("link", { name: "Start" }).getAttribute("href"), "/learn/m1-u1", "one button to the first lesson"); checks++;
 
   await page.setContent(await renderView("components/views/module-view.tsx", "ModuleView", { module: OUTLINE[0], progress: { "m1-u1": "read" } }));
+  assert.ok(await page.getByText(/estimate 18–24 hours/).isVisible()); checks++;
+  assert.ok(await page.getByText(/about 6 hours/).isVisible()); checks++;
+  assert.ok(await page.getByText(/estimate 12–18 hours/).isVisible()); checks++;
   assert.equal(await page.getByRole("link").filter({ hasText: /Lesson|Quiz|Project/ }).count(), 6, "a module lists lesson, quiz and project per unit"); checks++;
   assert.ok(await noSideways(page), "module page: no sideways scroll"); checks++;
 });

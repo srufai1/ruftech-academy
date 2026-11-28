@@ -27,13 +27,15 @@ export function isCheckFolder(name: string): boolean {
   return name === "check" || EXTRA_CHECKS.some(kind => name === `check-${kind}`);
 }
 
+export type UnitMinutes = number | { min: number; max: number };
+
 export type UnitMeta = {
   id: string;
   title: string;
   module: number;
   position: number;
   guidance: Guidance;
-  minutes: number;
+  minutes: UnitMinutes;
   project: string;
   extra_checks?: ExtraCheck[];
   gpis_part: string;
@@ -99,7 +101,10 @@ export function validateUnitMeta(value: unknown): string[] {
   if (!isInt(value.module, 1, 99)) problems.push("module must be a module number");
   if (!isInt(value.position, 1, 99)) problems.push("position must be 1 to 99");
   if (!GUIDANCE.includes(value.guidance as Guidance)) problems.push("guidance must be guided, half or independent");
-  if (!isInt(value.minutes, 1, 6000)) problems.push("minutes must be a whole number");
+  const minutes = value.minutes;
+  if (!isInt(minutes, 1, 6000) && !(isObj(minutes) && isInt(minutes.min, 1, 6000) && isInt(minutes.max, minutes.min, 6000))) {
+    problems.push("minutes must be 1–6000 or a range of whole minutes with 1 ≤ min ≤ max ≤ 6000");
+  }
   if (!isSlug(value.project)) problems.push("project must be the check id of the unit's lab");
   const extras = value.extra_checks;
   if (extras !== undefined && (!Array.isArray(extras) || !extras.every(kind => EXTRA_CHECKS.includes(kind)) || new Set(extras).size !== extras.length)) {

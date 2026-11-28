@@ -136,8 +136,10 @@ Every unit has the nine files of `content/README.md`, in the order of the eight 
 `unit.md` holds the front matter, one sentence "After this unit you can…", the step table with
 minutes (the shares above applied to `minutes`, rounded to 15), and "Before you start".
 
-**Minutes.** Each module file gives `minutes` per unit. They add up to about the module's
-weeks × 13 hours. Unit 1.1 is already built at 360 minutes and stays so. **[Q6]**
+**Time estimates.** Use whole minutes in the front matter, for example
+`minutes: { min: 720, max: 1080 }` for an estimate of 12–18 hours. Apply the step shares
+to each end. The module total adds the lower and upper estimates separately. Older units
+can keep a single number, for example `minutes: 360` displays as “about 6 hours”.
 
 **Lesson length.** A lesson is at most about 150 lines. Where a module file marks a lesson
 "two parts", `lesson.md` has `## Part A` and `## Part B`, each at most about 130 lines, with a

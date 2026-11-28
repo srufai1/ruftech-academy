@@ -1,3 +1,4 @@
+import { moduleEstimate } from "@/lib/content/time";
 import Link from "next/link";
 import { CheckCircle2, Circle, CircleDot } from "lucide-react";
 import { RaisedRow } from "@/components/raised-row";
@@ -39,7 +40,7 @@ export function MapView({ next, nextLine, modules, isNew }: {
       <ul aria-label="Modules" className="grid grid-cols-1 gap-2">
         {modules.map((row) => (
           <li key={row.slug}>
-            <RaisedRow href={`/map/${row.slug}`} title={`${row.label}  ${row.title}`} line={moduleLine(row)} icon={STATUS_ICON[row.status]}>
+            <RaisedRow href={`/map/${row.slug}`} title={`${row.label}  ${row.title}`} line={[moduleLine(row), moduleEstimate(row.units)].filter(Boolean).join(" · ")} icon={STATUS_ICON[row.status]}>
               {row.status === "active" && row.projectsTotal > 0 ? (
                 <span className="mt-2 block h-1.5 w-full overflow-hidden rounded-full bg-muted" role="progressbar"
                   aria-label={`${row.projectsDone} of ${row.projectsTotal} projects`} aria-valuemin={0} aria-valuemax={row.projectsTotal} aria-valuenow={row.projectsDone}>

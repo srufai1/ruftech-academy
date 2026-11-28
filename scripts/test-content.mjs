@@ -51,6 +51,19 @@ try {
   assert.equal(readFileSync(join(contentRoot, "manifest.json"), "utf8"), `${JSON.stringify(manifest, null, 2)}\n`, "content/manifest.json is up to date"); checks++;
   assert.equal(readFileSync(join(contentRoot, "index.json"), "utf8"), `${JSON.stringify(index, null, 2)}\n`, "content/index.json is up to date"); checks++;
 
+  const rangeCopy = join(work, "time-range");
+  cpSync(contentRoot, rangeCopy, { recursive: true });
+  const meta = join(unit(rangeCopy), "unit.md");
+  const original = readFileSync(meta, "utf8");
+  const minutes = value => writeFileSync(meta, original.replace(/^minutes:.*$/m, "minutes: " + value));
+  assert.equal(course.units[0].meta.minutes, 360); checks++;
+  minutes("{ min: 720, max: 1080 }");
+  assert.deepEqual(buildContent(rangeCopy).course.units[0].meta.minutes, { min: 720, max: 1080 }); checks++;
+  for (const bad of ["{ min: 12, max: 6 }", "{ max: 18 }", "{ min: 1, max: 6001 }", "0", "1.5"]) {
+    minutes(bad);
+    assert.throws(() => buildContent(rangeCopy), /unit.md: minutes/); checks++;
+  }
+
   // Six broken copies.
   expectFailure("missing file", (d) => rmSync(join(unit(d), "lab.md")), "module-01/unit-01/lab.md", /missing/);
   expectFailure("answer out of range", (d) => editJson(join(unit(d), "quiz.json"), (q) => { q.questions[0].answer = 9; }), "quiz.json", /answer is out of range/);

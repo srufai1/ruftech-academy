@@ -6,7 +6,9 @@
 export type ProgressState = "started" | "read" | "quiz_passed" | "done";
 export type ProgressMap = Readonly<Record<string, ProgressState | undefined>>;
 
-export type OutlineUnit = { id: string; label: string; title: string; quizId: string; projectId: string; projectTitle: string };
+import type { UnitMinutes } from "@ruftech-academy/shared/content-schema";
+
+export type OutlineUnit = { minutes: UnitMinutes; id: string; label: string; title: string; quizId: string; projectId: string; projectTitle: string };
 export type OutlineModule = { slug: string; number: number; label: string; title: string; guidanceLabel: string; weeks: number; units: OutlineUnit[] };
 
 export type ItemKind = "lesson" | "quiz" | "project";

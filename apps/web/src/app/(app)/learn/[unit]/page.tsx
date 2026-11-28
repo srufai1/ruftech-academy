@@ -36,6 +36,7 @@ export default async function LessonPage({ params }: Props) {
   const read = state === "read" || state === "quiz_passed" || state === "done";
   return (
     <LessonView
+      minutes={unit.meta.minutes}
       moduleHref={`/map/${mod.slug}`}
       moduleLabel={`Module ${mod.label ?? mod.number}`}
       label={`${mod.label ?? mod.number}.${unit.meta.position}`}

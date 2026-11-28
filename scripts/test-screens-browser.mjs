@@ -31,6 +31,7 @@ const map = (progress, isNew) => {
   return renderView("components/views/map-view.tsx", "MapView", { next, nextLine: next ? itemLine(next, progress) : "", modules: moduleRows(OUTLINE, progress), isNew });
 };
 const lesson = (isRead) => renderView("components/views/lesson-view.tsx", "LessonView", {
+    minutes: 360,
   moduleHref: "/map/m1", moduleLabel: "Module 1", label: "1.1", title: "The terminal and the filesystem",
   lessonHtml: renderMarkdown(read("lesson.md")), exampleHtml: renderMarkdown(read("example.md")),
   gpisPart: "The folder layout of the GPIS repository", read: isRead,
