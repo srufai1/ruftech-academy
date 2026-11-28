@@ -56,6 +56,13 @@ Milestones: **1.6** Project home · **2.6** Typed data shapes · **3.5** Score e
 **8.2** BECE aggregate · **P.4** FastAPI service. Modules 6 and 9 are planning modules already;
 they need no extra plan.
 
+**0.6 What learners build is a "School Management System".** In every learner-facing text
+(lessons, labs, quizzes, reviews, platform pages, mockups) the learner **builds a School
+Management System**, never "rebuilds GPIS". Their project folder is `~/projects/school-system`
+(was `gpis-rebuild`). GPIS stays named only as **the real school system we compare with**:
+"Compare with GPIS" sections, quoted GPIS decisions (D-numbers) and the read-only reference
+copy keep the name GPIS.
+
 **0.5 Platform look.** Light mode is the default; dark mode is the learner's choice, saved on
 their device (`docs/mockups/ui/academy-ui.html`).
 
