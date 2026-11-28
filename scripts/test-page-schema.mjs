@@ -4,10 +4,12 @@ import { validateCheck } from "../packages/shared/src/content-schema.ts";
 const base = { id: "page", title: "Page", kind: "page", required: true, url: "http://localhost:3000/" };
 const errors = fields => validateCheck({ id: "p", title: "Page", version: "1.0.0", unit: "u", steps: [{ ...base, ...fields }] });
 assert.deepEqual(errors({}), []);
+assert.deepEqual(errors({ media: "print" }), []);
 assert.deepEqual(errors({ session: "practice-admin", viewport: "computer", timeout_seconds: 120, sign_in_path: "/sign-in",
   actions: [{ goto: "/work?part=exam" }, { fill: { label: "Mark", value: "" } },
     { click: { role: "button", name: "Save" } }, { expect_local_storage: { key: "draft", json: { a: [1, null] } } }] }), []);
 for (const fields of [
+  { media: "screen" }, { media: true }, { media: null },
   { actions: [{ javascript: "1" }] }, { actions: [{ goto: "/one", reload: true }] },
   { actions: [{ click: { selector: ".button" } }] }, { actions: [{ click: { xpath: "//input" } }] },
   { actions: [{ fill: { label: "Name", testid: "name", value: "" } }] },

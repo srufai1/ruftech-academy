@@ -36,7 +36,7 @@ export const pageStep: StepKindImpl = async (step, ctx) => {
     const viewport = step.viewport === "computer" ? { width: 1280, height: 800 } : { width: 360, height: 780 };
     const context = await browser.newContext({ viewport, storageState, serviceWorkers: "block" });
     const page = await context.newPage();
-    const probe = await guardLocalPage(context, page, parsed.origin, () => stop(fail("left the local app")));
+    const probe = await guardLocalPage(context, page, parsed.origin, () => stop(fail("left the local app")), step.media === "print");
     let response;
     try { response = await page.goto(url, { waitUntil: "load", timeout: Math.min(timeout, 20000) }); }
     catch { return needs(`Nothing answered at ${url}. Start your app (npm run dev).`); }

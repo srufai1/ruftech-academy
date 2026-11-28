@@ -4,9 +4,11 @@ import type { BrowserContext, Dialog, Page } from "./browser.ts";
 /** Chromium pauses Document requests here, including every hop of a server redirect.
  * Playwright's route handler alone sees only the first request of a redirect chain.
  */
-export async function guardLocalPage(context: BrowserContext, page: Page, origin: string, onLeave: () => void) {
+export async function guardLocalPage(context: BrowserContext, page: Page, origin: string, onLeave: () => void, print = false) {
   const probeUrl = new URL(`/.academy-leave-probe/${randomUUID()}`, origin).href;
   const cdp = await context.newCDPSession(page);
+  // Set media on the attached session so its state survives the first navigation.
+  if (print) await cdp.send("Emulation.setEmulatedMedia", { media: "print" });
   cdp.on("Fetch.requestPaused", ({ requestId, request }) => {
     let command: Promise<unknown>;
     if (new URL(request.url).origin !== origin) {

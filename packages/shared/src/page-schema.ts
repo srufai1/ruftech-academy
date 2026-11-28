@@ -70,6 +70,7 @@ export function validatePageStep(step: Obj): string[] {
   if (!localAppUrl(step.url)) problems.push("a page step needs a local HTTP URL");
   if ("session" in step && !sessionRole(step.session)) problems.push("invalid session role");
   if ("sign_in_path" in step && !path(step.sign_in_path)) problems.push("invalid sign_in_path");
+  if ("media" in step && step.media !== "print") problems.push("media must be print");
   if ("viewport" in step && step.viewport !== "phone" && step.viewport !== "computer") problems.push("invalid viewport");
   if ("timeout_seconds" in step && !integer(step.timeout_seconds, 1, 120)) problems.push("timeout_seconds must be 1 to 120");
   if ("actions" in step) {

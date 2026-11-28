@@ -49,6 +49,11 @@ Each action has five seconds unless `wait_for` specifies its own limit. The exis
 | `expect_leave_warning` | True or false. Probe for an actual beforeunload dialog and stay on the current document. |
 | `wait_for` | Visible `text` and `seconds` from 1 to 10 |
 
+**Print view.** Set `media: print` on a page step to apply the app’s print stylesheet before
+the first local navigation. Actions, reloads and later navigation use the same media setting.
+For example, check the printed heading with `expect_text` and use `expect_count` to verify
+that a screen-only toolbar has zero visible matches. Omit `media` for the usual screen view.
+
 **What the checker can and cannot do in a browser**
 
 | Can | Cannot |

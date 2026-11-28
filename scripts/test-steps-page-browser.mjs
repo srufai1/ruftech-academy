@@ -6,7 +6,15 @@ import { createServer } from "node:http";
 import { pageStep } from "../packages/checker/src/steps/page.ts";
 import { CheckerError } from "../packages/checker/src/errors.ts";
 
+const paper = `<!doctype html><style>
+  .paper { display: none }
+  @media print { .paper { display: block } .screen { display: none } }
+</style><h1 class="paper">Printed register</h1><h1 class="screen">Edit register</h1>
+<p id="initial"></p><script>
+  document.querySelector("#initial").textContent = matchMedia("print").matches ? "Started in print" : "Started on screen";
+</script>`;
 const pages = {
+  "/register": paper, "/register/other": paper,
   "/good": `<!doctype html><meta name="viewport" content="width=device-width"><title>GPIS · Students</title><body style="margin:0"><h1>Students</h1><a href="#" style="display:block;min-height:44px">Admit</a></body>`,
   "/wide": `<!doctype html><meta name="viewport" content="width=device-width"><title>Wide</title><body><table style="width:900px"><tr><td>x</td></tr></table><a href="#">tiny</a></body>`,
 };
@@ -24,6 +32,15 @@ const eq = (a, b, label) => { assert.deepEqual(a, b, label); n++; };
 
 try {
   eq(await pageStep(step(`${base}/good`, { title_contains: "Students", text: ["Admit"], min_target_px: 44 }), ctx), { outcome: "pass", reasons: [] }, "a good page passes");
+  for (const print of [true, false]) {
+    const visible = print ? "Printed register" : "Edit register";
+    const hidden = print ? "Edit register" : "Printed register";
+    const assertions = [{ expect_text: print ? "Started in print" : "Started on screen" },
+      { expect_text: visible }, { expect_no_text: hidden }];
+    const result = await pageStep({ ...step(`${base}/register`), ...(print ? { media: "print" } : {}),
+      actions: [...assertions, { goto: "/register/other" }, ...assertions, { reload: true }, ...assertions] }, ctx);
+    eq(result, { outcome: "pass", reasons: [] }, print ? "print media throughout" : "default screen media throughout");
+  }
   const wide = await pageStep(step(`${base}/wide`, { min_target_px: 44 }), ctx);
   eq(wide.outcome, "fail");
   assert.ok(wide.reasons.includes("the page scrolls sideways at 360px"), "sideways scroll is caught"); n++;
