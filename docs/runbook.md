@@ -6,7 +6,9 @@ Vercel and Supabase dashboards, or your own terminal — never into a file in th
 a saved SQL snippet.
 
 The site runs on **Vercel** (free plan), the database and sign-in on **Supabase** (project
-`gpis-academy`, region London, eu-west-2). The app's server functions run in Vercel's London
+`ruftech-academy` in the owner's new account, set up 28 November 2026; region London,
+eu-west-2). Email is sent through **Brevo** SMTP (host `smtp-relay.brevo.com`, port 587; the
+login and SMTP key live only in Supabase). The old `gpis-academy` project is no longer used. The app's server functions run in Vercel's London
 region (`lhr1`), set in `apps/web/vercel.json`, so every page talks to a database in the same city.
 
 ---
@@ -42,8 +44,7 @@ In Supabase → SQL Editor, run each file **whole**, in this order. Each one onl
 | 7 | `supabase/migrations/0007_record_check_run.sql` | `record_check_run()` and the private key table |
 | 8 | `supabase/migrations/0008_named_checks.sql` | Extra checks per unit (debugging lab, own build, Docker) — T27 |
 
-> On the current project (`gpis-academy`) all seven are **already applied** (checked
-> 13 November 2026). Run them only for a new project. A future migration `0008_…` is run the
+> On the current project all eight (0001–0008) are **applied** (28 November 2026). Run them only for a new project. A future migration `0008_…` is run the
 > same way, after testing it on your computer.
 
 **Check:** in the SQL Editor —

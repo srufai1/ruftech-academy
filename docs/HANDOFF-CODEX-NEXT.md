@@ -64,6 +64,14 @@ solved copy, then the pages, then `npm run content`. One commit per unit:
   links as in the mockup; project pages show numbered steps with folded hints.
 - Change appearance only. No route, data, auth or behaviour changes.
 
+## Small fixes found on the live site (do them inside task 7, T33)
+
+- The email-confirmation link opens the home page with `?code=…` and the learner is not
+  signed in. Exchange the code and send the learner to the Map (or point Supabase's email
+  template at the app's confirm route). Test it.
+- The home page says "9 modules" while the map also lists the Python track; make the two
+  agree, and use the "School Management System" wording (`00-guide.md` 0.6).
+
 ## Rules for every commit
 
 - Run `npm run lint`, `npm run typecheck`, `npm run build`, `npm test`, and the browser
