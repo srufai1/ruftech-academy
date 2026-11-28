@@ -107,14 +107,12 @@ solved copy, then the pages, then `npm run content`. One commit per unit:
 
 ## When an owner decision is needed
 
-Stop the current task (finish nothing half-way in a commit) and ask the owner one short,
-plain question with 2–3 options when:
+Write it in `docs/OWNER-QUESTIONS.md` and keep going (see "Work without stopping"). Typical
+cases:
 - a GPIS school rule you need has no D-number in `docs/DECISIONS.md`;
 - a design file and the checker cannot both be true (say which line and why);
 - a task would need a new checker feature or a database change not in the roadmap;
 - something would delete or rewrite work that already exists.
-
-Then continue with the **next** task that does not depend on the answer.
 
 ## Report after each task (plain English, short)
 
