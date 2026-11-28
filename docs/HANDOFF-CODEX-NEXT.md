@@ -11,6 +11,22 @@ You are the builder for **Ruftech Academy** (repository `srufai1/ruftech-academy
 done. The owner is not technical in every area and is not a native English speaker: write
 every report in short, plain English.
 
+## Work without stopping (owner's instruction, 28 November 2026)
+
+- Do **all** the tasks below, one after another, in one run. **Do not stop or wait after a
+  task** to report or ask for approval. The owner reviews everything at the end.
+- Keep a running log in `docs/BUILD-LOG.md`: one short entry per task or unit (what was
+  built, commits, checks run and their results, anything the owner must do such as applying
+  a migration). Commit the log with the work.
+- If something needs an owner decision, **do not stop**: write it in
+  `docs/OWNER-QUESTIONS.md` (the question, 2–3 options, your recommendation, what is blocked),
+  choose the safest option that can be changed later **only if** it does not invent a school
+  rule, delete existing work, or change the database outside the plan; otherwise skip the
+  blocked part and continue with the next task.
+- Stop the whole run only if the repository cannot build or the tests cannot be made to pass
+  without breaking an existing rule.
+- At the very end, write one final report (plain English) at the top of `docs/BUILD-LOG.md`.
+
 ## Before every task
 
 1. `git pull` on `main`. Read `AGENTS.md`, `docs/roadmap.md` (the task's own section),
@@ -89,7 +105,7 @@ solved copy, then the pages, then `npm run content`. One commit per unit:
 - Stay inside the task. If you notice a problem elsewhere, list it in your report; do not
   fix it silently.
 
-## When to stop and ask
+## When an owner decision is needed
 
 Stop the current task (finish nothing half-way in a commit) and ask the owner one short,
 plain question with 2–3 options when:
