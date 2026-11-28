@@ -2,18 +2,18 @@
 
 | Unit | Title | Project | Kind | Level | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 6.1 | Capacity estimate | m6-p1 | Repo | half | 510 | 4 |
-| 6.2 | Multi-tenancy options | m6-p2 | Repo | half | 510 | 4 |
-| 6.3 | Scaling reads and caching | m6-p3 | Repo | half | 540 | 5 |
-| 6.4 | Queues and slow work | m6-p4 | Repo | half | 525 | 4 |
-| 6.5 | Rate limits and abuse | m6-p5 | Repo | half | 510 | 4 |
-| 6.6 | Design review | m6-p6 | Repo | half | 525 | 4 |
+| 6.1 | Capacity estimate | m6-p1 | Repo | half | 420–600 | 4 |
+| 6.2 | Multi-tenancy options | m6-p2 | Repo | half | 420–600 | 4 |
+| 6.3 | Scaling reads and caching | m6-p3 | Repo | half | 420–660 | 5 |
+| 6.4 | Queues and slow work | m6-p4 | Repo | half | 420–630 | 4 |
+| 6.5 | Rate limits and abuse | m6-p5 | Repo | half | 420–600 | 4 |
+| 6.6 | Design review | m6-p6 | Repo | half | 420–630 | 4 |
 
 ## Module rules (decided here)
 
 GPIS for 50 schools is a hypothetical design on paper. Keep the learner’s running system single-school. Put case artefacts in docs/design/. Label every invented load, price and target as a case assumption, with units and date. Document checks match exact level-two headings at 25 words each. Written reasoning is self-assessed. Use project-local Node tests for executable models.
 
-Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. Debugging and own builds are self-reviewed [Q1]. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
+Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. The debugging lab and own build have separate checks. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
 
 ## File and interface contract
 
@@ -49,7 +49,7 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 | title | Capacity estimate |
 | module / position | 6 / 1 |
 | guidance | half |
-| minutes | 510 |
+| minutes | `{ min: 420, max: 600 }` |
 | gpis_part | Separate students, reports, requests and stored bytes. A weekly average hides the release hour. |
 | requires | [wsl, node, git] |
 
@@ -62,6 +62,9 @@ After this unit you can
 3. Test sensitivity
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with counting chairs for the busiest assembly; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/sre-book/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -99,7 +102,10 @@ In a scratch folder.
 
 ### Lab — Capacity estimate
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -151,6 +157,10 @@ In a scratch folder.
 3. Convert bytes to MB.
 4. Explain one uncertainty with a testable prediction.
 
+**Debugging-lab check** (`m6-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m6-p1-own`). Recompute both release-hour estimates from the recorded assumptions. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m6-p1`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -183,7 +193,7 @@ Modules 4 and 5 for the data model. WSL, Git and Node. Offline unless the unit n
 | title | Multi-tenancy options |
 | module / position | 6 / 2 |
 | guidance | half |
-| minutes | 510 |
+| minutes | `{ min: 420, max: 600 }` |
 | gpis_part | Follow one request through authentication, storage and restore. |
 | requires | [wsl, node, git] |
 
@@ -196,6 +206,9 @@ After this unit you can
 3. Defend a choice
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with two schools sharing a building with separate cupboards; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/sre-book/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -233,7 +246,10 @@ In a scratch folder.
 
 ### Lab — Multi-tenancy options
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -285,6 +301,10 @@ In a scratch folder.
 3. Draw one-school restore.
 4. Defend a different option under a changed constraint.
 
+**Debugging-lab check** (`m6-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m6-p2-own`). Check the transfer, restore and two-school cost evidence in the comparison. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m6-p2`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -317,7 +337,7 @@ Modules 4 and 5 for the data model. WSL, Git and Node. Offline unless the unit n
 | title | Scaling reads and caching |
 | module / position | 6 / 3 |
 | guidance | half |
-| minutes | 540 |
+| minutes | `{ min: 420, max: 660 }` |
 | gpis_part | Compare roster, class ranking and document reprint using the same school size and request mix. |
 | requires | [wsl, node, git, supabase, lab-db] |
 
@@ -330,6 +350,9 @@ After this unit you can
 3. Read a query plan
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a copied timetable after a lesson changes rooms; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/sre-book/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -367,7 +390,10 @@ In a scratch folder.
 
 ### Lab — Scaling reads and caching
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -420,6 +446,10 @@ In a scratch folder.
 3. Compare two plans.
 4. Predict the result after an issue update.
 
+**Debugging-lab check** (`m6-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m6-p3-own`). Compare the fourth read before and after the recorded invalidation event. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m6-p3`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -454,7 +484,7 @@ Modules 4 and 5 for the data model. WSL, Git and Node. Offline unless the unit n
 | title | Queues and slow work |
 | module / position | 6 / 4 |
 | guidance | half |
-| minutes | 525 |
+| minutes | `{ min: 420, max: 630 }` |
 | gpis_part | A request returns a job identity. The worker finishes a PDF or sends an SMS later. |
 | requires | [wsl, node, git] |
 
@@ -467,6 +497,9 @@ After this unit you can
 3. Describe recovery
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with jobs waiting their turn at one printer; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/sre-book/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -504,7 +537,10 @@ In a scratch folder.
 
 ### Lab — Queues and slow work
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -556,6 +592,10 @@ In a scratch folder.
 3. Draw a lease expiry.
 4. State what a parent sees while delivery is uncertain.
 
+**Debugging-lab check** (`m6-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m6-p4-own`). Check the queue example includes both retryable and terminal outcomes. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m6-p4`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -588,7 +628,7 @@ Modules 4 and 5 for the data model. WSL, Git and Node. Offline unless the unit n
 | title | Rate limits and abuse |
 | module / position | 6 / 5 |
 | guidance | half |
-| minutes | 510 |
+| minutes | `{ min: 420, max: 600 }` |
 | gpis_part | State the identity, endpoint, period and maximum for each operation. |
 | requires | [wsl, node, git] |
 
@@ -601,6 +641,9 @@ After this unit you can
 3. Explain feedback
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with sharing office time among several classes; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/sre-book/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -638,7 +681,10 @@ In a scratch folder.
 
 ### Lab — Rate limits and abuse
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -690,6 +736,10 @@ In a scratch folder.
 3. Test two keys.
 4. Explain a shared-network false positive.
 
+**Debugging-lab check** (`m6-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m6-p5-own`). Check the export budget units and recompute its retry delay. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m6-p5`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -722,7 +772,7 @@ Modules 4 and 5 for the data model. WSL, Git and Node. Offline unless the unit n
 | title | Design review |
 | module / position | 6 / 6 |
 | guidance | half |
-| minutes | 525 |
+| minutes | `{ min: 420, max: 630 }` |
 | gpis_part | Follow report week across storage, cache and queue capacity. |
 | requires | [wsl, node, git] |
 
@@ -735,6 +785,9 @@ After this unit you can
 3. Revise after evidence
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with defending a building plan before construction; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/sre-book/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -772,7 +825,10 @@ In a scratch folder.
 
 ### Lab — Design review
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -823,6 +879,10 @@ In a scratch folder.
 2. Trace one recovery.
 3. Defend one rejected option.
 4. Name evidence that would reverse the decision.
+
+**Debugging-lab check** (`m6-p6-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m6-p6-own`). Read the recovery target and verify that the rejected option has a stated reconsideration condition. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
 
 ### Check plan (`m6-p6`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 

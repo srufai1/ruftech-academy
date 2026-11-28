@@ -39,17 +39,23 @@ ends with "How to check your work" (the command, and what a pass looks like).
 
 **0.4 Plan before you build — milestone projects only.** One project per module is a
 **milestone**. Before writing code, the learner writes three short documents in
-`docs/plans/<unit>/` of their repository and commits them **before** the first code commit:
+`docs/plans/<unit>/` of their repository and commits them **before** the first commit touching this milestone’s own implementation files:
 | File | Headings |
 | :--- | :--- |
 | `requirements.md` (product requirements) | `## Problem`, `## Users`, `## Must have`, `## Not now`, `## How we will know it works` |
-| `spec.md` (specification) | `## Screens or commands`, `## Data`, `## Rules` (each GPIS rule quoted with its D-number), `## Edge cases`, `## Tests I will write` |
+| `spec.md` (specification) | `## Screens or commands`, `## Data`, `## Rules` (school rules with D-numbers and engineering practices with file and section, as in §4), `## Edge cases`, `## Tests I will write` |
 | `decisions.md` (decision log) | one `## D-<n>: <title>` per decision with `Context`, `Options`, `Choice`, `Why` (at least two decisions) |
 A milestone unit gets one extra lesson section "Planning a project" (first milestone only in
 full; later ones a short reminder), and its main check gains a `doc` step for each file and a
 `tests` step proving the plan commit came first
-(`git log --diff-filter=A --format=%H -- docs/plans/<unit>/spec.md` is older than the first
-commit touching `src/`). Guided milestones give a filled example plan for a *different*
+using only the exact paths printed in the module design and repeated in `lab.md`.
+Use literal Git pathspecs so brackets in route names stay literal. Walk all commits
+reachable from HEAD that touched those paths. Each must have a strict ancestor whose
+tree already contains all three complete plans. Verify the required headings and two
+decisions in that earlier tree. A plan added alongside the first implementation, a
+plan completed later, and work on an unrelated branch all fail. Commit timestamps
+are insufficient. Earlier projects' files may already exist in the same repository.
+For a deployment milestone, its runbook and deployment evidence are the deliverables. Guided milestones give a filled example plan for a *different*
 project; later ones give only the headings.
 Milestones: **1.6** Project home · **2.6** Typed data shapes · **3.5** Score entry screen ·
 **4.3** Scores that explain themselves · **5.4** Submit scores · **7.4** Deploy and configure ·
@@ -59,7 +65,7 @@ they need no extra plan.
 **0.6 What learners build is a "School Management System".** In every learner-facing text
 (lessons, labs, quizzes, reviews, platform pages, mockups) the learner **builds a School
 Management System**, never "rebuilds GPIS". Their project folder is `~/projects/school-system`
-(was `gpis-rebuild`). GPIS stays named only as **the real school system we compare with**:
+(was `school-system`). GPIS stays named only as **the real school system we compare with**:
 "Compare with GPIS" sections, quoted GPIS decisions (D-numbers) and the read-only reference
 copy keep the name GPIS.
 
@@ -80,8 +86,7 @@ it belongs in `99-open-questions.md`, not in a guess.
 Read with: `docs/decisions.md` (ADR-1 to ADR-8), `docs/curriculum.md`, `content/README.md`,
 and the built unit `content/module-01/unit-01/`, which is the quality bar.
 
-Where a rule here says **[Qn]**, an open question touches it. The rule is written so that the
-unit can still be designed; the question says what changes with each answer.
+The decisions table in `99-open-questions.md` records the owner’s answers. The alternatives below that table are historical.
 
 ---
 
@@ -95,10 +100,10 @@ unit can still be designed; the question says what changes with each answer.
 | Quiz id | unit id + `-quiz` | `m2-u3-quiz` |
 | `module` in front matter | 1–9; Python track is `10` (slug `py` in `course.yaml`) | `10` |
 | Lab folder | `~/academy-labs/<check id>/…`, built by `npx academy init <check id>` | `~/academy-labs/m1-p2/logs` |
-| The learner's GPIS | `~/projects/gpis-rebuild` (made in unit 1.1's own build; a Git repository from unit 1.4's own build, checked in unit 1.6) | |
+| The learner's School Management System | `~/projects/school-system` (made in unit 1.1's own build; a Git repository from unit 1.4's own build, checked in unit 1.6) | |
 | The read-only GPIS | `~/reference/gpis-school-system` (cloned in unit 1.1, write permission removed) | |
 | The portfolio site | `~/projects/portfolio` (unit 3.1) | |
-| Design documents | `~/projects/gpis-rebuild/docs/design/` (module 6) | |
+| Design documents | `~/projects/school-system/docs/design/` (module 6) | |
 
 Each unit has a main `check/` whose id is the project id. A unit can also have
 `check-debug/`, `check-own/` and `check-docker/`. Declare exactly the folders present
@@ -113,9 +118,9 @@ learner's progress state.
 | Kind | `lab:` in `check.yaml` | The checker runs in | Used for |
 | :--- | :--- | :--- | :--- |
 | Lab project | `root` + `seed` | the lab folder | A seeded situation to repair or analyse (most of module 1, 2.5, 7.5, P.2, P.3) |
-| Repo project | none | the folder where the learner runs the command: the root of `gpis-rebuild` (or `portfolio`) | Everything the learner builds and keeps |
+| Repo project | none | the folder where the learner runs the command: the root of `school-system` (or `portfolio`) | Everything the learner builds and keeps |
 
-A repo project's `lab.md` always starts with "Run every command from `~/projects/gpis-rebuild`".
+A repo project's `lab.md` always starts with "Run every command from `~/projects/school-system`".
 
 ---
 
@@ -130,7 +135,7 @@ Every unit has the nine files of `content/README.md`, in the order of the eight 
 | 3 Quiz | `quiz.json` | 3% | Retrieval, marked on the server |
 | 4 Lab | `lab.md` + `check/` | 30% | The project of `curriculum.md` |
 | 5 Debugging lab | `debugging-lab.md` | 13% | A planted fault; cause first, then the smallest fix |
-| 6 Own build | `own-build.md` | 17% | A small variation with no steps, in the learner's own repository when it fits |
+| 6 Own build | `own-build.md` | 17% | A small variation with numbered outcomes, in the learner's own repository when it fits |
 | 7–8 Review and mastery | `review.md` | 13% | Self-review, comparison with GPIS, questions without notes |
 
 `unit.md` holds the front matter, one sentence "After this unit you can…", the step table with
@@ -141,9 +146,7 @@ minutes (the shares above applied to `minutes`, rounded to 15), and "Before you 
 to each end. The module total adds the lower and upper estimates separately. Older units
 can keep a single number, for example `minutes: 360` displays as “about 6 hours”.
 
-**Lesson length.** A lesson is at most about 150 lines. Where a module file marks a lesson
-"two parts", `lesson.md` has `## Part A` and `## Part B`, each at most about 130 lines, with a
-line "Stop here; do steps 1–3 of the guided example; then read Part B". **[Q5]**
+**Lesson length.** Keep one short lesson (about 150 lines). Teach each quiz concept in plain words and then in technical language. Keep one tiny example per idea. Move the longer commands, worked cases and variations to the guided example before the quiz.
 
 ---
 
@@ -171,10 +174,13 @@ GPIS (`srufai1/gpis-school-system`) is the reference answer (ADR-1).
 
 - `gpis_part` in the front matter names the part of GPIS the unit relates to, in words a
   learner understands ("The grading scale every screen and document uses").
-- Every GPIS rule a lesson, quiz or test uses is quoted with its decision number, for example
-  "(GPIS D-02)". The rules this course uses are listed in each module file under "GPIS rules
-  used", copied from `docs/DECISIONS.md` and `docs/CURRENT_RULES.md` of GPIS. **Never invent a
-  rule and never round a rule off.** If a rule is not in the module file, stop and ask.
+- **School rules.** Explain the rule in words, then quote its D-number from GPIS
+  `docs/DECISIONS.md`. This includes grading, ranking, membership, scores, workflow,
+  import and money. If the rule has no D-number, stop and ask the owner.
+- **Engineering practices.** For debugging, security rules, small commits, migrations
+  and row-level security (RLS), cite the GPIS file and section that states the practice.
+  For example, cite “GPIS AGENTS.md, Engineering discipline” for the debugging sequence.
+  Verify the source before using it. Never invent a rule, number or citation.
 - A lesson may name a GPIS file path ("see `src/lib/assessments/raw-marks.ts`"). It never
   copies GPIS code into the lesson. The learner opens the read-only copy.
 - **When the learner may open GPIS code** depends on the guidance level (section 5).
@@ -191,12 +197,12 @@ GPIS (`srufai1/gpis-school-system`) is the reference answer (ADR-1).
 | :--- | :--- | :--- | :--- |
 | `lesson.md` | Full | Full | Short: the ideas and where to read more |
 | `example.md` | Every command, with expected output | The first half in full; the second half as "now do the same for…" | A worked example of a **different** problem of the same kind |
-| `lab.md` → Requirements | Numbered table | Numbered table | Numbered table (this is all there is) |
-| `lab.md` → Steps | Yes: one step per requirement, naming the command or file | No | No |
-| `hints` in `lab.md` | 2–3, under "If you are stuck" | 2–4, each folded (`<details>`), each naming a place to look, not the answer | None |
+| `lab.md` → Requirements | Numbered table | Numbered table | Numbered outcomes |
+| `lab.md` → Steps | Numbered commands and files | Numbered tasks and places to look | Numbered observable outcomes |
+| Hints | Inline under each step | Folded under each step | Closed by default; suggest a 30-minute attempt first |
 | GPIS code | After each step | After the checker passes, or after a written attempt of 30 minutes | Only after the checker passes |
 | `debugging-lab.md` | Says how many faults there are | Says how many faults | Says only the symptom |
-| `own-build.md` | Requirements only (always) | Requirements only | Requirements only |
+| `own-build.md` | Numbered requirements and inline hints | Numbered requirements and folded hints | Numbered outcomes and folded hints |
 
 A hint never contains the finished code or command with its arguments. It names the idea
 ("ties share a position: what should the next position be?") or the tool (`man chmod`).
@@ -223,7 +229,7 @@ in the module file.
 - Each step: one sentence of purpose, the command or the code to type, the expected output.
 - "Type every command yourself. Do not paste." (as in unit 1.1).
 - It uses the read-only GPIS copy or a throw-away folder under `~/academy-labs/scratch/`. It
-  never edits `gpis-rebuild`, so a mistake costs nothing.
+  never edits `school-system`, so a mistake costs nothing.
 - It ends with "What you just used": the list of commands or ideas.
 
 ---
@@ -252,10 +258,9 @@ checker package (T17).
 
 ## 9. Lab and seed rules
 
-**`lab.md` always has, in this order:** level, checker id and time; one paragraph of situation;
+**`lab.md` always has, in this order:** project number, title and estimated time; one paragraph on what you are building and why;
 "Start" (the `init` command for a lab project, or the folder to work in); "What done means"
-(the numbered requirements table); "Steps" (guided only); "If you are stuck" (hints, as the
-level allows); "Check your work" (the checker command); "Compare with GPIS".
+(the numbered requirements table); numbered steps with §0.3 hints; "Compare with GPIS"; "How to check your work" (copyable command and passing result).
 
 **Requirements** are observable facts ("`rank([90, 90, 80])` returns `[1, 1, 3]`"), never
 activities ("learn about ranking"). Every requirement is checked by at least one step, or is
@@ -278,7 +283,7 @@ marked "(self-review)".
 
 **Docker.** Only 4.6 and 7.5 need Docker, plus two optional extras (7.2 traffic lab, P.4
 container). They are marked **[Docker]** in the unit title, in "Before you start", and in
-`requires`. Each gives the no-Docker path of `curriculum.md`. **[Q8]**
+`requires`. Keep the written or cloud evidence in the main check. Put live container proof in the named Docker check.
 
 **Network.** A lab uses the network only when the module file says so: the learner's own
 Supabase lab project (modules 4, 5, 7, 9, Python), Vercel (3.1, 7.4, 9.5), `git clone` of the
@@ -306,7 +311,7 @@ learner (Known limits in `decisions.md`), so treat it as public.
 | The project lints, type-checks and builds | `static` | Runs the project's own `lint`, `tsc`, `build` |
 | History: number of commits, message quality, no secret | `git` | Anything else about history (a branch exists, a merge happened) is a `tests` step that runs a `git` command |
 | The database refuses or returns exactly this | `sql` | Lab database only. See 10.4 |
-| A page shows this at 360px | `page` | `http://localhost` only. It loads one address and looks; it does not click or type. See 10.5 |
+| A page shows this at 360px | `page` | `http://localhost` only. It can click, type and make assertions using the actions in docs/checker.md. See 10.5 |
 
 ### 10.2 Required and optional
 
@@ -346,6 +351,18 @@ learner (Known limits in `decisions.md`), so treat it as public.
 - Use `expect_error: true` for "the database must refuse this". Put the reason in the message.
 - Table and column names the checks rely on are fixed in the module files ("Schema contract").
   The learner is told them in `lab.md`; without that a check could not be written.
+
+**Practice fixture IDs.** Reserve these disjoint ranges in the learner’s marked practice database.
+
+| IDs | Lifetime | Readers |
+| --- | --- | --- |
+| 900001–909999 | Rows created and rolled back by one SQL step | That step’s transaction |
+| 910001–919999 | Lasting synthetic demo rows, installed once for the unit | Browser, Python service and cross-connection checks |
+
+Qualify fixture reads by key. Give new rows a ZZ practice name where the schema allows.
+Prepare lasting fixtures idempotently in the learner setup. SQL steps may read those rows
+for comparison. Their temporary inserts use the first range. Never reset a learner’s
+other rows. Scratch-only load benchmarks use their own temporary table.
 
 ### 10.5 Page steps and behaviour in the browser
 
@@ -395,18 +412,17 @@ The checker shows it; it does not act on it.
 - Each module file gives, per unit: the planted fault(s), the symptom, the evidence expected
   under each heading, and the fixed state.
 - GPIS's own rule is quoted in every debugging lab: OBSERVE → ISOLATE → TEST → PROVE →
-  DOCUMENT → MOVE ON.
-- **How a debugging lab is seeded and checked is open. [Q1]** Each unit therefore lists the
-  seed contents and the fixed-state facts in a form any answer to Q1 can use.
+  DOCUMENT → MOVE ON (GPIS AGENTS.md, Engineering discipline).
+- Publish the debugging seed and tests in `check-debug/`. Use the broken and repaired examples to prove the check fails and passes.
 
 ## 12. Own build rules
 
-- No steps and no hints at any level. 4–7 requirements.
+- Number 4–7 observable requirements. Give hints according to §0.3.
 - A variation of the lab, not a repeat: another input, another rule of the same family, or the
-  same idea applied in `gpis-rebuild`.
-- From unit 1.6 on it ends with a commit in `gpis-rebuild`.
-- It ends with "Then compare with GPIS" and a note file in `gpis-rebuild/notes/`.
-- **How an own build is checked is open. [Q1]** Each unit lists its requirements as facts.
+  same idea applied in `school-system`.
+- From unit 1.6 on it ends with a commit in `school-system`.
+- It ends with "Then compare with GPIS" and a note file in `school-system/notes/`.
+- Publish the tests for the numbered acceptance criteria in `check-own/`. Use an empty or incomplete variation as the failing case.
 
 ## 13. Review and mastery rules
 
@@ -446,10 +462,10 @@ Build one unit at a time, in position order. For each unit:
 - [ ] every requirement in `lab.md` is covered by a step or marked "(self-review)";
 - [ ] every message says what is wrong and none says how to fix it;
 - [ ] every command in `example.md` was run and its output matches;
-- [ ] every GPIS rule carries its decision number and matches the module file;
+- [ ] every school rule carries its D-number and every engineering practice names its source file and section (§4);
 - [ ] the quiz has a reason for every wrong option and the right answers are spread;
 - [ ] no file under `check/` holds a solution;
-- [ ] the level's rules of section 5 are kept (no Steps in a half-guided lab);
+- [ ] each lab has numbered steps with the guidance and hints in section 5;
 - [ ] reading level: no sentence over 25 words in `lesson.md` (spot check ten).
 
 **A module is done when** every unit is done, the units were tried in order on a clean WSL

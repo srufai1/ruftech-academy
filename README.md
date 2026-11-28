@@ -1,6 +1,6 @@
 # Ruftech Academy
 
-Learn software engineering by rebuilding a real system, step by step.
+Learn software engineering by building a School Management System, step by step.
 
 - **The course** — `content/` (original lessons) and `docs/curriculum.md`.
 - **The platform** — `apps/web` (Next.js 16 + Supabase), where lessons, quizzes and

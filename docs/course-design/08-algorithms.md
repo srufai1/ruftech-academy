@@ -2,17 +2,17 @@
 
 | Unit | Title | Project | Kind | Level | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 8.1 | Ranking at scale | m8-p1 | Repo | half [Q2] | 660 | 5 |
-| 8.2 | BECE aggregate | m8-p2 | Repo | half [Q2] | 660 | 5 |
-| 8.3 | Oldest debt first | m8-p3 | Repo | half [Q2] | 660 | 4 |
-| 8.4 | Search | m8-p4 | Repo | half [Q2] | 660 | 4 |
-| 8.5 | Number puzzle (optional) | m8-p5 | Repo | half [Q2] | 480 | 5 |
+| 8.1 | Ranking at scale | m8-p1 | Repo | half | 540–780 | 5 |
+| 8.2 | BECE aggregate | m8-p2 | Repo | half | 540–780 | 5 |
+| 8.3 | Oldest debt first | m8-p3 | Repo | independent | 540–780 | 4 |
+| 8.4 | Search | m8-p4 | Repo | independent | 540–780 | 4 |
+| 8.5 | Number puzzle (optional) | m8-p5 | Repo | independent | 390–570 | 5 |
 
 ## Module rules (decided here)
 
-Q2 is open. The tables show half guidance from course.yaml as a provisional layout. The alternative independent layout keeps the different-subject worked example, removes folded hints and shows only the symptom of the debugging exercise. Both layouts use the same contracts, outputs and checks. Unit 8.5 is optional in the course; its steps are required when attempted. Time limits apply to the computation in a warmed Node process, with a separate generous runner timeout. Do not use timing as a proof of complexity.
+Units 8.1–8.2 give places to look. From 8.3 the task is independent: keep numbered outcomes and only closed hints after a suggested 30-minute attempt. Unit 8.5 is optional in the course; its steps are required when attempted. Time limits apply to the computation in a warmed Node process, with a separate generous runner timeout. Do not use timing as a proof of complexity.
 
-Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. Debugging and own builds are self-reviewed [Q1]. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
+Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. The debugging lab and own build have separate checks. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
 
 ## File and interface contract
 
@@ -30,7 +30,7 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 
 | Source in the read-only GPIS | Text to use |
 | :--- | :--- |
-| D-02, D-03, D-04, Q-07 | “Ties share a position; the next position skips ahead by the number of tied students.” Use the class total, active roll and open memberships. An incomplete subject adds nothing. No JHS 3 class position. |
+| D-02, D-03, D-04, D-10 | “Ties share a position; the next position skips ahead by the number of tied students.” Use the class total, active roll and open memberships. An incomplete subject adds nothing. No JHS 3 class position. |
 | D-01, D-10, D-27, D-80, D-162, D-171 | “Missing subject scores print blank”. Stored maxima, including 140 for JHS Integrated Science, drive scaling. JHS 3 mocks use 30 + 70 and a separate grade scale. |
 | D-81, D-218 | “Best Six = ALL core subjects + the best 2 electives”. Both sums use the same selected subjects. Only submitted results can supply a final. |
 | D-90, D-124 | “New cash settles oldest outstanding academic-year/term debt first, then oldest original charge posting time within that period, with ID as the deterministic tie-breaker.” No overpayment or credit. |
@@ -47,8 +47,8 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 | id / project | `m8-u1` / `m8-p1` |
 | title | Ranking at scale |
 | module / position | 8 / 1 |
-| guidance | half (provisional, Q2) |
-| minutes | 660 |
+| guidance | half |
+| minutes | `{ min: 540, max: 780 }` |
 | gpis_part | Sort once, then scan tied groups. The next rank equals one plus the count strictly above. |
 | requires | [wsl, node, git] |
 
@@ -62,6 +62,9 @@ After this unit you can
 
 ### Lesson
 
+Teach each idea below in the four layers of guide §0.1. Start with ties in a sports-day finishing list; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://opendatastructures.org/) (read · 10 min). Teach every quiz concept before the quiz.
+
+
 | Section | Key idea and small example |
 | :--- | :--- |
 | 1. Preserve competition positions | Sort once, then scan tied groups. The next rank equals one plus the count strictly above. |
@@ -74,7 +77,7 @@ After this unit you can
 
 1. 1,1,2 → dense rank → 1,1,3
 2. 1,1,3 → sorted output → 3,1,1
-3. Disqualify → missing adds nothing → Total 60 under Q-07
+3. Disqualify → missing adds nothing → Total 60 under D-10
 
 ### Guided example — Race results
 
@@ -91,14 +94,17 @@ In a scratch folder.
 | :--- | :--- | :--- | :--- |
 | 1 | 90,90,80 under D-02? | 1,1,3 | 1,1,2 (dense rank). 1,2,3 (breaks ties) |
 | 2 | 80,90,90 in input order? | 3,1,1 | 1,1,3 (sorted output). 2,1,1 (dense rank) |
-| 3 | One student with null and 60? | Total 60 under Q-07 | Disqualify (missing adds nothing). Average 30 (ranking uses total) |
+| 3 | One student with null and 60? | Total 60 under D-10 | Disqualify (missing adds nothing). Average 30 (ranking uses total) |
 | 4 | Withdrawn highest scorer? | Exclude before ranking | Rank then remove (gap persists). Keep as active (wrong cohort) |
 | 5 | All equal across 100,000 records? | Every position is 1 | Positions by id (breaks ties). Position zero (one-based) |
 | 6 | One full scan per student? | Quadratic comparisons | Linear (ignores outer loop). Logarithmic (no halving) |
 
 ### Lab — Ranking at scale
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -107,7 +113,7 @@ In a scratch folder.
 | 1 | `src/lib/ranking.ts`, `docs/algorithms/ranking.md` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
 | 3 | Import competitionRanks and rankClass from src/lib/ranking.ts using the 2.2 interfaces. Frozen [70,90,70,80] → [3,1,3,2]; [], [0], 200 equal values. One withdrawn highest scorer does not move active positions. Include an incomplete subject and compare old/new module 2 fixtures. | `positions` |
-| 4 | Warm with 1,000 totals then rank 100,000 generated as i%100. In input order rank(99)=1, rank(98)=1001 and rank(0)=99001. Compare all entries; test duration for the one call under five seconds, outer timeout 30s. | `load` |
+| 4 | Warm with 1,000 totals then rank 100,000 generated as i%100. In input order rank(99)=1, rank(98)=1001 and rank(0)=99001. Compare all entries; allow a loose 30-second computation budget and 60 seconds for the runner. Require the written cost explanation: counting/sorting work and extra space as input grows. | `load` |
 | 5 | docs/algorithms/ranking.md: Sort, Scan, Memory, Measurement. Include O(n log n) sort, O(n) scan, cost of restoring order and measured machine/runtime; 20 words per heading. | `cost` |
 
 **Hints (folded).** Look at src/lib/ranking.ts. Compare the smallest passing case with the failing boundary in the check table.
@@ -151,6 +157,10 @@ In a scratch folder.
 3. Time two data sizes.
 4. Defend the space bound.
 
+**Debugging-lab check** (`m8-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m8-p1-own`). Compare the oracle on 50 totals including a three-way tie. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m8-p1`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -158,7 +168,7 @@ In a scratch folder.
 | deliverables | files | yes | `src/lib/ranking.ts`, `docs/algorithms/ranking.md` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
 | positions | tests | yes | `tests/positions.test.mjs` via files. Import competitionRanks and rankClass from src/lib/ranking.ts using the 2.2 interfaces. Frozen [70,90,70,80] → [3,1,3,2]; [], [0], 200 equal values. One withdrawn highest scorer does not move active positions. Include an incomplete subject and compare old/new module 2 fixtures. |
-| load | tests | yes | `tests/load.test.mjs` via files. Warm with 1,000 totals then rank 100,000 generated as i%100. In input order rank(99)=1, rank(98)=1001 and rank(0)=99001. Compare all entries; test duration for the one call under five seconds, outer timeout 30s. |
+| load | tests | yes | `tests/load.test.mjs` via files. Warm with 1,000 totals then rank 100,000 generated as i%100. In input order rank(99)=1, rank(98)=1001 and rank(0)=99001. Compare all entries; allow a loose 30-second computation budget and 60 seconds for the runner. Require the written cost explanation: counting/sorting work and extra space as input grows. |
 | cost | doc | yes | docs/algorithms/ranking.md: Sort, Scan, Memory, Measurement. Include O(n log n) sort, O(n) scan, cost of restoring order and measured machine/runtime; 20 words per heading. |
 
 **Messages for required steps**
@@ -166,7 +176,7 @@ In a scratch folder.
 - `deliverables` — A named deliverable is missing.
 - `history` — The committed history is missing or contains a credential pattern.
 - `positions` — A tie, cohort or input order changed.
-- `load` — The large class returned wrong positions or exceeded five seconds.
+- `load` — The large class returned wrong positions or exceeded the 30-second computation budget.
 - `cost` — The complexity account misses a stage.
 
 ### Needs
@@ -184,8 +194,8 @@ Module 2’s typed functions and tests. WSL, Node and Git. All fixtures are synt
 | id / project | `m8-u2` / `m8-p2` |
 | title | BECE aggregate |
 | module / position | 8 / 2 |
-| guidance | half (provisional, Q2) |
-| minutes | 660 |
+| guidance | half |
+| minutes | `{ min: 540, max: 780 }` |
 | gpis_part | Read kind, display order and submitted final for each offering for the sitting. |
 | requires | [wsl, node, git] |
 
@@ -198,6 +208,9 @@ After this unit you can
 3. Report incompleteness
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with choosing which subject marks count on a slip; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://opendatastructures.org/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -212,6 +225,8 @@ After this unit you can
 1. Raw 426 and aggregate 6 → subject count → Raw 426 and aggregate 14
 2. Both 1 → rounds up → Grades 1 and 2
 3. Pick four → hard-coded → Count all five
+
+**Planning a project.** Recall the three plans from Project 1.6. Show one edge case for this milestone and how to turn it into a test before implementing it.
 
 ### Guided example — Count exhibition entries
 
@@ -235,7 +250,18 @@ In a scratch folder.
 
 ### Lab — BECE aggregate
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Step 1 · Plan the milestone.** In `lab.md`, list the following exact implementation
+paths. Before the first change to any of them, commit `requirements.md`, `spec.md`
+and `decisions.md` together under `docs/plans/8.2/`. Use the headings in guide §0.4.
+
+- `src/lib/algorithms/aggregate.ts`
+- `tests/aggregate.test.ts`
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -288,7 +314,16 @@ In a scratch folder.
 3. Explain an unused blank elective.
 4. Prove equal-score selection is stable.
 
+**Debugging-lab check** (`m8-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m8-p2-own`). Use five cores and tied electives; assert stable selection and the incomplete case. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m8-p2`, version 1.0.0, no `lab:`, requires [wsl, node, git])
+
+Add three required `doc` steps for the plans in `docs/plans/8.2/`, one per file,
+with the headings in §0.4. Add a required `tests` step for the decision count and
+the Git ancestry check in §0.4, using the literal paths in step 1 above.
+
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
@@ -321,8 +356,8 @@ Module 2’s typed functions and tests. WSL, Node and Git. All fixtures are synt
 | id / project | `m8-u3` / `m8-p3` |
 | title | Oldest debt first |
 | module / position | 8 / 3 |
-| guidance | half (provisional, Q2) |
-| minutes | 660 |
+| guidance | independent |
+| minutes | `{ min: 540, max: 780 }` |
 | gpis_part | Sort by academic year, term, posting time and id. Posting date alone can give the wrong order. |
 | requires | [wsl, node, git] |
 
@@ -335,6 +370,9 @@ After this unit you can
 3. Reconcile allocations
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with paying the oldest unpaid receipt first; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://opendatastructures.org/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -372,7 +410,10 @@ In a scratch folder.
 
 ### Lab — Oldest debt first
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -424,6 +465,10 @@ In a scratch folder.
 3. Reject an extra pesewa.
 4. Prove conservation.
 
+**Debugging-lab check** (`m8-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m8-p3-own`). Reconcile opening balances, partial payment and closing balances by period. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m8-p3`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -455,8 +500,8 @@ Module 2’s typed functions and tests. WSL, Node and Git. All fixtures are synt
 | id / project | `m8-u4` / `m8-p4` |
 | title | Search |
 | module / position | 8 / 4 |
-| guidance | half (provisional, Q2) |
-| minutes | 660 |
+| guidance | independent |
+| minutes | `{ min: 540, max: 780 }` |
 | gpis_part | Ignore case, repeated whitespace and full stops after initials under D-247. |
 | requires | [wsl, node, git] |
 
@@ -469,6 +514,9 @@ After this unit you can
 3. Compare equal work
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with finding a pupil by several words of their name; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://opendatastructures.org/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -506,7 +554,10 @@ In a scratch folder.
 
 ### Lab — Search
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -558,6 +609,10 @@ In a scratch folder.
 3. Prove equivalence.
 4. Defend a benchmark limit.
 
+**Debugging-lab check** (`m8-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m8-p4-own`). Compare short and multi-word result order against a linear scan. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m8-p4`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -589,8 +644,8 @@ Module 2’s typed functions and tests. WSL, Node and Git. All fixtures are synt
 | id / project | `m8-u5` / `m8-p5` |
 | title | Number puzzle (optional) |
 | module / position | 8 / 5 |
-| guidance | half (provisional, Q2) |
-| minutes | 480 |
+| guidance | independent |
+| minutes | `{ min: 390, max: 570 }` |
 | gpis_part | Factor positive integers from 2 to 1,000,000,000. This is a small integer puzzle. |
 | requires | [wsl, node, git] |
 
@@ -603,6 +658,9 @@ After this unit you can
 3. Verify reconstruction
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with arranging counters into equal groups; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://opendatastructures.org/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -640,7 +698,10 @@ In a scratch folder.
 
 ### Lab — Number puzzle (optional)
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -649,7 +710,7 @@ In a scratch folder.
 | 1 | `src/lib/algorithms/factors.ts`, `docs/algorithms/factors.md` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
 | 3 | factors(n) in factors.ts: 2→[2], 36→[2,2,3,3], 49→[7,7], 97→[97], 1000000000→nine 2s then nine 5s. Throw RangeError on 1,0,negative,non-integer or >1e9. For 2..5000 verify sorted prime factors and exact product. | `factors` |
-| 4 | Warm with 97; factor 999983 repeatedly 100 times in under 2s, assert [999983] every time. Outer test timeout 20s. | `budget` |
+| 4 | Warm with 97; factor 999983 repeatedly 100 times within a loose 30-second budget, assert [999983] every time. Outer timeout 60s. Require the explanation of how many divisors are tried and why the search stops. | `budget` |
 | 5 | docs/algorithms/factors.md: Range, Stopping rule, Measurement. Explain square-root stopping and why small fixtures say nothing about practical encryption; 20 words each. | `bound` |
 
 **Hints (folded).** Look at src/lib/algorithms/factors.ts. Compare the smallest passing case with the failing boundary in the check table.
@@ -693,6 +754,10 @@ In a scratch folder.
 3. Reject 1.
 4. Measure the bounded prime case.
 
+**Debugging-lab check** (`m8-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m8-p5-own`). Compare distinct and repeated factor counts on a prime square. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m8-p5`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -700,7 +765,7 @@ In a scratch folder.
 | deliverables | files | yes | `src/lib/algorithms/factors.ts`, `docs/algorithms/factors.md` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
 | factors | tests | yes | `tests/factors.test.mjs` via files. factors(n) in factors.ts: 2→[2], 36→[2,2,3,3], 49→[7,7], 97→[97], 1000000000→nine 2s then nine 5s. Throw RangeError on 1,0,negative,non-integer or >1e9. For 2..5000 verify sorted prime factors and exact product. |
-| budget | tests | yes | `tests/budget.test.mjs` via files. Warm with 97; factor 999983 repeatedly 100 times in under 2s, assert [999983] every time. Outer test timeout 20s. |
+| budget | tests | yes | `tests/budget.test.mjs` via files. Warm with 97; factor 999983 repeatedly 100 times within a loose 30-second budget, assert [999983] every time. Outer timeout 60s. Require the explanation of how many divisors are tried and why the search stops. |
 | bound | doc | yes | docs/algorithms/factors.md: Range, Stopping rule, Measurement. Explain square-root stopping and why small fixtures say nothing about practical encryption; 20 words each. |
 
 **Messages for required steps**

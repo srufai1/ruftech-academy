@@ -7,18 +7,18 @@ Date of all decisions: 12 November 2026. Decided by: the owner (first learner).
 
 ---
 
-## ADR-1 — The course rebuilds GPIS; the platform stays small
+## ADR-1 — Build a School Management System and keep the study platform small
 
-**Decision.** The course teaches software engineering by rebuilding GPIS (the school
-management system in `srufai1/gpis-school-system`) step by step. GPIS is the reference answer
+**Decision.** The course teaches software engineering by building a School Management System step by step. GPIS
+(`srufai1/gpis-school-system`) is the real system used for comparison
 at every step. The e-learning platform is only the tool the learner studies with.
 
 **Why.** GPIS is a real, working system with real rules (grading, ranking, class membership,
-fees, issued documents). A learner who can rebuild it has met real problems, not toy ones.
+fees, issued documents). A learner who can implement these rules has met real problems, not toy ones.
 
 **Consequences.**
-- Every module names the part of GPIS it rebuilds, and ends with "compare with GPIS".
-- The learner builds in their own repository (`gpis-rebuild`). `gpis-school-system` is read
+- Every module names the feature being built, and ends with "compare with GPIS".
+- The learner builds in their own repository (`school-system`). `gpis-school-system` is read
   only: never edited, never copied in bulk.
 - The platform gets only what studying needs: lessons, quizzes, progress, checklists.
 - The blueprint idea "learners build the e-learning platform through the program" is dropped.
@@ -67,8 +67,8 @@ One learner does not need it. A local checker gives the same feedback at no cost
 | Level | Where | What the learner gets |
 | :--- | :--- | :--- |
 | Guided | Early modules | Step-by-step instructions; compare with GPIS code after each step |
-| Half guided | Middle modules | The task, hints, and the checker; no steps |
-| Independent | Late modules and capstone | Requirements only; compare with GPIS at the end |
+| Half guided | Middle modules | Numbered tasks, places to look and folded hints |
+| Independent | Late modules and capstone | Numbered outcomes with closed hints after a 30-minute attempt; compare with GPIS at the end |
 
 **Why.** Copying steps does not build skill. Removing help slowly does.
 
@@ -188,7 +188,7 @@ emails, the docs, the npm packages (`@ruftech-academy/shared`, `/checker`, `/web
 checker tarball (`ruftech-academy-checker-<version>.tgz`), the repository
 (`srufai1/ruftech-academy`), and the three context lines of the signing format
 (`ruftech-academy/check-result/v1`, `ruftech-academy/challenge/v1`,
-`ruftech-academy/record/v1`). The course still rebuilds GPIS (ADR-1); "GPIS" stays wherever
+`ruftech-academy/record/v1`). The course builds a School Management System (ADR-1); "GPIS" stays wherever
 it means the school system the learner builds.
 
 **Why now.** No result has been signed or recorded yet (T19 is not built), so changing the
@@ -228,8 +228,8 @@ protocol versions.
 | §6.3 Analytics and weekly reporting hub | Postponed | A weekly self-report checklist replaces it |
 | §6.4 Portfolio and blog generator | Cut | Learner writes their own site and articles |
 | §7 Module 3 Python core and backend | Moved | Becomes the Python track at the end (ADR-2) |
-| §7 Module 8 Generative AI and prompt engineering | Postponed | Not needed to rebuild GPIS |
-| §7 "learners build the e-learning platform" | Replaced | Learners rebuild GPIS (ADR-1) |
+| §7 Module 8 Generative AI and prompt engineering | Postponed | Not needed to build the School Management System |
+| §7 "learners build the e-learning platform" | Replaced | Learners build a School Management System (ADR-1) |
 | §8 Execution roadmap, phases 4–9 (exercise engine, cohorts, analytics, AI tutor, publishing, mobile) | Cut / postponed | All depend on things ADR-3 removes |
 | §9 First four sprints | Replaced | A new, smaller plan will follow these decisions |
 | §10 Initial service objectives (99.9%, queue times, AI evals) | Cut | No public service; the quality gates themselves stay |

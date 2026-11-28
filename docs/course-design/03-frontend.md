@@ -5,27 +5,27 @@ Read `00-guide.md` first. Level: **guided** for 3.1–3.3, **half guided** for 3
 
 | Unit | Title | Project | Kind | Level | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 3.1 | HTML, CSS and a first Next.js site | `m3-p1` Portfolio site | Repo (`~/projects/portfolio`) | guided | 960 | 11 |
-| 3.2 | Layouts, navigation and components | `m3-p2` App shell | Repo | guided | 1020 | 13 |
-| 3.3 | Server Components and the URL as state | `m3-p3` Students list | Repo | guided | 1080 | 12 |
-| 3.4 | Dynamic routes and tabs | `m3-p4` Student profile | Repo | half | 960 | 10 |
-| 3.5 | Client Components and forms | `m3-p5` Score entry screen | Repo | half | 1200 | 11 |
-| 3.6 | Printing | `m3-p6` Print layer | Repo | half | 1020 | 10 |
+| 3.1 | HTML, CSS and a first Next.js site | `m3-p1` Portfolio site | Repo (`~/projects/portfolio`) | guided | 780–1140 | 11 |
+| 3.2 | Layouts, navigation and components | `m3-p2` App shell | Repo | guided | 810–1230 | 13 |
+| 3.3 | Server Components and the URL as state | `m3-p3` Students list | Repo | guided | 870–1290 | 12 |
+| 3.4 | Dynamic routes and tabs | `m3-p4` Student profile | Repo | half | 780–1140 | 10 |
+| 3.5 | Client Components and forms | `m3-p5` Score entry screen | Repo | half | 960–1440 | 11 |
+| 3.6 | Printing | `m3-p6` Print layer | Repo | half | 810–1230 | 10 |
 
 ## Module rules (decided here)
 
 | Topic | Rule |
 | :--- | :--- |
 | Next.js version | The version `create-next-app` installs when the unit is built (16 at the time of design). **Before writing any lesson or check, the builder reads the guides in `node_modules/next/dist/docs/`** for: `searchParams` and `params` in pages, `Link`, `layout`, `error` / `loading` / `not-found` files, `"use client"`. API details in this file are named by idea, not by signature |
-| Ports | `gpis-rebuild` runs on `http://localhost:3000` (`npm run dev`). The portfolio runs on `http://localhost:3001` (`"dev": "next dev -p 3001"`), so the two can never be confused |
+| Ports | `school-system` runs on `http://localhost:3000` (`npm run dev`). The portfolio runs on `http://localhost:3001` (`"dev": "next dev -p 3001"`), so the two can never be confused |
 | The learner starts the app | Every `lab.md` in this module says: "In a second terminal: `npm run dev`. Leave it running while you check." The checker starts nothing |
 | Styling | Tailwind CSS v4 and shadcn/ui (Radix, Lucide icons) only, as GPIS. No second component library, no CSS-in-JS |
 | Design target | 360px wide first; 44px touch targets; tables become cards below `md:`; nothing hidden on phones (GPIS interface rules) |
 | Data | No database yet. `src/data/sample.ts` holds the sample data (below), typed with unit 2.6's types. Pages read it through functions in `src/lib/sample-queries.ts`, so module 5 can swap the source without touching pages |
 | State in the address | Search, filters, page number, tab and score part live in the URL, as in GPIS. This also makes them checkable (guide 10.5) |
 | HTML checks | Where a fact is in the server's HTML (a link's address, `aria-current`, `lang`, a label), a `tests` step with `files:` fetches the page with Node's `fetch` and reads the HTML. Its first assertion is "the app answers at http://localhost:3000". No browser needed |
-| Browser checks | Clicking and typing need Playwright, driven from a `tests` file **[Q4]**. Those steps are listed with "(Q4)" |
-| Browser for `page` steps | `page` steps need Playwright's Chromium on the learner's machine. Unit 3.1 "Before you start" installs it (`npx playwright install chromium`); the builder confirms the exact command against `academy doctor` **[Q7]** |
+| Browser checks | Use T26 `page.actions` and role, label or test ID targets. Use `media: print` for print rendering after T35. |
+| Browser setup | Once, install Playwright with `npm install -D playwright` and `npx playwright install chromium`. Run `npx academy doctor` to prove Chromium starts. |
 | `src/config/school.ts` | In 3.2 `src/config/school.mjs` becomes `school.ts` (same export, more fields). `scripts/school-info.mjs` imports the `.ts` file |
 
 ## Sample data contract (`src/data/sample.ts`)
@@ -76,7 +76,7 @@ The builder writes the 24 students; these facts are fixed:
 | title | HTML, CSS and a first Next.js site |
 | module / position | 3 / 1 |
 | guidance | guided |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | The login page and public pages of GPIS: plain, accessible HTML that works at 360px |
 | requires | `[wsl, node, git, github, vercel, playwright]` |
 
@@ -90,21 +90,24 @@ After this unit you can:
 4. check a page with the keyboard only, and fix what cannot be reached;
 5. deploy the site to Vercel and say what a deployment is.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a noticeboard that fits on a small wall; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://nextjs.org/docs/app) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | HTML says what things are | `header`, `nav`, `main`, `footer`, `h1`–`h3` in order, `p`, `ul`, `a`, `img alt`, `button` against `a` |
-| A2 | CSS says how they look | Selectors, the box model, `rem`, colour contrast |
-| A3 | Layout | Flow, flexbox, grid; `gap`; `max-width` for reading; never a fixed pixel width on a container |
-| A4 | Phone first | Write for 360px; add `sm:` / `md:` / `lg:` for wider; test by narrowing the window; sideways scroll is a bug |
-| A5 | Tailwind | Utility classes instead of a CSS file; `className`; spacing scale; `md:grid-cols-2`; `min-h-11` (44px) |
-| B1 | A Next.js project | `create-next-app` (TypeScript, Tailwind, App Router, `src/`); what each folder is |
-| B2 | Routes are folders | `src/app/page.tsx`, `src/app/projects/page.tsx`; `layout.tsx` wraps every page; `Link` |
-| B3 | Components | A function that returns HTML-like JSX; props; one component per file; `{}` for values; `map` with `key` |
-| B4 | Metadata and language | `metadata.title`, `lang="en"`, one `h1` per page |
-| B5 | Accessibility by keyboard | Tab order, visible focus, a "Skip to content" link, link text that says where it goes |
-| B6 | Deploying | Push to GitHub; import in Vercel; every push to `main` makes a deployment; the URL; preview deployments |
+| 1 | HTML says what things are | `header`, `nav`, `main`, `footer`, `h1`–`h3` in order, `p`, `ul`, `a`, `img alt`, `button` against `a` |
+| 2 | CSS says how they look | Selectors, the box model, `rem`, colour contrast |
+| 3 | Layout | Flow, flexbox, grid; `gap`; `max-width` for reading; never a fixed pixel width on a container |
+| 4 | Phone first | Write for 360px; add `sm:` / `md:` / `lg:` for wider; test by narrowing the window; sideways scroll is a bug |
+| 5 | Tailwind | Utility classes instead of a CSS file; `className`; spacing scale; `md:grid-cols-2`; `min-h-11` (44px) |
+| 6 | A Next.js project | `create-next-app` (TypeScript, Tailwind, App Router, `src/`); what each folder is |
+| 7 | Routes are folders | `src/app/page.tsx`, `src/app/projects/page.tsx`; `layout.tsx` wraps every page; `Link` |
+| 8 | Components | A function that returns HTML-like JSX; props; one component per file; `{}` for values; `map` with `key` |
+| 9 | Metadata and language | `metadata.title`, `lang="en"`, one `h1` per page |
+| 10 | Accessibility by keyboard | Tab order, visible focus, a "Skip to content" link, link text that says where it goes |
+| 11 | Deploying | Push to GitHub; import in Vercel; every push to `main` makes a deployment; the URL; preview deployments |
 
 - **Diagram:** a 360px page as boxes: header / nav / main / footer, and the same page at 1024px with the nav beside the title.
 - **Common mistakes**
@@ -143,19 +146,22 @@ What you just used: semantic HTML, Tailwind utilities, breakpoints, routes, layo
 
 ### Lab — project 3.1 Portfolio site (repo project, `~/projects/portfolio`)
 
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
 **What done means**
 
 | # | Requirement | Step |
 | :--- | :--- | :--- |
 | 1 | A Next.js app in `~/projects/portfolio`, a Git repository, dev server on port 3001 | `project-files`, `history` |
-| 2 | Pages: `/` (about you), `/projects` (at least the `gpis-rebuild` project with one paragraph), `/writing` (a list; one entry is enough) | `home`, `projects`, `writing` |
+| 2 | Pages: `/` (about you), `/projects` (at least the `school-system` project with one paragraph), `/writing` (a list; one entry is enough) | `home`, `projects`, `writing` |
 | 3 | Each page: one `h1`; a title that contains your site name; `lang="en"`; a `nav` with links to all three pages; a `main`; a `footer` | `structure` |
 | 4 | At 360px no page scrolls sideways; every link and button in the nav is at least 44px high | `home`, `projects`, `writing` |
 | 5 | The first focusable element is a link "Skip to content" that goes to `#main` | `structure` |
 | 6 | Every image has an `alt` | `structure` |
 | 7 | The link for the current page is marked with `aria-current="page"` | `structure` |
 | 8 | Lint, type check and build pass | `static` |
-| 9 | The site is deployed on Vercel; `deploy-url.txt` holds its `https://` address on one line, and the address answers | `deploy-url`, `deployed-answers` |
+| 9 | The site is deployed on Vercel; `deploy-url.txt` holds its `https://` address on one line, and the address answers | `deploy-url`, owner review |
 | 10 | `README.md` says how to run it and where it is deployed | `readme` |
 
 **Steps (guided):** (1) `create-next-app`, set port 3001, first commit; (2) the layout:
@@ -189,7 +195,7 @@ deployment.
 1. Add `/now` to your portfolio: what you are learning this month, as a list with dates.
 2. Add a light / dark colour pair using CSS variables; both pass a contrast check (name the tool you used).
 3. One image, optimised (`next/image`), with a useful `alt`.
-4. At 360px, 768px and 1280px the page is laid out differently on purpose; describe the three in `notes/unit-3-1.md` (in `gpis-rebuild`).
+4. At 360px, 768px and 1280px the page is laid out differently on purpose; describe the three in `notes/unit-3-1.md` (in `school-system`).
 5. Deployed; the address in `deploy-url.txt` still answers.
 
 ### Review
@@ -197,6 +203,10 @@ deployment.
 - **Checklist extras:** I walked every page with the keyboard only. I looked at every page at 360px. One `h1` per page. The deployed site matches my local one.
 - **Compare with GPIS:** (1) Open `src/app/login/` in the read-only copy. Which HTML elements does the form use, and how is each input labelled? (2) Find `min-h-11` or `h-11` in GPIS's components. Why does the same number keep appearing? (3) GPIS has no "mobile version". How does one set of pages serve both a phone and a computer?
 - **Mastery:** (1) From an empty folder: a two-page site with a shared layout, skip link and nav, in 40 minutes. (2) Given a screenshot of a wide table, sketch its phone form. (3) Explain `md:` to someone who thinks it means "medium phones". (4) Name five things you check with the keyboard.
+
+**Debugging-lab check** (`m3-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m3-p1-own`). Open /now on the phone viewport and inspect the dated entries. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
 
 ### Check plan (`m3-p1`, version 1.0.0, no `lab:`, run in `~/projects/portfolio`, `requires [wsl, node, git, vercel, playwright]`)
 
@@ -207,12 +217,10 @@ deployment.
 | `history` | git | yes | `min_commits: 6`, `message_min_chars: 15`, `no_secrets: true` |
 | `structure` | tests (files) | yes | Fetches `/`, `/projects`, `/writing` on port 3001 and reads the HTML: `<html lang="en">`; exactly one `<h1>`; a `<nav>` with links to `/`, `/projects`, `/writing`; `<main id="main">`; a `<footer>`; the first `<a>` in `<body>` has `href="#main"`; every `<img>` has a non-empty `alt` or `alt=""` with `role="presentation"`; exactly one link in the nav has `aria-current="page"` and it is the current page |
 | `deploy-url` | tests (run) | yes | `grep -cE '^https://[a-z0-9.-]+/?$' deploy-url.txt` → `"1\n"` |
-| `deployed-answers` | tests (run) | yes | `curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$(head -n 1 deploy-url.txt)"` → `expect_stdout: "200"` (network) |
 | `static` | static | yes | `run: [lint, tsc, build]` |
 | `home` | page | yes | `url: http://localhost:3001/`, status 200, `no_sideways_scroll`, `min_target_px: 44`, `text: ["Skip to content"]` |
-| `projects` | page | yes | `http://localhost:3001/projects`, same, `text: ["gpis-rebuild"]` |
+| `projects` | page | yes | `http://localhost:3001/projects`, same, `text: ["school-system"]` |
 | `writing` | page | yes | `http://localhost:3001/writing`, same |
-| `deployed-same` | tests (run) | no | `curl -s --max-time 15 "$(head -n 1 deploy-url.txt)/projects" \| grep -c 'gpis-rebuild'` → not `0` (optional: proves the deployed site has the projects page) |
 
 Messages: `project-files` "A required file is missing." `readme` "README.md is missing a
 heading, or a section is too short." `history` "Too few commits, a message that says too
@@ -226,7 +234,7 @@ build reports problems." `home` / `projects` / `writing` "The page does not load
 ### Needs
 
 Module 2. A GitHub account (from 1.6's own build) and a free Vercel account. **Network: yes.**
-Playwright's Chromium for the `page` steps (Q7). Deployed pages are checked by HTTP only (Q3).
+Playwright's Chromium for the `page` steps (Q7). Submit the HTTPS address and a short note on the project page. The owner opens the synthetic demo and records a verdict.
 
 ---
 
@@ -240,7 +248,7 @@ Playwright's Chromium for the `page` steps (Q7). Deployed pages are checked by H
 | title | Layouts, navigation and components |
 | module / position | 3 / 2 |
 | guidance | guided |
-| minutes | 1020 |
+| minutes | `{ min: 810, max: 1230 }` |
 | gpis_part | The GPIS app shell: sidebar on computers, one bottom bar plus More on phones (D-254) |
 | requires | `[wsl, node, git, playwright]` |
 
@@ -254,20 +262,23 @@ After this unit you can:
 4. mark the current place for sighted and non-sighted users;
 5. build a form page with labelled inputs (the login page, no sign-in yet).
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with the same corridor signs outside every classroom; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://nextjs.org/docs/app) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | Adding a framework to a living repository | Install `next`, `react`, `react-dom`, TypeScript types; `src/app/`; scripts `dev`, `build`, `start`; keep `test`, `lint`, `typecheck`, `verify`; ESLint config for Next |
-| A2 | Nested layouts and route groups | `(app)/layout.tsx` for pages with the shell; `/login` outside it |
-| A3 | Navigation as data | `src/lib/navigation.ts`: `{ label, href, icon, inBottomBar }[]`; one source, two drawings |
-| A4 | Two shapes, one page | Sidebar `hidden md:flex`; bottom bar `md:hidden`, fixed to the bottom; content padding so the bar hides nothing |
-| A5 | The More page | The bar holds four places and More; More lists every place. Nothing is unreachable on a phone |
-| B1 | shadcn/ui | Components are copied into `src/components/ui/`; `Button`, `Input`, `Label`, `Card`; Lucide icons with text labels |
-| B2 | The current place | `aria-current="page"`, a visible style, matching `/students/12` to "Students" |
-| B3 | Forms | `label` + `htmlFor`, `name`, `type`, `autocomplete`, `required`; errors beside the field |
-| B4 | The config module grows | `school.ts`: `name`, `shortName`, `motto`, `addressLines`, `phone`, `logoPath`; used by the header and the login page |
-| B5 | In GPIS | `src/components/app-shell.tsx` and `bottomNav()`; no hamburger on phones; Account and Sign out in the photo menu (D-254) |
+| 1 | Adding a framework to a living repository | Install `next`, `react`, `react-dom`, TypeScript types; `src/app/`; scripts `dev`, `build`, `start`; keep `test`, `lint`, `typecheck`, `verify`; ESLint config for Next |
+| 2 | Nested layouts and route groups | `(app)/layout.tsx` for pages with the shell; `/login` outside it |
+| 3 | Navigation as data | `src/lib/navigation.ts`: `{ label, href, icon, inBottomBar }[]`; one source, two drawings |
+| 4 | Two shapes, one page | Sidebar `hidden md:flex`; bottom bar `md:hidden`, fixed to the bottom; content padding so the bar hides nothing |
+| 5 | The More page | The bar holds four places and More; More lists every place. Nothing is unreachable on a phone |
+| 6 | shadcn/ui | Components are copied into `src/components/ui/`; `Button`, `Input`, `Label`, `Card`; Lucide icons with text labels |
+| 7 | The current place | `aria-current="page"`, a visible style, matching `/students/12` to "Students" |
+| 8 | Forms | `label` + `htmlFor`, `name`, `type`, `autocomplete`, `required`; errors beside the field |
+| 9 | The config module grows | `school.ts`: `name`, `shortName`, `motto`, `addressLines`, `phone`, `logoPath`; used by the header and the login page |
+| 10 | In GPIS | `src/components/app-shell.tsx` and `bottomNav()`; no hamburger on phones; Account and Sign out in the photo menu (D-254) |
 
 - **Diagram:** two wireframes side by side: 360px (top bar, content, bottom bar with five items) and 1280px (sidebar, content).
 - **Common mistakes**
@@ -306,11 +317,14 @@ What you just used: route groups, a nav list, responsive show / hide, shadcn/ui,
 
 ### Lab — project 3.2 App shell (repo project)
 
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
 **What done means**
 
 | # | Requirement | Step |
 | :--- | :--- | :--- |
-| 1 | `gpis-rebuild` is a Next.js app (App Router, `src/app/`); `npm run dev` serves port 3000; `npm test` still passes; `verify.sh` runs lint, typecheck, tests and build | `project-files`, `old-tests`, `static` |
+| 1 | `school-system` is a Next.js app (App Router, `src/app/`); `npm run dev` serves port 3000; `npm test` still passes; `verify.sh` runs lint, typecheck, tests and build | `project-files`, `old-tests`, `static` |
 | 2 | `src/config/school.ts` exports `school` with `name`, `shortName`, `motto`, `addressLines`, `phone`, `logoPath`; `school.mjs` is gone; the school's name is typed in no other file under `src/` | `one-source`, `school-info` |
 | 3 | `src/lib/navigation.ts` exports `navigation`: Home `/`, Students `/students`, Scores `/scores`, Classes `/classes`, Settings `/settings`; and `bottomBar`: the first four, then More `/more` | `nav-data` |
 | 4 | Pages exist (a heading and one sentence each for now): `/`, `/students`, `/scores`, `/classes`, `/settings`, `/more`, `/login` | `pages-answer` |
@@ -361,6 +375,10 @@ bar's height and the content's bottom padding should be the same Tailwind number
 - **Compare with GPIS:** (1) Read `src/components/app-shell.tsx` and find `bottomNav()`. How does GPIS decide which places go in the bar for each role? (2) GPIS's sidebar is "computers only". What did phones have before D-254, and what problem did the owner describe? (3) Every GPIS page "keeps its own server gate". Why is hiding a link in the menu not a security measure?
 - **Mastery:** (1) Add a new place "Reports" in under five minutes and show it in both menus. (2) Explain route groups with a drawing. (3) From memory, write a labelled input with shadcn/ui. (4) Say why a fixed bar needs padding, and how much.
 
+**Debugging-lab check** (`m3-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m3-p2-own`). Compare the two role menus in both layouts. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m3-p2`, version 1.0.0, no `lab:`, `requires [wsl, node, git, playwright]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -410,7 +428,7 @@ Unit 3.1; module 2's repository. **Network: yes** (`npm install`, shadcn). App r
 | title | Server Components and the URL as state |
 | module / position | 3 / 3 |
 | guidance | guided |
-| minutes | 1080 |
+| minutes | `{ min: 870, max: 1290 }` |
 | gpis_part | The Students list: search, filters and paging in the URL; a table that becomes cards on phones |
 | requires | `[wsl, node, git, playwright]` |
 
@@ -424,20 +442,23 @@ After this unit you can:
 4. show a table on wide screens and cards on phones from the same data;
 5. design the empty, loading and error states before the happy one is finished.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a bookmark that opens the register at the same search; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://nextjs.org/docs/app) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | Two places code can run | Server Components: run on the server, can read data, send HTML. Client Components: run in the browser too, can hold state and handle events. Default: server |
-| A2 | The address is state | `?q=asante&class=basic-3&page=2`. Shareable, back button works, survives reload, needs no JavaScript |
-| A3 | Reading it | The page receives the search parameters; treat them as untrusted text; parse into a typed `StudentListQuery` with defaults |
-| A4 | Writing it | Every link is built by one function `studentsHref(query, change)`; a GET form for search needs no JavaScript |
-| A5 | Pure list logic | `filterStudents`, `sortStudents`, `paginate` in `src/lib/student-list.ts`; reuse `matchesName` (2.4) and `classRoll` ideas (2.6) |
-| B1 | Who is listed | Default: active students with an open membership (D-04). The status filter shows withdrawn or alumni on purpose |
-| B2 | Table and cards | One list of rows; `<table>` inside `hidden md:block`, cards inside `md:hidden`; both complete — nothing dropped on phones |
-| B3 | Paging | Page size 10; "Page 2 of 3"; previous / next as links; a page past the end shows the last page |
-| B4 | States | Empty ("No students match"), with a way out (clear filters); `loading.tsx`; `error.tsx` with a retry |
-| B5 | In GPIS | The Students page reads its filters from the URL; name search follows D-247 |
+| 1 | Two places code can run | Server Components: run on the server, can read data, send HTML. Client Components: run in the browser too, can hold state and handle events. Default: server |
+| 2 | The address is state | `?q=asante&class=basic-3&page=2`. Shareable, back button works, survives reload, needs no JavaScript |
+| 3 | Reading it | The page receives the search parameters; treat them as untrusted text; parse into a typed `StudentListQuery` with defaults |
+| 4 | Writing it | Every link is built by one function `studentsHref(query, change)`; a GET form for search needs no JavaScript |
+| 5 | Pure list logic | `filterStudents`, `sortStudents`, `paginate` in `src/lib/student-list.ts`; reuse `matchesName` (2.4) and `classRoll` ideas (2.6) |
+| 6 | Who is listed | Default: active students with an open membership (D-04). The status filter shows withdrawn or alumni on purpose |
+| 7 | Table and cards | One list of rows; `<table>` inside `hidden md:block`, cards inside `md:hidden`; both complete — nothing dropped on phones |
+| 8 | Paging | Page size 10; "Page 2 of 3"; previous / next as links; a page past the end shows the last page |
+| 9 | States | Empty ("No students match"), with a way out (clear filters); `loading.tsx`; `error.tsx` with a retry |
+| 10 | In GPIS | The Students page reads its filters from the URL; name search follows D-247 |
 
 - **Diagram:** request flow: browser address → server reads parameters → pure functions over data → HTML → links carrying the next address.
 - **Common mistakes**
@@ -476,6 +497,9 @@ What you just used: Server Components, search parameters, a GET form, one href b
 | 8 | What is a good empty state? | It says nothing matched and offers a way to clear the filters | A blank area (looks broken); the full list (ignores the search); a red error (nothing failed) |
 
 ### Lab — project 3.3 Students list (repo project)
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **Start:** copy the sample data from `lab.md` into `src/data/sample.ts` (see the contract).
 
@@ -533,6 +557,10 @@ with `URLSearchParams`, and add a key only when it differs from its default. (c)
 - **Compare with GPIS:** (1) Open the Students page in the read-only copy (`src/app/…/students/page.tsx`). Which parameters does it read from the address? (2) GPIS's search also accepts "name, class" (`name-class-search.ts`). What does that save a teacher on a phone? (3) Your list filters in memory. GPIS filters in the database. What changes when there are 2,000 students? (Modules 4 and 6.)
 - **Mastery:** (1) Add a "gender" filter end to end in 30 minutes, with tests. (2) Explain why the search form needs no JavaScript. (3) Draw the request flow for pressing "Next". (4) List four states of a list screen and what each must show.
 
+**Debugging-lab check** (`m3-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m3-p3-own`). Request two academic years and compare each class count and roster link. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m3-p3`, version 1.0.0, no `lab:`, `requires [wsl, node, git, playwright]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -580,7 +608,7 @@ Unit 3.2; `matchesName` (2.4), types and `classRoll` ideas (2.6). App running on
 | title | Dynamic routes and tabs |
 | module / position | 3 / 4 |
 | guidance | half |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | The student profile: overview, class history from memberships, documents |
 | requires | `[wsl, node, git, playwright]` |
 
@@ -595,6 +623,9 @@ After this unit you can:
 5. use `not-found` correctly instead of an empty or broken page.
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with tabs in a pupil’s paper file; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://nextjs.org/docs/app) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
@@ -637,6 +668,9 @@ Continues `~/academy-labs/scratch/u3-3/books/`.
 | 6 | GPIS D-21: Ama was in Basic 2 last year. Under "2025/2026" her history shows | Basic 2 | Basic 3 (today's class); both; nothing until she graduates |
 
 ### Lab — project 3.4 Student profile (repo project)
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **What done means**
 
@@ -685,6 +719,10 @@ module 2. (3) A gap is the time between one membership's end and the next one's 
 - **Compare with GPIS:** (1) Open a student profile page in the read-only copy. What tabs does it have, and which is in the address? (2) GPIS's `/records` area is read-only by decision (D-75, D-76). Why must a historical roster not filter on `status = 'active'`? (3) Where on the GPIS profile do document actions live, and which decision put them there?
 - **Mastery:** (1) Add a fourth tab in 15 minutes. (2) Explain to someone why "current class" is a sentence for a withdrawn student, not a blank. (3) From memory, write the gap rule. (4) Name the three wrong ids you would always test.
 
+**Debugging-lab check** (`m3-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m3-p4-own`). Open a historical term and compare the roll with a current-term roll. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m3-p4`, version 1.0.0, no `lab:`, `requires [wsl, node, git, playwright]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -727,13 +765,11 @@ Unit 3.3 (sample data, list). App running on 3000.
 | title | Client Components and forms |
 | module / position | 3 / 5 |
 | guidance | half |
-| minutes | 1200 |
+| minutes | `{ min: 960, max: 1440 }` |
 | gpis_part | The score entry screen: one part at a time, autosave, one bottom button (D-257) |
 | requires | `[wsl, node, git, playwright]` |
 
-**Blocked in part by [Q4]:** four steps of this check click and type. They are designed as
-`tests` files that drive the page with Playwright from the project. If Q4 is answered
-otherwise, only the "(Q4)" rows of the check plan change.
+The four interactive steps use the local score page with the phone viewport and a fresh draft.
 
 ### Outcomes
 
@@ -745,21 +781,24 @@ After this unit you can:
 4. build a screen with exactly one main action that changes with the situation;
 5. warn before the user loses work, and only then.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a teacher writing one mark and keeping a draft; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://nextjs.org/docs/app) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | When the browser must run code | Events, state, storage. `"use client"` at the top of the file; everything it imports ships to the browser |
-| A2 | Server shell, client island | The page (server) loads class, subject, roster and part from the address; it passes plain data to one client component |
-| A3 | State | `useState`; state is per component; never copy props into state without a reason; derive what can be derived |
-| A4 | Controlled inputs | `value` + `onChange`; keep what the user typed as **text**; parse separately (`parseMark`, 2.3) |
-| A5 | Showing a problem | Under the box, a few words ("Max 15"); `aria-invalid`, `aria-describedby`; never clear what was typed |
-| B1 | A local draft | `localStorage`, one key per class + subject; write on every valid change; read once after mounting (the server has no storage) |
-| B2 | The tick | "✓ Saved" after a write; it never says "Saving…" (D-257) |
-| B3 | One bottom button | A pure function `bottomAction(state)` chooses: marks to fix → next part → submit. Test it without a browser |
-| B4 | Leaving with unsaved work | Only invalid marks are unsaved; `beforeunload` while any exist; no warning otherwise |
-| B5 | Phone typing | `inputMode="decimal"`, 44px boxes, Enter moves to the next student, the bar above the keyboard |
-| B6 | In GPIS | D-257 in full; D-162: zero, blank and ABS; Class Test is filled from Monthly tests, shown as a locked chip |
+| 1 | When the browser must run code | Events, state, storage. `"use client"` at the top of the file; everything it imports ships to the browser |
+| 2 | Server shell, client island | The page (server) loads class, subject, roster and part from the address; it passes plain data to one client component |
+| 3 | State | `useState`; state is per component; never copy props into state without a reason; derive what can be derived |
+| 4 | Controlled inputs | `value` + `onChange`; keep what the user typed as **text**; parse separately (`parseMark`, 2.3) |
+| 5 | Showing a problem | Under the box, a few words ("Max 15"); `aria-invalid`, `aria-describedby`; never clear what was typed |
+| 6 | A local draft | `localStorage`, one key per class + subject; write on every valid change; read once after mounting (the server has no storage) |
+| 7 | The tick | "✓ Saved" after a write; it never says "Saving…" (D-257) |
+| 8 | One bottom button | A pure function `bottomAction(state)` chooses: marks to fix → next part → submit. Test it without a browser |
+| 9 | Leaving with unsaved work | Only invalid marks are unsaved; `beforeunload` while any exist; no warning otherwise |
+| 10 | Phone typing | `inputMode="decimal"`, 44px boxes, Enter moves to the next student, the bar above the keyboard |
+| 11 | In GPIS | D-257 in full; D-162: zero, blank and ABS; Class Test is filled from Monthly tests, shown as a locked chip |
 
 - **Diagram:** the screen at 360px as boxes: header (subject, "✓ Saved", one small line) / part chips / list of students with one box each / the one bottom button.
 - **Common mistakes**
@@ -768,6 +807,8 @@ After this unit you can:
   3. Reading `localStorage` while rendering → the server and the browser disagree (a hydration error) → read in an effect.
   4. Saving invalid text to the draft → a wrong mark comes back tomorrow → save only what `parseMark` accepts.
   5. Three buttons at the bottom ("Save", "Next", "Submit") → the user must think → one, chosen by the state.
+
+**Planning a project.** Recall the three plans from Project 1.6. Show one edge case for this milestone and how to turn it into a test before implementing it.
 
 ### Guided example — "Attendance for one class" (first half in full, second as tasks)
 
@@ -797,6 +838,21 @@ Present, Absent or Late; a note of at most 40 characters.
 
 ### Lab — project 3.5 Score entry screen (repo project)
 
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Step 1 · Plan the milestone.** In `lab.md`, list the following exact implementation
+paths. Before the first change to any of them, commit `requirements.md`, `spec.md`
+and `decisions.md` together under `docs/plans/3.5/`. Use the headings in guide §0.4.
+
+- `src/app/(app)/scores/[classSlug]/page.tsx`
+- `src/app/(app)/scores/[classSlug]/[subjectSlug]/page.tsx`
+- `src/components/scores/entry-sheet.tsx`
+- `src/lib/score-entry.ts`
+
+
+The course already created the Scores index in Project 3.2. The history check starts with the new detail routes, entry sheet and score-entry module listed above.
+
 Address: `/scores/<classSlug>/<subjectSlug>?part=<part>`; parts `individual` (default, left
 out of the address), `group`, `project`, `exam`. `/scores` lists the classes; a class lists
 its subjects (plain links; kept simple).
@@ -808,14 +864,14 @@ its subjects (plain links; kept simple).
 | 1 | `/scores/basic-3/mathematics` shows the subject, the class, "Draft", and the seven active students of Basic 3 in last-name order, each with one box for the current part | `entry-first-part` |
 | 2 | Part chips with maxima: "Ind Test 15", "Group Work 15", "Project Work 15", "Exam 100", as links that change `part`; the current chip has `aria-current`; a dashed, locked chip "Class test auto" that is not a link | `chips-html` |
 | 3 | An unknown class, subject or part gives 404 | `unknown-404` |
-| 4 | Each box: a label with the student's name, `inputmode="decimal"`, at least 44px high; it accepts what `parseMark` accepts (numbers to two decimals up to the part's maximum, blank, `ABS`) | `entry-first-part`, `typing` (Q4) |
-| 5 | A value `parseMark` refuses stays in the box, is marked `aria-invalid="true"`, shows a short reason ("Max 15", "Numbers only", "2 decimals max") and is **not** saved | `typing` (Q4) |
-| 6 | Every accepted change is saved at once to `localStorage` under `gpis-draft:<classSlug>:<subjectSlug>` as JSON `{ [studentId]: { individual, group, project, exam } }` with numbers, `"ABS"` or `null`; the header shows "✓ Saved" and never "Saving…" | `draft` (Q4) |
-| 7 | Reloading, or moving to another part and back, shows the saved values | `draft` (Q4) |
-| 8 | One bottom button, by priority: "N marks to fix ↑" (focuses the first invalid box); else "Next: <part> ›" (a link to the next part); else, on Exam, "Submit Mathematics" | `bottom-action-logic`, `bottom-button` (Q4) |
-| 9 | Submit opens a dialog with "Blank marks stay blank. They are not counted as 0." and the number of blanks; its confirm button is disabled and labelled "Submitting is built in unit 5.4" | `bottom-button` (Q4) |
-| 10 | Enter in a box moves to the next student's box | `typing` (Q4) |
-| 11 | Leaving the page while a box is invalid asks for confirmation; with no invalid box it does not | `leave-warning` (Q4) |
+| 4 | Each box: a label with the student's name, `inputmode="decimal"`, at least 44px high; it accepts what `parseMark` accepts (numbers to two decimals up to the part's maximum, blank, `ABS`) | `entry-first-part`, `typing` |
+| 5 | A value `parseMark` refuses stays in the box, is marked `aria-invalid="true"`, shows a short reason ("Max 15", "Numbers only", "2 decimals max") and is **not** saved | `typing` |
+| 6 | Every accepted change is saved at once to `localStorage` under `gpis-draft:<classSlug>:<subjectSlug>` as JSON `{ [studentId]: { individual, group, project, exam } }` with numbers, `"ABS"` or `null`; the header shows "✓ Saved" and never "Saving…" | `draft` |
+| 7 | Reloading, or moving to another part and back, shows the saved values | `draft` |
+| 8 | One bottom button, by priority: "N marks to fix ↑" (focuses the first invalid box); else "Next: <part> ›" (a link to the next part); else, on Exam, "Submit Mathematics" | `bottom-action-logic`, `bottom-button` |
+| 9 | Submit opens a dialog with "Blank marks stay blank. They are not counted as 0." and the number of blanks; its confirm button is disabled and labelled "Submitting is built in unit 5.4" | `bottom-button` |
+| 10 | Enter in a box moves to the next student's box | `typing` |
+| 11 | Leaving the page while a box is invalid asks for confirmation; with no invalid box it does not | `leave-warning` |
 | 12 | `src/lib/score-entry.ts` holds pure functions `bottomAction(state)` and `countBlanks(draft, roster)`, with your tests; the client component is the only `"use client"` file under `src/app/(app)/scores` and `src/components/scores` besides small UI parts | `bottom-action-logic`, `client-files` |
 
 **Hints** (folded): (1) Keep the typed text in state; call `parseMark` when you need to know
@@ -853,7 +909,16 @@ browser event for leaving.
 - **Compare with GPIS:** (1) Read D-257 in `docs/DECISIONS.md`. Which two button states did you not build, and what do they need that you do not have yet? ("Not saved · Retry" and "Next subject".) (2) GPIS autosaves to the server, not only to the browser. What can go wrong with a browser-only draft on a shared phone? (3) GPIS names its test file for this screen in D-257 point 6. Open it. What does it check at 360px that you checked by hand?
 - **Mastery:** (1) Write `bottomAction` again from memory with five tests. (2) Explain the hydration error to someone with a drawing of server HTML against browser HTML. (3) Add a fifth part in a scratch branch and list every place that had to change. (4) Explain why the box keeps "150" visible when it is refused.
 
+**Debugging-lab check** (`m3-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m3-p5-own`). At computer width edit a mark in grid view and reopen it in single-part view. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m3-p5`, version 1.0.0, no `lab:`, `requires [wsl, node, git, playwright]`)
+
+Add three required `doc` steps for the plans in `docs/plans/3.5/`, one per file,
+with the headings in §0.4. Add a required `tests` step for the decision count and
+the Git ancestry check in §0.4, using the literal paths in step 1 above.
+
 
 | Step id | Kind | Req. | Verifies |
 | :--- | :--- | :--- | :--- |
@@ -863,10 +928,10 @@ browser event for leaving.
 | `chips-html` | tests (files) | yes | Fetch `/scores/basic-3/mathematics?part=group`: four chip links with the texts above and hrefs for each part (default part without `?part`); `aria-current` on Group Work; an element with text "Class test auto" that is not inside an `<a>`; seven `<input>` with `inputmode="decimal"`, each with a `<label>` containing a student's name |
 | `entry-first-part` | page | yes | `http://localhost:3000/scores/basic-3/mathematics`, `text: ["Mathematics", "Basic 3", "Draft", "Ind Test 15", "Exam 100", "Class test auto", "Godfred Kofi Asante", "Next: Group Work"]`, `no_sideways_scroll`, `min_target_px: 44` |
 | `entry-exam-part` | page | yes | `…?part=exam`, `text: ["Submit Mathematics"]` |
-| `typing` (Q4) | tests (files, Playwright) | yes | At 360px: type `12` for the first student → no `aria-invalid`; type `16` → `aria-invalid="true"` and "Max 15" visible, box still shows `16`; type `abc` → "Numbers only"; `7.555` → "2 decimals max"; `abs` → accepted; press Enter → focus is in the second student's box |
-| `draft` (Q4) | tests (files, Playwright) | yes | Type `12`, `0`, `ABS`, leave one blank, and `16` in the fifth box; read `localStorage["gpis-draft:basic-3:mathematics"]`: values `12`, `0`, `"ABS"`, `null` or missing, and **no** 16; "✓ Saved" visible and the page never contained "Saving"; reload → boxes show `12`, `0`, `ABS`, empty; go to Group Work and back → the same |
-| `bottom-button` (Q4) | tests (files, Playwright) | yes | With one invalid box the only button in the bottom bar reads "1 mark to fix ↑", and clicking it focuses that box; after correcting it reads "Next: Group Work ›" and leads to `?part=group`; on Exam "Submit Mathematics" opens a dialog containing "Blank marks stay blank. They are not counted as 0." and a disabled confirm button |
-| `leave-warning` (Q4) | tests (files, Playwright) | yes | With an invalid box, closing the page raises a `beforeunload` dialog; with none, it does not |
+| `typing` | page | yes | At 360px: type `12` for the first student → no `aria-invalid`; type `16` → `aria-invalid="true"` and "Max 15" visible, box still shows `16`; type `abc` → "Numbers only"; `7.555` → "2 decimals max"; `abs` → accepted; press Enter → focus is in the second student's box |
+| `draft` | page | yes | Use `fill` with each pupil’s label for `12`, `0`, `ABS`, leave one blank, and `16` in the fifth box; use `expect_local_storage` for the full fixture JSON in `localStorage["gpis-draft:basic-3:mathematics"]`: values `12`, `0`, `"ABS"`, `null` or missing, and **no** 16; "✓ Saved" visible and the page never contained "Saving"; reload → boxes show `12`, `0`, `ABS`, empty; go to Group Work and back → the same |
+| `bottom-button` | page | yes | With one invalid box the only button in the bottom bar reads "1 mark to fix ↑", and clicking it focuses that box; after correcting it reads "Next: Group Work ›" and leads to `?part=group`; on Exam "Submit Mathematics" opens a dialog containing "Blank marks stay blank. They are not counted as 0." and a disabled confirm button |
+| `leave-warning` | page | yes | Use `fill` to enter 16 for a 15-mark part, assert `expect_leave_warning: true`, then fill 12 and assert `expect_leave_warning: false` |
 | `static` | static | yes | `run: [lint, tsc, build]` |
 
 Contract told to the learner: the bottom bar of this screen has `data-entry-action`; each
@@ -901,7 +966,7 @@ Units 3.3–3.4; `parseMark` (2.3). `npm install --save-dev playwright` (network
 | title | Printing |
 | module / position | 3 / 6 |
 | guidance | half |
-| minutes | 1020 |
+| minutes | `{ min: 810, max: 1230 }` |
 | gpis_part | The shared print layer: A4 portrait, one header from the school config, used by every document (D-07, D-33) |
 | requires | `[wsl, node, git, playwright]` |
 
@@ -916,6 +981,9 @@ After this unit you can:
 5. explain why the header is built once, before any document.
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a report laid on A4 paper; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://nextjs.org/docs/app) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
@@ -961,6 +1029,9 @@ Continues the notice app of 3.1.
 
 ### Lab — project 3.6 Print layer (repo project)
 
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
 Documents: **Class list** `/print/class-list/<classSlug>` and **Student summary**
 `/print/student/<id>`.
 
@@ -971,7 +1042,7 @@ Documents: **Class list** `/print/class-list/<classSlug>` and **Student summary*
 | 1 | `src/components/print/print-page.tsx` is the only place that draws the letterhead: logo, school name, address lines and phone from `school.ts`, then the document title; and a footer "Printed 14 November 2026" using `schoolToday` | `one-header`, `class-list`, `student-summary` |
 | 2 | Both documents use it; neither repeats any school detail | `one-header` |
 | 3 | One `@page` rule in the project: `size: A4 portrait` with margins | `one-page-rule` |
-| 4 | The shell (sidebar, bottom bar, top bar) and every button are not printed | `print-hidden-html`, `print-media` (Q4, optional) |
+| 4 | The shell (sidebar, bottom bar, top bar) and every button are not printed | `print-hidden-html`, `print-media` (T35, optional) |
 | 5 | Class list: title "Class list — Basic 3", academic year, term, "On roll: 7", a numbered table (No., Name, Code, Gender) of the active students with an open membership (D-04), last-name order; rows do not split across pages | `class-list`, `class-list-html` |
 | 6 | Student summary: name, code, class, date of birth, guardian phone, House, and the class history table; a missing value (for example no middle name, no phone) prints an empty cell | `student-summary`, `blank-is-blank` |
 | 7 | Each document has a "Print" button (calls the browser's print) and a "Back" link, neither printed; the profile's Documents tab gains a working row "Student summary"; the class page or Students list links to the class list | `print-hidden-html` |
@@ -1011,6 +1082,10 @@ tiny Client Component.
 - **Compare with GPIS:** (1) Find the shared print component under `src/components/print/` (or `src/lib/print/`) in the read-only copy. Which documents use it? (2) Read D-33's reason for building the layer first. What happened in the legacy Word export (`routes/admission.py:1042`)? (3) Why is the ID card sheet (D-34) not "one document per page", and what does it need that an A4 document does not?
 - **Mastery:** (1) Add a third document (a blank marks sheet for one subject) in 30 minutes using the layer. (2) From memory, write the `@page` rule and one break rule. (3) Explain why browser printing was chosen over a PDF library, with one cost and one benefit. (4) Show in print preview that the bottom bar is gone.
 
+**Debugging-lab check** (`m3-p6-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m3-p6-own`). Compare batch roster size with summary count and check page breaks in print preview. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m3-p6`, version 1.0.0, no `lab:`, `requires [wsl, node, git, playwright]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -1023,7 +1098,7 @@ tiny Client Component.
 | `blank-is-blank` | tests (files) | yes | Fetch `/print/student/<id of a sample student with no middle name and no guardian phone>`: the value cells for those rows are empty (no `0`, `N/A`, `-`, `—`, `null`, `undefined`) |
 | `class-list` | page | yes | `http://localhost:3000/print/class-list/basic-3`, `text: ["Great Pakyiman International School", "Class list — Basic 3", "On roll: 7", "Godfred Kofi Asante", "Printed"]`, `no_sideways_scroll` |
 | `student-summary` | page | yes | `…/print/student/2`, `text: ["Great Pakyiman International School", "Ama Serwaa Birikran", "Basic 2", "Basic 3", "Printed"]`, `no_sideways_scroll` |
-| `print-media` (Q4) | tests (files, Playwright) | no | With print media emulated: the header is visible; elements with `data-bottom-bar`, `data-sidebar` and all buttons are not visible |
+| `print-media` (T35) | page | no | Open the Basic 3 class list with `media: print`. Use `expect_text` for the school name and class title. Mark each shell area and each screen-only control (including Print and Back) with `data-testid="screen-only"`; `expect_count: { testid: screen-only, count: 0 }` checks visibility. Repeat on the student summary with `goto`. Keep the HTML coverage check for all buttons and the CSS assertion for A4 portrait. |
 | `static` | static | yes | `run: [lint, tsc, build]` |
 
 The sample data contract gains one fact for this unit: student 7 has `middleName: null` and

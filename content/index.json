@@ -61,7 +61,7 @@
       "slug": "m8",
       "title": "Algorithms and problem solving",
       "guidance": "half",
-      "guidance_label": "Half guided",
+      "guidance_label": "Half → independent from 8.3",
       "weeks": 4
     },
     {
@@ -153,7 +153,7 @@
       "position": 8,
       "title": "Algorithms and problem solving",
       "guidance": "half",
-      "content_hash": "517dfa1e0a04190d8e3630dcbd69fff00de0e76e41b6af3c476363345f2632a0"
+      "content_hash": "f700d701f389573e285fe19e6ef5f5a7a7e065f6a9ceb07a32cf6c51a94315f2"
     },
     {
       "slug": "m9",

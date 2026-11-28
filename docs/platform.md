@@ -19,7 +19,7 @@ did, and receives results from the local checker (`checker.md`). It never runs l
 flowchart LR
   subgraph PC["Learner's computer (WSL 2)"]
     VS["VS Code + terminal"]:::local
-    REPO["gpis-rebuild repo"]:::local
+    REPO["school-system repo"]:::local
     CLI["academy checker CLI"]:::local
   end
   subgraph CLOUD["Hosted (free tiers)"]
@@ -81,7 +81,7 @@ flowchart TD
   C --> D{"Quiz passed?"}:::gate
   D -- no --> B
   D -- yes --> E["Lab + debugging lab"]:::work
-  E --> F["Own build in gpis-rebuild"]:::work
+  E --> F["Own build in school-system"]:::work
   F --> G["Run checker in terminal"]:::cli
   G --> H{"All checks pass?"}:::gate
   H -- no --> F

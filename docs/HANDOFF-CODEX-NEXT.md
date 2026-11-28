@@ -18,15 +18,16 @@ every report in short, plain English.
    decisions table at the top is final) and `docs/course-design/99-builder-notes.md`.
 2. Find the first task in the list below whose "done when" is not yet true. Do that task.
 3. The GPIS repository `srufai1/gpis-school-system` is **read-only reference**. Never edit,
-   commit to or run it. Every GPIS rule you use is quoted with its D-number from
-   `docs/DECISIONS.md`; never invent one. If a rule you need is missing, stop that task and
-   ask (see "When to stop").
+   commit to or run it. Follow guide §4. Quote school rules with their D-number from GPIS
+   `docs/DECISIONS.md`. Cite engineering practices by GPIS file and section. Never invent a
+   source. If a school rule has no D-number, stop and ask.
 
 ## The task list
 
 | # | Task | Done when |
 | :--- | :--- | :--- |
 | 1 | **T32** — update the course-design files (and `docs/curriculum.md`, `docs/decisions.md` wording, platform copy) to section 0.6's naming, and to the owner's 19 answers (roadmap T32) **and** to the owner's teaching rules in `00-guide.md` section 0 (simple words + technical, Learn more links, no unexplained codes, numbered steps with hints, milestone plans) | Every "Accept" line of T32 is true; every module file's lesson outlines, labs and check plans follow section 0; `npm test` green |
+| 1a | **T35** — page step: print view | Roadmap T35 passes before module 3 or 5 content begins |
 | 2 | **T34** — rework the 12 built units (1.1–2.6) to `00-guide.md` section 0 (including 0.6: "build a School Management System", folder `~/projects/school-system` in every page, seed and check): add "In simple words" and "Learn more" to every lesson section, replace bare codes with names, numbered steps with hints in every lab, milestone plan steps in 1.6 and 2.6; add the course Glossary page; bump each changed check's version | Each unit's done-list in `00-guide.md` section 14 is true again; every link opened and working; `npm run content`; `npm test` green |
 | 3 | **T28** — debugging-lab and own-build checks for the 12 built units (1.1–2.6); fix unit 1.1's names to `m1-p1-debug` and `m1-p1-own` | Each new check fails on its start state and passes on a solved copy (kept outside the repo); `npm run content`; `npm test` green |
 | 4 | **T29** — unit time as a range | Roadmap T29 "Accept" is true |
@@ -92,7 +93,7 @@ solved copy, then the pages, then `npm run content`. One commit per unit:
 
 Stop the current task (finish nothing half-way in a commit) and ask the owner one short,
 plain question with 2–3 options when:
-- a GPIS rule you need is not in `docs/DECISIONS.md`;
+- a GPIS school rule you need has no D-number in `docs/DECISIONS.md`;
 - a design file and the checker cannot both be true (say which line and why);
 - a task would need a new checker feature or a database change not in the roadmap;
 - something would delete or rewrite work that already exists.

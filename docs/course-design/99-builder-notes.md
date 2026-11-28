@@ -5,7 +5,13 @@ Written by the builder after building units 1.2–1.6 and 2.1–2.6 from `00-gui
 open questions, and places where the design and reality differed. Each item says what was
 built, so it can be confirmed or changed.
 
-## Interim answers to open questions (please confirm or replace)
+## Original build and subsequent decisions
+
+The table records the first build. For T28, publish the debugging and own-build
+checks separately as described in each module design. Reuse the listed seed or
+scratch repo for debugging. Check the own build in the learner’s project. The owner
+confirmed the Academy sign-in page as the GET-only target for the request journey.
+T34 updates the existing pages and milestone instructions before those checks ship.
 
 | Question | What was built |
 | :--- | :--- |

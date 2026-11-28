@@ -4,12 +4,12 @@ Read `00-guide.md` first. Level: **guided** (all six units). 6 weeks, about 78 h
 
 | Unit | Title | Project | Kind | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 1.1 | The terminal and the filesystem | `m1-p1` Find your way | Lab | 360 | 10 (built) |
-| 1.2 | Text, pipes and small scripts | `m1-p2` Log report | Lab | 840 | 9 |
-| 1.3 | Processes, signals and ports | `m1-p3` Processes and ports | Lab | 780 | 8 |
-| 1.4 | Git: a history you can trust | `m1-p4` Git rescue | Lab | 900 | 11 |
-| 1.5 | How the web works: one request's journey | `m1-p5` Request journey | Repo | 840 | 9 |
-| 1.6 | A project home | `m1-p6` Project home | Repo | 960 | 13 |
+| 1.1 | The terminal and the filesystem | `m1-p1` Find your way | Lab | 300–420 | 10 (built) |
+| 1.2 | Text, pipes and small scripts | `m1-p2` Log report | Lab | 660–1020 | 9 |
+| 1.3 | Processes, signals and ports | `m1-p3` Processes and ports | Lab | 630–930 | 8 |
+| 1.4 | Git: a history you can trust | `m1-p4` Git rescue | Lab | 720–1080 | 11 |
+| 1.5 | How the web works: one request's journey | `m1-p5` Request journey | Repo | 660–1020 | 9 |
+| 1.6 | A project home | `m1-p6` Project home | Repo | 780–1140 | 13 |
 
 **GPIS rules used in this module** (quote with the number; do not add others):
 
@@ -28,15 +28,29 @@ newer, VS Code with the WSL extension, `npx academy doctor` passes.
 
 ## Unit 1.1 — The terminal and the filesystem
 
-**Built. Keep as is.** Front matter: `id m1-u1`, `module 1`, `position 1`, `guidance guided`,
-`minutes 360`, `project m1-p1`, `requires [wsl]`.
+**Built unit; update its pages in T34.** Front matter: `id m1-u1`, `module 1`, `position 1`, `guidance guided`,
+`minutes { min: 300, max: 420 }`, `project m1-p1`, `requires [wsl]`.
 
-One defect is listed in `99-open-questions.md` **[Q1]**: `debugging-lab.md` and `own-build.md`
-name checks (`m1-p1-debug`, `m1-u1-own`) that do not exist and that the format cannot hold.
-Do not change the unit until Q1 is answered.
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a cupboard with named drawers; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://www.gnu.org/software/bash/manual/bash.html) (read · 10 min). Teach every quiz concept before the quiz.
+
+
+Use the existing lesson and guided example as the technical outline. Introduce paths using named drawers before asking learners to navigate the directory tree.
+
+### Lab — Find your way
+
+Open with what the learner is building and why. Use the numbered requirements as steps, with the command or file and an inline hint. End with “How to check your work”, the main command and what a pass shows.
+
+
+Use the seeded office tree and the numbered tasks in the built lab. Give an inline hint below each task. The debugging check verifies the repaired links and permissions in the broken office tree. The own build checks the learner’s project tree.
+
+**Debugging-lab check** (`m1-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m1-p1-own`). Check the folder tree, required files and command notes against the own-build list. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
 
 What later units rely on from 1.1: the read-only copy `~/reference/gpis-school-system`;
-the folder `~/projects/gpis-rebuild` with `docs/`, `scripts/`, `notes/`; `docs/commands.md`;
+the folder `~/projects/school-system` with `docs/`, `scripts/`, `notes/`; `docs/commands.md`;
 the five-heading `diagnosis.md`.
 
 ---
@@ -51,7 +65,7 @@ the five-heading `diagnosis.md`.
 | title | Text, pipes and small scripts |
 | module / position | 1 / 2 |
 | guidance | guided |
-| minutes | 840 |
+| minutes | `{ min: 660, max: 1020 }` |
 | gpis_part | The scripts folder of GPIS, and how a server log is read after a failed sign-in |
 | requires | `[wsl]` |
 
@@ -65,20 +79,23 @@ After this unit you can:
 4. use exit codes and standard error so another program can trust your script;
 5. test a script with a normal, an empty and an awkward input before calling it done.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with sorting attendance slips into piles; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://www.gnu.org/software/bash/manual/bash.html) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | One job per command | Small tools, joined. Standard input, standard output, standard error. `\|`, `>`, `>>`, `2>`, `<` |
-| A2 | Looking inside a file | `cat`, `less`, `head`, `tail -n`, `wc -l`. A log is one event per line |
-| A3 | Choosing lines | `grep`, `grep -v`, `grep -c`, `grep -E`. Anchors `^` `$`. Quote the pattern |
-| A4 | Choosing columns | `cut -d' ' -f`, `awk '{print $9, $7}'`. Why `awk` is easier when spaces repeat |
-| A5 | Counting and ranking | `sort`, `uniq -c` needs sorted input, `sort -k1,1nr -k3,3`, `head -n 5` |
-| B1 | A script is a saved pipeline | Shebang, `chmod u+x`, `./name.sh`, `set -euo pipefail` and what each part does |
-| B2 | Arguments and quoting | `$1`, `$#`, `"$1"` always in double quotes; what breaks with `term 1 access.log` |
-| B3 | Exit codes | `$?`, `exit 0/1/2`, `&&` and `\|\|`, messages for people go to standard error (`>&2`) |
-| B4 | Tests for a script | Three inputs every time: normal, empty, awkward name. Compare with `diff` |
-| B5 | In GPIS | `scripts/` holds small checks that CI runs; they must exit non-zero on failure or CI stays green by mistake |
+| 1 | One job per command | Small tools, joined. Standard input, standard output, standard error. `\|`, `>`, `>>`, `2>`, `<` |
+| 2 | Looking inside a file | `cat`, `less`, `head`, `tail -n`, `wc -l`. A log is one event per line |
+| 3 | Choosing lines | `grep`, `grep -v`, `grep -c`, `grep -E`. Anchors `^` `$`. Quote the pattern |
+| 4 | Choosing columns | `cut -d' ' -f`, `awk '{print $9, $7}'`. Why `awk` is easier when spaces repeat |
+| 5 | Counting and ranking | `sort`, `uniq -c` needs sorted input, `sort -k1,1nr -k3,3`, `head -n 5` |
+| 6 | A script is a saved pipeline | Shebang, `chmod u+x`, `./name.sh`, `set -euo pipefail` and what each part does |
+| 7 | Arguments and quoting | `$1`, `$#`, `"$1"` always in double quotes; what breaks with `term 1 access.log` |
+| 8 | Exit codes | `$?`, `exit 0/1/2`, `&&` and `\|\|`, messages for people go to standard error (`>&2`) |
+| 9 | Tests for a script | Three inputs every time: normal, empty, awkward name. Compare with `diff` |
+| 10 | In GPIS | `scripts/` holds small checks that CI runs; they must exit non-zero on failure or CI stays green by mistake |
 
 - **Diagram:** one text diagram of a pipeline: `access.log → grep → awk → sort → uniq -c → sort -nr → head`, with a three-line sample under each arrow.
 - **Common mistakes**
@@ -118,6 +135,9 @@ What you just used: `grep awk sort uniq head wc chmod`, `"$1"`, `$#`, `$?`, `>&2
 | 7 | GPIS: why must a check script in `scripts/` exit non-zero when it finds a problem? | CI reads only the exit code; 0 means "all good" | "So the text is red" (colour is not the signal); "Because Git refuses scripts that exit 0" (no such rule); "It does not matter if the message is clear" (nobody reads a green run) |
 
 ### Lab — project 1.2 Log report (lab project)
+
+Open with what the learner is building and why. Use the numbered requirements as steps, with the command or file and an inline hint. End with “How to check your work”, the main command and what a pass shows.
+
 
 - **Start:** `npx academy init m1-p2` → `~/academy-labs/m1-p2/logs`.
 - **Situation:** the school's web server kept a log for one morning. The head of ICT wants to
@@ -187,7 +207,7 @@ cases`, each at least 20 words.
 
 ### Own build — top pages
 
-In `~/projects/gpis-rebuild`:
+In `~/projects/school-system`:
 
 1. `scripts/top-pages.sh FILE [N]` prints the N most requested paths among **successful**
    requests (status 200–399), as `COUNT PATH`, biggest first, ties in path order. N defaults to 3.
@@ -202,6 +222,10 @@ In `~/projects/gpis-rebuild`:
 - **Checklist extras:** I ran the script on an empty file and on a name with spaces before I ran the checker. Errors go to standard error. I can say what every part of my pipeline does.
 - **Compare with GPIS:** (1) Open `scripts/` in the read-only copy. Pick one script. What does it exit with when it finds a problem, and who reads that? (2) GPIS checks run in CI, not by hand. What would happen to the project if one of them always exited 0?
 - **Mastery (lesson closed):** (1) From `access.log`, print the three addresses with the most requests of any kind. (2) Print how many `POST` requests failed. (3) Write, from an empty file, a script that prints `usage` to standard error and exits 1 when it gets no argument; prove the exit code. (4) Explain to a classmate why `uniq -c` needs `sort`, with a three-line example.
+
+**Debugging-lab check** (`m1-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m1-p2-own`). Run top-pages with tied paths, a spaced filename, an invalid N and no successful requests. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
 
 ### Check plan (`m1-p2`, version 1.0.0, `lab: root ~/academy-labs/m1-p2/logs, seed fixtures/seed.sh`, `requires [wsl]`)
 
@@ -245,7 +269,7 @@ Unit 1.1. No install. No network.
 | title | Processes, signals and ports |
 | module / position | 1 / 3 |
 | guidance | guided |
-| minutes | 780 |
+| minutes | `{ min: 630, max: 930 }` |
 | gpis_part | What runs when GPIS runs: the dev server, its port, and how to stop it cleanly |
 | requires | `[wsl, node]` |
 
@@ -260,6 +284,9 @@ After this unit you can:
 5. collect evidence (commands and output) before changing anything.
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with two clerks trying to use the same desk; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://www.gnu.org/software/bash/manual/bash.html) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
@@ -307,6 +334,9 @@ What you just used: `ps`, `pstree`, `jobs`, `kill`, `ss`, `curl`, `&`.
 | 7 | GPIS: `npm run dev` says port 3000 is in use. Best first step? | Find which process holds 3000 (`ss -ltnp`) and decide whether to stop it | "Restart the computer" (works, teaches nothing); "Change the app to port 3001 for good" (hides the old copy); "`kill -9` every node process" (may kill other work) |
 
 ### Lab — project 1.3 Processes and ports (lab project)
+
+Open with what the learner is building and why. Use the numbered requirements as steps, with the command or file and an inline hint. End with “How to check your work”, the main command and what a pass shows.
+
 
 - **Start:** `npx academy init m1-p3` → `~/academy-labs/m1-p3/office-server`, then `./start.sh`.
 - **Situation:** the office status server "is running" but nobody can open it, and the laptop
@@ -364,7 +394,7 @@ read only when the program starts.
 
 ### Own build — port check
 
-In `~/projects/gpis-rebuild`:
+In `~/projects/school-system`:
 
 1. `scripts/port-check.sh PORT` prints `free` and exits 0 when nothing listens on that port.
 2. When something listens, it prints `in use: PID COMMAND ADDRESS` and exits 1.
@@ -378,6 +408,10 @@ In `~/projects/gpis-rebuild`:
 - **Checklist extras:** I saved the evidence before I stopped anything. I used `TERM` first. I can read the address and the port in `ss` output.
 - **Compare with GPIS:** (1) Read `package.json` in the read-only copy. Which command starts the dev server, and which port does it use? Where could that port be changed? (2) GPIS's rule says "Never change working code merely to make an error message disappear." How would changing the port break that rule in the debugging lab?
 - **Mastery:** (1) Start any server on port 8123, then show three facts about it: PID, parent, listening address. (2) Stop it without `kill -9` and prove the port is free. (3) Explain "Connection refused" against "timed out" with one command for each. (4) Draw the process tree of your terminal now.
+
+**Debugging-lab check** (`m1-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m1-p3-own`). Probe a free loopback port and a temporary listener; check exit codes and reported owner. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
 
 ### Check plan (`m1-p3`, version 1.0.0, `lab: root ~/academy-labs/m1-p3/office-server`, `requires [wsl, node]`)
 
@@ -422,7 +456,7 @@ learner starts the processes; the seed starts nothing. No network.
 | title | Git: a history you can trust |
 | module / position | 1 / 4 |
 | guidance | guided |
-| minutes | 900 |
+| minutes | `{ min: 720, max: 1080 }` |
 | gpis_part | The commit history of GPIS: small commits, one topic each, no secret ever committed |
 | requires | `[wsl, git]` |
 
@@ -436,20 +470,23 @@ After this unit you can:
 4. find and bring back a commit that no branch points to;
 5. keep a secret file out of history with `.gitignore`, and say why deleting it later is not enough.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with dated copies of a class register; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://www.gnu.org/software/bash/manual/bash.html) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | What Git stores | Snapshots, not differences. A commit = snapshot + parent + message. `git log --oneline --graph --all` |
-| A2 | Three places | Working tree, staging area, repository. `status`, `add -p`, `commit`, `diff`, `diff --staged` |
-| A3 | Good commits | One topic. Message: what and why, in the present tense. Bad: "fix", "update", "wip" |
-| A4 | Branches are names | A branch is a movable name for a commit. `switch -c`, `branch`, HEAD |
-| A5 | Ignoring files | `.gitignore`; `.env`; "ignored" does not remove what is already committed |
-| B1 | Merging | Fast-forward and merge commit. `git merge --no-ff` |
-| B2 | Conflicts | Why they happen (same lines, two changes). The markers. Read both, write the right text, `add`, `commit`. `merge --abort` |
-| B3 | Nothing is lost quickly | `git reflog`. A commit with no branch still exists for weeks. `git branch name <sha>`, `cherry-pick` |
-| B4 | Rewriting history | `commit --amend`, `reset --hard`, force-push: what they destroy; the rule "never rewrite what others have" |
-| B5 | In GPIS | Small commits; `.env.local` never committed (security rule 7); CI searches for secret keys |
+| 1 | What Git stores | Snapshots, not differences. A commit = snapshot + parent + message. `git log --oneline --graph --all` |
+| 2 | Three places | Working tree, staging area, repository. `status`, `add -p`, `commit`, `diff`, `diff --staged` |
+| 3 | Good commits | One topic. Message: what and why, in the present tense. Bad: "fix", "update", "wip" |
+| 4 | Branches are names | A branch is a movable name for a commit. `switch -c`, `branch`, HEAD |
+| 5 | Ignoring files | `.gitignore`; `.env`; "ignored" does not remove what is already committed |
+| 6 | Merging | Fast-forward and merge commit. `git merge --no-ff` |
+| 7 | Conflicts | Why they happen (same lines, two changes). The markers. Read both, write the right text, `add`, `commit`. `merge --abort` |
+| 8 | Nothing is lost quickly | `git reflog`. A commit with no branch still exists for weeks. `git branch name <sha>`, `cherry-pick` |
+| 9 | Rewriting history | `commit --amend`, `reset --hard`, force-push: what they destroy; the rule "never rewrite what others have" |
+| 10 | In GPIS | Small commits; `.env.local` never committed (security rule 7); CI searches for secret keys |
 
 - **Diagram (Mermaid `gitGraph`):** `main` with three commits, a branch with two, a merge commit; a dotted note "deleted branch: commit still exists".
 - **Common mistakes**
@@ -491,6 +528,9 @@ What you just used: `init add commit status diff log switch branch merge reflog 
 | 8 | GPIS: a real key was pushed in a commit. What must happen first? | Change (rotate) the key, because anyone with the history has it | "Delete the file in a new commit" (history keeps it); "Make the repository private" (already copied); "Add it to `.gitignore`" (too late) |
 
 ### Lab — project 1.4 Git rescue (lab project)
+
+Open with what the learner is building and why. Use the numbered requirements as steps, with the command or file and an inline hint. End with “How to check your work”, the main command and what a pass shows.
+
 
 - **Start:** `npx academy init m1-p4` → `~/academy-labs/m1-p4/school-notes` (a Git repository).
 - **Situation:** two colleagues edited the term notes. One branch does not merge cleanly, a
@@ -547,9 +587,9 @@ or committed (not checked).
 | Evidence | Observe: `git log --oneline` output. Causes: commits on another branch; commits never made; commits on a detached HEAD. Tests: `git branch -a`; `git reflog` (shows "checkout: moving from <sha> to main"); `git status`. Fix 1: `git branch morning-work <sha>` and merge it. Fix 2: `git check-ignore -v notes/meeting.md` names the line; remove that line and commit `.gitignore` |
 | Fixed state | `main` contains both lost commits (same subject lines); `notes/meeting.md` is tracked; nothing was force-deleted or reset |
 
-### Own build — `gpis-rebuild` becomes a repository
+### Own build — `school-system` becomes a repository
 
-In `~/projects/gpis-rebuild`:
+In `~/projects/school-system`:
 
 1. It is a Git repository on branch `main` with your real name and email set for this repository.
 2. `.gitignore` ignores `.env`, `.env.*`, `node_modules/` and `notes/private/`; `.env.example` is **not** ignored.
@@ -563,6 +603,10 @@ In `~/projects/gpis-rebuild`:
 - **Checklist extras:** I read `git status` before every `git add`. I resolved the conflict by reading both sides. I did not use `reset --hard` or `push --force`. I can draw my history.
 - **Compare with GPIS:** (1) Run `git log --oneline | head -30` in the read-only copy. Pick three messages. What do they have in common? (2) Run `git log --stat -3`. How many files does a typical commit touch, and why does that help the person who reviews it? (3) GPIS's `.env.example` holds names and no values. Why is that file committed when `.env.local` never is?
 - **Mastery:** (1) In a new repository, make a conflict on purpose and resolve it; show the graph. (2) Delete an unmerged branch and bring its commit back. (3) Explain, with a drawing, the difference between the staging area and a commit. (4) Say what you would do in the first ten minutes after pushing a real password.
+
+**Debugging-lab check** (`m1-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m1-p4-own`). Inspect the local branch, ignored paths and committed files. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
 
 ### Check plan (`m1-p4`, version 1.0.0, `lab: root ~/academy-labs/m1-p4/school-notes`, `requires [wsl, git]`)
 
@@ -613,12 +657,11 @@ Units 1.1–1.3. Git installed. No network, no GitHub account yet.
 | title | How the web works: one request's journey |
 | module / position | 1 / 5 |
 | guidance | guided |
-| minutes | 840 |
+| minutes | `{ min: 660, max: 1020 }` |
 | gpis_part | The path of the GPIS sign-in request: browser, DNS, TLS, Vercel, the Next.js app, Supabase |
 | requires | `[wsl, git]` |
 
-**Blocked by [Q9]:** which site the learner traces. The unit says "the target site"
-everywhere; the answer to Q9 gives its address. Nothing else changes.
+The target is the Academy’s own sign-in page at `https://ruftech-academy.vercel.app/sign-in`. Use GET only; the learner stays signed out.
 
 ### Outcomes
 
@@ -630,21 +673,24 @@ After this unit you can:
 4. say where a cache can sit at each hop and what it would hide;
 5. tell from a symptom which hop probably failed.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a note passing from a pupil to the school office and back; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://www.gnu.org/software/bash/manual/bash.html) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | Clients and servers | Request and response. URL parts: scheme, host, port, path, query |
-| A2 | Finding the server: DNS | Name → address. Resolver, record types A / AAAA / CNAME, TTL. `dig +short`, `dig` |
-| A3 | Connecting: TCP | Address + port; the handshake in one sentence; ports 80 and 443 |
-| A4 | Trusting: TLS | Certificate, who signed it, which names it covers, expiry. What HTTPS protects and what it does not. `openssl s_client -connect host:443 -servername host` |
-| A5 | Speaking: HTTP | Methods GET / POST. Status families 2xx 3xx 4xx 5xx. Headers: `content-type`, `set-cookie`, `cache-control`, `location`. `curl -sI`, `curl -v` |
-| B1 | The edge | A hosting platform (Vercel) answers first: TLS ends there, static files come from its cache, the rest goes to a function |
-| B2 | The app | The Next.js server builds the page or runs an action; it reads the cookie to know who you are |
-| B3 | The database | The app asks Supabase (PostgreSQL) over the network; the database decides which rows this user may see |
-| B4 | Back to the browser | HTML, then CSS / JS requests, then rendering. Cookies stored. The browser cache |
-| B5 | Caches at every hop | Browser cache, DNS cache (TTL), edge cache (`cache-control`, `age`, `x-vercel-cache`), app data cache; what each hides when stale |
-| B6 | In GPIS | Sign-in is a POST handled on the server; the session lives in a cookie; pages with private data are not cached at the edge |
+| 1 | Clients and servers | Request and response. URL parts: scheme, host, port, path, query |
+| 2 | Finding the server: DNS | Name → address. Resolver, record types A / AAAA / CNAME, TTL. `dig +short`, `dig` |
+| 3 | Connecting: TCP | Address + port; the handshake in one sentence; ports 80 and 443 |
+| 4 | Trusting: TLS | Certificate, who signed it, which names it covers, expiry. What HTTPS protects and what it does not. `openssl s_client -connect host:443 -servername host` |
+| 5 | Speaking: HTTP | Methods GET / POST. Status families 2xx 3xx 4xx 5xx. Headers: `content-type`, `set-cookie`, `cache-control`, `location`. `curl -sI`, `curl -v` |
+| 6 | The edge | A hosting platform (Vercel) answers first: TLS ends there, static files come from its cache, the rest goes to a function |
+| 7 | The app | The Next.js server builds the page or runs an action; it reads the cookie to know who you are |
+| 8 | The database | The app asks Supabase (PostgreSQL) over the network; the database decides which rows this user may see |
+| 9 | Back to the browser | HTML, then CSS / JS requests, then rendering. Cookies stored. The browser cache |
+| 10 | Caches at every hop | Browser cache, DNS cache (TTL), edge cache (`cache-control`, `age`, `x-vercel-cache`), app data cache; what each hides when stale |
+| 11 | In GPIS | Sign-in is a POST handled on the server; the session lives in a cookie; pages with private data are not cached at the edge |
 
 - **Diagram (Mermaid `sequenceDiagram`):** Browser → DNS resolver → Edge (TLS) → App function → Database → back, with a note "cache?" on each arrow.
 - **Common mistakes**
@@ -685,9 +731,12 @@ What you just used: `dig`, `curl -sI`, `curl -v`, `openssl s_client`, `openssl x
 
 ### Lab — project 1.5 Request journey (repo project)
 
-- **Start:** work in `~/projects/gpis-rebuild`. Evidence goes in `docs/evidence/`.
+Open with what the learner is building and why. Use the numbered requirements as steps, with the command or file and an inline hint. End with “How to check your work”, the main command and what a pass shows.
+
+
+- **Start:** work in `~/projects/school-system`. Evidence goes in `docs/evidence/`.
 - **Situation:** you will soon build a sign-in page. First prove you know the road a sign-in
-  request travels on a real deployed site built with the same stack (the target site, Q9).
+  request travels on a real deployed site built with the same stack (the Academy sign-in page).
 - **Rule:** you only **load** the sign-in page (a GET). You do not sign in from the terminal,
   and you never write a password, cookie or token into a file.
 
@@ -709,7 +758,7 @@ pipeline → `tls.txt`; (4) `curl -sI` on the sign-in page → `headers.txt`; op
 any `set-cookie` value with `[removed]`; (5) write the seven sections, one hop at a time: what
 happens, the evidence line, the cache line; (6) for App server and Database, say what you
 cannot see from outside and how you know they exist (response headers, the stack named in
-`curriculum.md`); (7) draw the diagram; (8) run the checker; (9) commit if `gpis-rebuild` is
+`curriculum.md`); (7) draw the diagram; (8) run the checker; (9) commit if `school-system` is
 already a repository.
 
 **Hints:** (a) Response headers that begin `x-vercel-` or `server:` tell you who answered.
@@ -731,7 +780,7 @@ from outside; that is a finding, not a gap.
 ### Own build — local against deployed
 
 1. In `~/academy-labs/scratch/u1-5-own/`, write a 10-line Node server that answers `/login` with a small HTML page and a `cache-control: no-store` header.
-2. Capture `curl -v http://127.0.0.1:<port>/login` into `docs/evidence/local.txt` in `gpis-rebuild`.
+2. Capture `curl -v http://127.0.0.1:<port>/login` into `docs/evidence/local.txt` in `school-system`.
 3. `notes/unit-1-5.md` has a table: each of the seven hops; "deployed" and "local" columns; what is missing locally and why (no DNS, no TLS, no edge).
 4. One paragraph: which bugs can therefore **never** be found on localhost.
 5. Add a second route `/logo` with `cache-control: max-age=3600`; show with two `curl -sI` runs how you would know a cache answered.
@@ -742,7 +791,11 @@ from outside; that is a finding, not a gap.
 - **Compare with GPIS:** (1) In the read-only copy, find where the sign-in form is handled (look under `src/app/` for the login route). Does the browser talk to the database directly, or through the server? How can you tell? (2) GPIS keeps the session in a cookie. Which of your seven hops read or write that cookie?
 - **Mastery:** (1) For a site you have never traced, produce DNS, TLS and header evidence in under ten minutes. (2) From memory, draw the seven hops and name one cache at each. (3) Given "`curl` works, the browser shows an error page", list three causes in order of likelihood. (4) Explain why a 502 is not the app's bug report but the edge's.
 
-### Check plan (`m1-p5`, version 1.0.0, no `lab:`, run in `~/projects/gpis-rebuild`, `requires [wsl]`)
+**Debugging-lab check** (`m1-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m1-p5-own`). Request the local login page and compare status and cache headers with the recorded trace. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
+### Check plan (`m1-p5`, version 1.0.0, no `lab:`, run in `~/projects/school-system`, `requires [wsl]`)
 
 | Step id | Kind | Req. | Verifies |
 | :--- | :--- | :--- | :--- |
@@ -783,7 +836,7 @@ HTTPS to the target site and to `example.com`).
 | title | A project home |
 | module / position | 1 / 6 |
 | guidance | guided |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | How the GPIS repository is set up: README, AGENTS.md rules, lint, scripts, `.env.example` |
 | requires | `[wsl, git, node]` |
 
@@ -797,28 +850,33 @@ After this unit you can:
 4. keep school details in one config module and import them;
 5. publish the repository to GitHub without publishing a secret.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with labels on the shelves of a shared cupboard; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://www.gnu.org/software/bash/manual/bash.html) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | What a repository must tell a stranger | README: what, how to run, layout, rules. The reader has ten minutes |
-| A2 | Rules you write down | GPIS's `AGENTS.md`: boundary, read-first list, security rules, working style. Why written rules beat remembered ones |
-| A3 | `package.json` | `npm init`, `name`, `private`, `type: module`, `scripts`, `devDependencies`; `package-lock.json` is committed; `node_modules/` is not |
-| A4 | Lint | A program that reads code for known mistakes. ESLint flat config (`eslint.config.mjs`); `npm run lint`; fix the code, do not switch the rule off |
-| A5 | Modules | `export` / `import` in `.mjs`; one config module for facts used in many places |
-| B1 | One command to check everything | `scripts/verify.sh`: `set -euo pipefail`; runs lint, then the scripts' own checks; prints `verify ok` last |
-| B2 | Why exit codes matter again | CI (module 7) will run exactly this script; green must mean checked |
-| B3 | Environment files | `.env` for local values; `.env.example` with names only (GPIS security rule 7); both patterns in `.gitignore` |
-| B4 | A remote | GitHub repository, `git remote add`, `push -u`, private first; what a push shows the world |
-| B5 | In GPIS | `README.md`, `AGENTS.md`, `docs/`, `scripts/`, `src/config/school.ts`; before saying "it works": lint, build, type check |
+| 1 | What a repository must tell a stranger | README: what, how to run, layout, rules. The reader has ten minutes |
+| 2 | Rules you write down | GPIS's `AGENTS.md`: boundary, read-first list, security rules, working style. Why written rules beat remembered ones |
+| 3 | `package.json` | `npm init`, `name`, `private`, `type: module`, `scripts`, `devDependencies`; `package-lock.json` is committed; `node_modules/` is not |
+| 4 | Lint | A program that reads code for known mistakes. ESLint flat config (`eslint.config.mjs`); `npm run lint`; fix the code, do not switch the rule off |
+| 5 | Modules | `export` / `import` in `.mjs`; one config module for facts used in many places |
+| 6 | One command to check everything | `scripts/verify.sh`: `set -euo pipefail`; runs lint, then the scripts' own checks; prints `verify ok` last |
+| 7 | Why exit codes matter again | CI (module 7) will run exactly this script; green must mean checked |
+| 8 | Environment files | `.env` for local values; `.env.example` with names only (GPIS AGENTS.md, security rule 7); both patterns in `.gitignore` |
+| 9 | A remote | GitHub repository, `git remote add`, `push -u`, private first; what a push shows the world |
+| 10 | In GPIS | `README.md`, `AGENTS.md`, `docs/`, `scripts/`, `src/config/school.ts`; before saying "it works": lint, build, type check |
 
-- **Diagram:** a text tree of the finished `gpis-rebuild` folder with one line of purpose per entry.
+- **Diagram:** a text tree of the finished `school-system` folder with one line of purpose per entry.
 - **Common mistakes**
   1. Committing `node_modules/` → thousands of files in history → ignore it before the first `npm install`.
   2. Turning off a lint rule to get green → the mistake stays → fix the code.
   3. `verify.sh` joined with `;` → a failure in the middle is hidden → `set -e` or `&&`.
   4. The school name typed in three files → one is forgotten when it changes → one config module.
   5. README written once and never run → the steps are wrong → follow your own README in a new folder.
+
+**Planning a project.** Use the example of a school tuck shop. Its users are hungry pupils; the first release prints the menu. Show a filled requirements page, a specification of the menu command and two decisions about prices and opening hours. Then have learners plan their own project.
 
 ### Guided example — "A tiny project, done properly"
 
@@ -849,7 +907,20 @@ What you just used: `npm init`, `npm install --save-dev`, `npm run`, ESLint, `ex
 
 ### Lab — project 1.6 Project home (repo project)
 
-- **Start:** `~/projects/gpis-rebuild` (from unit 1.1; a Git repository from unit 1.4's own
+Open with what the learner is building and why. Use the numbered requirements as steps, with the command or file and an inline hint. End with “How to check your work”, the main command and what a pass shows.
+
+
+**Step 1 · Plan the milestone.** In `lab.md`, list the following exact implementation
+paths. Before the first change to any of them, commit `requirements.md`, `spec.md`
+and `decisions.md` together under `docs/plans/1.6/`. Use the headings in guide §0.4.
+
+- `src/config/school.mjs`
+- `scripts/school-info.mjs`
+- `scripts/verify.sh`
+- `eslint.config.mjs`
+
+
+- **Start:** `~/projects/school-system` (from unit 1.1; a Git repository from unit 1.4's own
   build. If it is not one yet, `git init` is step 1).
 - **Situation:** from the next module on, every unit adds code to this repository. Give it a
   proper home first.
@@ -899,7 +970,7 @@ earlier scripts.
 
 ### Own build — publish and one helper
 
-1. A **private** GitHub repository `gpis-rebuild` exists and `main` is pushed (`git status` says "up to date with origin/main").
+1. A **private** GitHub repository `school-system` exists and `main` is pushed (`git status` says "up to date with origin/main").
 2. Before the push you ran `git log -p | grep -n "sb_secret\|PASSWORD\|TOKEN"` and wrote the result in `notes/unit-1-6.md`.
 3. `scripts/new-note.sh UNIT` (for example `2-1`) creates `notes/unit-2-1.md` with three headings: `## What I built`, `## What surprised me`, `## Compare with GPIS`.
 4. It refuses to overwrite an existing note (message on standard error, exit 1), and refuses a unit that is not in the form `N-N` (exit 2).
@@ -912,7 +983,16 @@ earlier scripts.
 - **Compare with GPIS:** (1) Read GPIS's `README.md` and `AGENTS.md`. Name two rules there that you did not think of, and say what accident each one prevents. (2) Open `src/config/school.ts` in GPIS. What is in it besides the name? Why does a printed report card make this module important? (3) GPIS says to run lint, build and a type check before saying "it works". Which of the three can your project run today?
 - **Mastery:** (1) From an empty folder, in 30 minutes: repository, ignore file, `package.json`, one module, one script that imports it, lint, verify script, README. (2) Explain why `;` and `&&` differ, with a two-line example. (3) Say what would go wrong, step by step, if `.env` were committed and pushed. (4) Explain your `RULES.md` to someone as if they were joining the project.
 
-### Check plan (`m1-p6`, version 1.0.0, no `lab:`, run in `~/projects/gpis-rebuild`, `requires [wsl, git, node]`)
+**Debugging-lab check** (`m1-p6-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m1-p6-own`). Inspect the tracked branch and its upstream revision locally; confirm private visibility in the learner review. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
+### Check plan (`m1-p6`, version 1.0.0, no `lab:`, run in `~/projects/school-system`, `requires [wsl, git, node]`)
+
+Add three required `doc` steps for the plans in `docs/plans/1.6/`, one per file,
+with the headings in §0.4. Add a required `tests` step for the decision count and
+the Git ancestry check in §0.4, using the literal paths in step 1 above.
+
 
 | Step id | Kind | Req. | Verifies |
 | :--- | :--- | :--- | :--- |
@@ -952,7 +1032,7 @@ needed for the own build only; the lab does not need it.
 
 ## After module 1 the learner has
 
-- `~/projects/gpis-rebuild`: a Git repository with README, rules, lint, `verify.sh`, a config
+- `~/projects/school-system`: a Git repository with README, rules, lint, `verify.sh`, a config
   module, `docs/request-journey.md`, a notes folder, and (own build) a private GitHub remote.
 - Habits the next modules rely on: evidence before change; the five-heading diagnosis; small
   commits; three test inputs; exit codes that tell the truth.

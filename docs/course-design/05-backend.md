@@ -2,18 +2,18 @@
 
 | Unit | Title | Project | Kind | Level | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 5.1 | Login and roles | m5-p1 | Repo | half | 900 | 7 |
-| 5.2 | Admit a student | m5-p2 | Repo | half | 960 | 6 |
-| 5.3 | Student import | m5-p3 | Repo | half | 960 | 5 |
-| 5.4 | Submit scores | m5-p4 | Repo | half | 900 | 5 |
-| 5.5 | Send back and resubmit | m5-p5 | Repo | half | 900 | 4 |
-| 5.6 | Issue a document | m5-p6 | Repo | half | 840 | 4 |
+| 5.1 | Login and roles | m5-p1 | Repo | half | 720–1080 | 7 |
+| 5.2 | Admit a student | m5-p2 | Repo | half | 780–1140 | 6 |
+| 5.3 | Student import | m5-p3 | Repo | half | 780–1140 | 5 |
+| 5.4 | Submit scores | m5-p4 | Repo | half | 720–1080 | 5 |
+| 5.5 | Send back and resubmit | m5-p5 | Repo | half | 720–1080 | 4 |
+| 5.6 | Issue a document | m5-p6 | Repo | half | 660–1020 | 4 |
 
 ## Module rules (decided here)
 
-Use only synthetic records. Check SQL against the marked practice database. Each sql step sets up its own rows, uses qualified public names, and rolls back. Use the module 4 fixtures and claims for ADMIN and ASSESSMENT. Use id 900001 upwards and names beginning ZZ. Counts are integers, money and dates are text, and lists have explicit ordering. Page checks use a learner-started app at http://localhost:3000, status 200, 360 × 780, no sideways scroll and 44px controls. Browser interaction tests (Q4) load Playwright from the project and first assert the app answers. Use separate synthetic role sessions in ignored local storage-state files, never a test bypass in the app. Extend module 4 with forward migrations. Enable RLS on every new table before granting access. Use a verified active root role for D-218. Replace sample reads with request-scoped Supabase functions under src/lib. Server Components call getClaims() before queries. Use the existing module 3 routes and phone navigation. Distinguish audit events from the current submitted package.
+Use only synthetic records. Check SQL against the marked practice database. Each sql step sets up its own rows, uses qualified public names, and rolls back. Use the module 4 fixtures and claims for ADMIN and ASSESSMENT. Use the guide §10.4 allocation table and names beginning ZZ. Counts are integers, money and dates are text, and lists have explicit ordering. Page checks use a learner-started app at http://localhost:3000, status 200, 360 × 780, no sideways scroll and 44px controls. Use local page actions for browser interactions. Use separate synthetic role sessions in ignored local storage-state files, never a test bypass in the app. Extend module 4 with forward migrations. Enable RLS on every new table before granting access. Use a verified active root role for D-218. Replace sample reads with request-scoped Supabase functions under src/lib. Server Components call getClaims() before queries. Use the existing module 3 routes and phone navigation. Distinguish audit events from the current submitted package.
 
-Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. Debugging and own builds are self-reviewed [Q1]. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
+Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. The debugging lab and own build have separate checks. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
 
 ## File and interface contract
 
@@ -34,13 +34,24 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 | :--- | :--- |
 | AGENTS.md rules 1–8 | “Role comes from app_metadata, never user_metadata.” Validate on client, server and database. Use migrations and RLS. No privileged key in src. |
 | D-13, D-170, D-177, D-204 | “5 failed GPIS login attempts lock the account for 30 minutes”. D-177 amends idle expiry to 60 minutes, warning two minutes before. D-204 displays the remaining lock time. |
-| D-262, D-48, D-70 | “Student · Class · Family · Photo and check”. Optional fields say (optional). ADM/GPIS/YYYY/NNN. Fewest students first, then House alphabetically. |
-| D-42, D-43, D-45, D-46, amended D-51, D-223/224 | “Exactly five columns are required.” Split first word and rest. Match class canonically and exactly. Skip and name row errors. The permanent-ID phone update is a narrow exception to create-only. |
+| D-262, D-48, D-70, D-273 | “Student · Class · Family · Photo and check”. Optional fields say (optional). ADM/GPIS/YYYY/NNN. On activation, count active students and choose the least populated House, alphabetically on ties. |
+| D-42, D-43, D-45, D-46, D-51, D-149 §6, D-172, D-223 and D-224 | Name, Class and Date of Birth are required. Gender and Parent Phone are optional. Split first word and rest. Match class canonically and exactly. Skip and name row errors. The permanent-ID phone update is a narrow exception to create-only. |
 | D-218 | “Enter scores → Submit → Preview → Issue & Print”. An issued class and term locks the whole subject. Send-back history and issued identities are immutable. |
 | D-10, D-27, D-80, D-162, D-171 | “Missing subject scores print blank”. Four CA parts of 15 scale to 50 below JHS 3. The exam maximum lives on its row. JHS Integrated Science uses 140. JHS 3 mocks use 30 + 70. |
 | D-07, D-33, D-34, D-254, D-257, D-266 | Portrait A4 and “one shared print layer”. ID cards have a sheet layout. Phone score entry has one bottom action. |
 
 ---
+
+### Practice accounts for browser checks
+
+Use your own marked practice project. Create separate synthetic Admin, Assessment,
+assigned Teacher and, where required, active Root accounts. Set roles through the
+trusted account setup. Assign the teacher only the fixture class. Add `.academy/` to
+`.gitignore` before saving a session. Start the local app and run
+`npx academy session admin --url http://localhost:3000/login`. Sign in in the visible
+window. Repeat with the corresponding role name for each account. On expiry, run
+the same command again. Use `npx academy session admin --clear` to remove that session.
+A signed-out step uses a fresh browser context. Keep login details out of fixtures.
 
 ## Unit 5.1 — Login and roles
 
@@ -52,7 +63,7 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 | title | Login and roles |
 | module / position | 5 / 1 |
 | guidance | half |
-| minutes | 900 |
+| minutes | `{ min: 720, max: 1080 }` |
 | gpis_part | Resolve a synthetic staff username on the server and establish a Supabase session. An unknown name gets the same public failure as a wrong password. |
 | requires | [wsl, node, git, supabase, lab-db, playwright] |
 
@@ -65,6 +76,9 @@ After this unit you can
 3. Distinguish the two clocks
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a staff badge with an expiry time; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://supabase.com/docs/guides/database) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -102,7 +116,10 @@ In a scratch folder.
 
 ### Lab — Login and roles
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -114,7 +131,7 @@ In a scratch folder.
 | 4 | Test login.ts with injected Auth and clock. Four failures then success resets count. Five failures at minute 0 lock until 30. A retry at 29 leaves expiry fixed. Known and unknown names have the same public response. | `clock` |
 | 5 | Scan src/ using the guide’s secret patterns. Reject tracked .env or .env.local. Report path only. | `source` |
 | 6 | /login shows School username, Password and Sign in. | `login` |
-| 7 | Playwright (Q4), signed-out request for /students reaches /login. Sign in with a synthetic school username, reach /students, sign out and revisit the protected URL. It redirects again. | `session` |
+| 7 | Use a fresh page to assert that /students redirects to /login. In a separate page step with the saved staff session, visit /students, click Sign out, revisit /students and assert the login URL. The learner signs in manually during setup. | `session` |
 
 **Hints (folded).** Compare the two clocks. Check the source of each role.
 
@@ -157,6 +174,10 @@ In a scratch folder.
 3. Test expiry at exactly minute 30.
 4. Show that a signed-out reload cannot read a roster.
 
+**Debugging-lab check** (`m5-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m5-p1-own`). Compare countdown with the server expiry and check keyboard focus after expiry. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m5-p1`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db, playwright])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -167,7 +188,7 @@ In a scratch folder.
 | clock | tests | yes | `tests/clock.test.mjs` via files. Test login.ts with injected Auth and clock. Four failures then success resets count. Five failures at minute 0 lock until 30. A retry at 29 leaves expiry fixed. Known and unknown names have the same public response. |
 | source | tests | yes | `tests/source.test.mjs` via files. Scan src/ using the guide’s secret patterns. Reject tracked .env or .env.local. Report path only. |
 | login | page | yes | /login shows School username, Password and Sign in. |
-| session | tests | yes | `tests/session.test.mjs` via files. Playwright (Q4), signed-out request for /students reaches /login. Sign in with a synthetic school username, reach /students, sign out and revisit the protected URL. It redirects again. |
+| session | page | yes | Use a fresh page to assert that /students redirects to /login. In a separate page step with the saved staff session, visit /students, click Sign out, revisit /students and assert the login URL. The learner signs in manually during setup. |
 
 **Messages for required steps**
 
@@ -195,9 +216,20 @@ Module 4.4 and the preceding backend units as applicable. WSL, Git, Node, learne
 | title | Admit a student |
 | module / position | 5 / 2 |
 | guidance | half |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | Client, Server Action and database must independently reject a missing required name. |
 | requires | [wsl, node, git, supabase, lab-db, playwright] |
+
+**Forward migration and regression fixtures.** Retain existing students and memberships.
+Allow Male, Female and Other on the admission form and matching stored values (GPIS
+decision D-262). Add `parent_phone` separately from the guardian and emergency numbers
+(GPIS decision D-37). Update the shared practice fixture once and rerun the earlier
+admission and membership checks. Generate a separate permanent student ID once, in the
+form STU-000001 (GPIS decision D-56). Test two admissions, withdrawal and reinstatement:
+the same pupil keeps the id, and another pupil never receives it. Preserve the distinct
+admission number. Record each applied parent-phone change in immutable audit history
+(GPIS decision D-223). Test a changed number, a blank and an unchanged number. Only the
+first changes the stored phone or adds an event. Recheck identity at commit time.
 
 ### Outcomes
 
@@ -209,10 +241,13 @@ After this unit you can
 
 ### Lesson
 
+Teach each idea below in the four layers of guide §0.1. Start with a numbered admissions receipt; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://supabase.com/docs/guides/database) (read · 10 min). Teach every quiz concept before the quiz.
+
+
 | Section | Key idea and small example |
 | :--- | :--- |
 | 1. Validate across three boundaries | Client, Server Action and database must independently reject a missing required name. |
-| 2. Allocate under concurrency | Assign one admission number and one House in the admission transaction. Two simultaneous admissions cannot take the same number. |
+| 2. Allocate under concurrency | Allocate each admission number once. Waiting pupils have no House. Activation assigns a House and creates the membership together at clearance (GPIS decision D-273). Two simultaneous admissions cannot take the same number. |
 | 3. Follow the four screens | Preserve back navigation and use (optional) for optional fields. Class membership belongs to the selected year and term. |
 
 **Text diagram** Student → Class → Family → Photo and check → one transaction
@@ -245,7 +280,10 @@ In a scratch folder.
 
 ### Lab — Admit a student
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -253,9 +291,9 @@ In a scratch folder.
 | :--- | :--- | :--- |
 | 1 | `src/lib/admissions/admit.ts`, `supabase/migrations/*admit*.sql` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
-| 3 | Playwright (Q4) as lab admin at /admit. Expect Student, Class, Family, Photo and check in order. Empty required name blocks Next. Back preserves input. Complete one synthetic record and reload the student page. | `wizard` |
+| 3 | Use page actions with `session: admin` at /admit. Expect Student, Class, Family, Photo and check in order. Empty required name blocks Next. Back preserves input. Complete one synthetic record and reload the student page. | `wizard` |
 | 4 | Call admit.ts validateAdmission(input) with blank surname, missing class and impossible DOB. Each returns a field error. Submit the same invalid inputs directly to the authorised action harness. No insert call may occur. | `server` |
-| 5 | Using module 4.2 year/term/class 900001, seed empty Houses ZZ A and ZZ B. As ADMIN call public.admit_student(jsonb) with first_name ZZ, last_name Learner, DOB 2015-01-01, gender female, year/class/term ids 900001 and year start 2090. Return student id. Join student, house and membership by that id: house ZZ A (use only fixture houses in allocation test fixture), class 900001. Invalid class 999999 → error and zero students with last_name ZZRejected. Check generated number against ADM/GPIS/[0-9]{4}/[0-9]{3,}. | `atomic` |
+| 5 | Using module 4.2 year/term/class 900001, include all four Houses, including those with no active pupils. Count only active pupils in this transaction; save the id with the fewest students, breaking ties by House name alphabetically (GPIS decisions D-70 and D-273), immediately before activation. As ADMIN call public.admit_student(jsonb) with first_name ZZ, last_name Learner, DOB 2015-01-01, gender female, year/class/term ids 900001 and year start 2090. Return the student id. Assert that the waiting row has no House. Using synthetic clearance prerequisites and a finance-authorised Admin, clear the admission and join the active student, House and membership by that id: the saved expected House id, class 900001. Invalid class 999999 → error and zero students with last_name ZZRejected. Check generated number against ADM/GPIS/[0-9]{4}/[0-9]{3,}. | `atomic` |
 | 6 | /login shows School username. Authenticated wizard layout is measured inside wizard at 360 × 780, all four screens fit. | `layout` |
 
 **Hints (folded).** Read the module 4 foreign keys. Compare empty and invalid input.
@@ -299,15 +337,19 @@ In a scratch folder.
 3. Predict a tie between houses.
 4. Prove a refused admission leaves no row.
 
+**Debugging-lab check** (`m5-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m5-p2-own`). Open the receipt for a new synthetic pupil with an empty photo; compare the membership class. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m5-p2`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db, playwright])
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
 | deliverables | files | yes | `src/lib/admissions/admit.ts`, `supabase/migrations/*admit*.sql` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
-| wizard | tests | yes | `tests/wizard.test.mjs` via files. Playwright (Q4) as lab admin at /admit. Expect Student, Class, Family, Photo and check in order. Empty required name blocks Next. Back preserves input. Complete one synthetic record and reload the student page. |
+| wizard | page | yes | Use page actions with `session: admin` at /admit. Expect Student, Class, Family, Photo and check in order. Empty required name blocks Next. Back preserves input. Complete one synthetic record and reload the student page. |
 | server | tests | yes | `tests/server.test.mjs` via files. Call admit.ts validateAdmission(input) with blank surname, missing class and impossible DOB. Each returns a field error. Submit the same invalid inputs directly to the authorised action harness. No insert call may occur. |
-| atomic | sql | yes | Using module 4.2 year/term/class 900001, seed empty Houses ZZ A and ZZ B. As ADMIN call public.admit_student(jsonb) with first_name ZZ, last_name Learner, DOB 2015-01-01, gender female, year/class/term ids 900001 and year start 2090. Return student id. Join student, house and membership by that id: house ZZ A (use only fixture houses in allocation test fixture), class 900001. Invalid class 999999 → error and zero students with last_name ZZRejected. Check generated number against ADM/GPIS/[0-9]{4}/[0-9]{3,}. |
+| atomic | sql | yes | Using module 4.2 year/term/class 900001, include all four Houses, including those with no active pupils. Count only active pupils in this transaction; save the id with the fewest students, breaking ties by House name alphabetically (GPIS decisions D-70 and D-273), immediately before activation. As ADMIN call public.admit_student(jsonb) with first_name ZZ, last_name Learner, DOB 2015-01-01, gender female, year/class/term ids 900001 and year start 2090. Return the student id. Assert that the waiting row has no House. Using synthetic clearance prerequisites and a finance-authorised Admin, clear the admission and join the active student, House and membership by that id: the saved expected House id, class 900001. Invalid class 999999 → error and zero students with last_name ZZRejected. Check generated number against ADM/GPIS/[0-9]{4}/[0-9]{3,}. |
 | layout | page | yes | /login shows School username. Authenticated wizard layout is measured inside wizard at 360 × 780, all four screens fit. |
 
 **Messages for required steps**
@@ -335,7 +377,7 @@ Module 4.4 and the preceding backend units as applicable. WSL, Git, Node, learne
 | title | Student import |
 | module / position | 5 / 3 |
 | guidance | half |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | Missing headers stop the whole file. A bad date names the row and the reason. |
 | requires | [wsl, node, git, supabase, lab-db, playwright] |
 
@@ -348,6 +390,9 @@ After this unit you can
 3. Confirm the preview
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with checking a pile of forms before filing any; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://supabase.com/docs/guides/database) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -376,7 +421,7 @@ In a scratch folder.
 
 | # | Idea | Right answer and reason | Wrong options and why |
 | :--- | :--- | :--- | :--- |
-| 1 | Five D-42 headers, no Status? | Explain active default before confirm | Guess status (operator must know). Reject whole file (status optional) |
+| 1 | An import contains the three required headers and omits Status. What does the preview explain? | Explain active default before confirm | Guess status (operator must know). Reject whole file (status optional) |
 | 2 | J.H.S 3 versus JHS 3? | Same canonical class under D-45 | New class (punctuation ignored). Choose nearest (no fuzzy match) |
 | 3 | One-word full name? | Row error under D-46 | Duplicate it (invents surname). Move to middle name (wrong column) |
 | 4 | File lacks Class? | Store nothing | Skip one row (header affects all). Use current class (ambiguous) |
@@ -385,7 +430,10 @@ In a scratch folder.
 
 ### Lab — Student import
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -393,11 +441,11 @@ In a scratch folder.
 | :--- | :--- | :--- |
 | 1 | `src/lib/import/preview.ts`, `src/lib/import/confirm.ts` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
-| 3 | Import previewWorkbook(bytes,classes) from preview.ts. Fixtures use Full name, Date of birth, Class, Gender, Phone number. Include ZZ Ama Kyei, ISO DOB, J.H.S 3, then one-word name, 03/04/2015, repeated row and unknown class. Assert row numbers and causes, first word ZZ and remaining surname Ama Kyei. Missing Class gives file error and no token. Missing Status produces visible active/enrolment notice. | `preview` |
+| 3 | Import previewWorkbook(bytes,classes) from preview.ts. Use Name, Class and Date of Birth in the minimal fixture. Add Gender and Parent Phone to a second fixture and verify both layouts. Include ZZ Ama Kyei, ISO DOB, J.H.S 3, then one-word name, 03/04/2015, repeated row and unknown class. Assert row numbers and causes, first word ZZ and remaining surname Ama Kyei. Missing Class gives file error and no token. Missing Status produces visible active/enrolment notice. | `preview` |
 | 4 | Using confirmPreview(token,actor,store) from confirm.ts and transactional test store, confirm a preview with two valid rows and one skipped row. Expect two students and memberships, then refuse token reuse and foreign owner. Inject failure on second valid insert: neither survives. | `confirm` |
 | 5 | Existing STU-000001 and matching full displayed name (including reordered words per D-224) and DOB: changed non-empty phone updates only phone, with one audit entry; blank leaves it alone. Wrong DOB → conflict/Skip. Repeat identity check at confirm. | `phone` |
 
-**Hints (folded).** Read D-42 header names. Compare preview and commit against a changed stored phone.
+**Hints (folded).** Use the current import headers (GPIS decisions D-149 §6 and D-172). Compare preview and commit against a changed stored phone.
 
 **Finished state.** The confirmation receipt names applied and skipped changes. Check with `npx academy check m5-p3`.
 
@@ -438,13 +486,17 @@ In a scratch folder.
 3. Demonstrate another user cannot confirm.
 4. Reconcile the receipt with the committed rows.
 
+**Debugging-lab check** (`m5-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m5-p3-own`). Preview two classes; compare category totals and skipped row numbers. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m5-p3`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db, playwright])
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
 | deliverables | files | yes | `src/lib/import/preview.ts`, `src/lib/import/confirm.ts` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
-| preview | tests | yes | `tests/preview.test.mjs` via files. Import previewWorkbook(bytes,classes) from preview.ts. Fixtures use Full name, Date of birth, Class, Gender, Phone number. Include ZZ Ama Kyei, ISO DOB, J.H.S 3, then one-word name, 03/04/2015, repeated row and unknown class. Assert row numbers and causes, first word ZZ and remaining surname Ama Kyei. Missing Class gives file error and no token. Missing Status produces visible active/enrolment notice. |
+| preview | tests | yes | `tests/preview.test.mjs` via files. Import previewWorkbook(bytes,classes) from preview.ts. Use Name, Class and Date of Birth in the minimal fixture. Add Gender and Parent Phone to a second fixture and verify both layouts. Include ZZ Ama Kyei, ISO DOB, J.H.S 3, then one-word name, 03/04/2015, repeated row and unknown class. Assert row numbers and causes, first word ZZ and remaining surname Ama Kyei. Missing Class gives file error and no token. Missing Status produces visible active/enrolment notice. |
 | confirm | tests | yes | `tests/confirm.test.mjs` via files. Using confirmPreview(token,actor,store) from confirm.ts and transactional test store, confirm a preview with two valid rows and one skipped row. Expect two students and memberships, then refuse token reuse and foreign owner. Inject failure on second valid insert: neither survives. |
 | phone | tests | yes | `tests/phone.test.mjs` via files. Existing STU-000001 and matching full displayed name (including reordered words per D-224) and DOB: changed non-empty phone updates only phone, with one audit entry; blank leaves it alone. Wrong DOB → conflict/Skip. Repeat identity check at confirm. |
 
@@ -472,9 +524,17 @@ Module 4.4 and the preceding backend units as applicable. WSL, Git, Node, learne
 | title | Submit scores |
 | module / position | 5 / 4 |
 | guidance | half |
-| minutes | 900 |
+| minutes | `{ min: 720, max: 1080 }` |
 | gpis_part | A draft can contain zero, blank and ABS. Only the current submitted package feeds previews. |
 | requires | [wsl, node, git, supabase, lab-db] |
+
+**Forward migration and check fixtures.** Give JHS 3 mock sittings distinct identities
+within the academic year and link marks and submission packages to the selected sitting.
+Store the subjects offered for the class and year. In the rolled-back fixture submit two
+sittings in one term with different marks. Read back both and verify the first survives.
+Compute the slip for the selected sitting and offerings (GPIS decisions D-80 and D-81).
+A missing offered subject keeps the slip incomplete. Returning a package and submitting
+its correction must preserve the issue history (GPIS decision D-218).
 
 ### Outcomes
 
@@ -485,6 +545,9 @@ After this unit you can
 3. Submit the whole subject
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with handing in a complete subject register; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://supabase.com/docs/guides/database) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -499,6 +562,8 @@ After this unit you can
 1. 56 → uses 100 → 40 from the stored maximum (D-171)
 2. Write zero → changes meaning → Keep null under D-218
 3. Show all latest rows → includes draft → Excluded from issued input
+
+**Planning a project.** Recall the three plans from Project 1.6. Show one edge case for this milestone and how to turn it into a test before implementing it.
 
 ### Guided example — Publish a choir list
 
@@ -522,7 +587,18 @@ In a scratch folder.
 
 ### Lab — Submit scores
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Step 1 · Plan the milestone.** In `lab.md`, list the following exact implementation
+paths. Before the first change to any of them, commit `requirements.md`, `spec.md`
+and `decisions.md` together under `docs/plans/5.4/`. Use the headings in guide §0.4.
+
+- `src/lib/assessments/submit.ts`
+- `supabase/migrations/20260504000000_subject_submit.sql`
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -575,7 +651,16 @@ In a scratch folder.
 3. Calculate 112/140 scaled to 50.
 4. Refuse an invalid second row and compare the first.
 
+**Debugging-lab check** (`m5-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m5-p4-own`). Reopen a draft containing zero, ABS and blank; compare all three counts. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m5-p4`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db])
+
+Add three required `doc` steps for the plans in `docs/plans/5.4/`, one per file,
+with the headings in §0.4. Add a required `tests` step for the decision count and
+the Git ancestry check in §0.4, using the literal paths in step 1 above.
+
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
@@ -609,7 +694,7 @@ Module 4.4 and the preceding backend units as applicable. WSL, Git, Node, learne
 | title | Send back and resubmit |
 | module / position | 5 / 5 |
 | guidance | half |
-| minutes | 900 |
+| minutes | `{ min: 720, max: 1080 }` |
 | gpis_part | Any issued card or slip for the class and term locks its submitted subjects. |
 | requires | [wsl, node, git, supabase, lab-db] |
 
@@ -622,6 +707,9 @@ After this unit you can
 3. Preserve history
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with returning a marked register with a dated note; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://supabase.com/docs/guides/database) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -659,7 +747,10 @@ In a scratch folder.
 
 ### Lab — Send back and resubmit
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -711,6 +802,10 @@ In a scratch folder.
 3. Compare inactive Root and active Admin.
 4. Count return items after resubmission.
 
+**Debugging-lab check** (`m5-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m5-p5-own`). Open the timeline before and after resubmission; compare event identity and reason. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m5-p5`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -743,7 +838,7 @@ Module 4.4 and the preceding backend units as applicable. WSL, Git, Node, learne
 | title | Issue a document |
 | module / position | 5 / 6 |
 | guidance | half |
-| minutes | 840 |
+| minutes | `{ min: 660, max: 1020 }` |
 | gpis_part | Copy the submitted data, period, names, layout inputs and verification identity at issue. |
 | requires | [wsl, node, git, supabase, lab-db, playwright] |
 
@@ -756,6 +851,9 @@ After this unit you can
 3. Share the print layer
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a signed report whose original stays on file; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://supabase.com/docs/guides/database) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -793,7 +891,10 @@ In a scratch folder.
 
 ### Lab — Issue a document
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -802,7 +903,7 @@ In a scratch folder.
 | 1 | `src/lib/documents/issue.ts`, `supabase/migrations/*issue_document*.sql` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
 | 3 | Reuse 5.4 class/term/subject 900001 and complete submitted marks. As ADMIN call issue_document(student_id,term_id,kind) for 900001,900001,report_card. Keep returned id in a scratch table, copy payload as before. Use 5.5 return and resubmit with changed exam mark, then issue_updated(old_id). Join issued_documents by old/new ids: old.payload=before true, new.payload<>before true, new.id<>old.id true; update or delete old row → error. | `freeze` |
-| 4 | Playwright (Q4), lab admin. Open /documents/{oldId}/reprint and /documents/{newId}/reprint from an issued synthetic pair. Assert old/new exam values differ as seeded, each shows its own verification identity, print media hides navigation and the page has portrait A4 print rules. | `print` |
+| 4 | Use the saved admin session and two lasting synthetic issues (910101 and 910102). Check the original exam mark of 60 and corrected mark of 70 beside their distinct verification identities. In print view (T35), check both identities again and verify that navigation is hidden. Check A4 portrait in the shared stylesheet. | `print` |
 
 **Hints (folded).** Read the issue payload twice. Compare live keys with stored period data.
 
@@ -845,6 +946,10 @@ In a scratch folder.
 3. Compare the two identities.
 4. Check portrait layout in print preview.
 
+**Debugging-lab check** (`m5-p6-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m5-p6-own`). Follow both issue-history links and compare the original and corrected marks. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m5-p6`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db, playwright])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -852,7 +957,9 @@ In a scratch folder.
 | deliverables | files | yes | `src/lib/documents/issue.ts`, `supabase/migrations/*issue_document*.sql` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
 | freeze | sql | yes | Reuse 5.4 class/term/subject 900001 and complete submitted marks. As ADMIN call issue_document(student_id,term_id,kind) for 900001,900001,report_card. Keep returned id in a scratch table, copy payload as before. Use 5.5 return and resubmit with changed exam mark, then issue_updated(old_id). Join issued_documents by old/new ids: old.payload=before true, new.payload<>before true, new.id<>old.id true; update or delete old row → error. |
-| print | tests | yes | `tests/print.test.mjs` via files. Playwright (Q4), lab admin. Open /documents/{oldId}/reprint and /documents/{newId}/reprint from an issued synthetic pair. Assert old/new exam values differ as seeded, each shows its own verification identity, print media hides navigation and the page has portrait A4 print rules. |
+| reprint | page | yes | On screen, visit `/documents/910101/reprint` then `goto: /documents/910102/reprint`. Use `expect_text` for the appropriate labelled mark and verification identity on each. |
+| print (T35) | page | yes | `session: admin`, `media: print`. On each of the two reprint URLs use `expect_count: { testid: screen-only, count: 0 }` for labelled shell and action controls, and `expect_text` for the printed mark and identity. |
+| paper-size | tests | yes | Check the shared print stylesheet for the portrait A4 rule. |
 
 **Messages for required steps**
 

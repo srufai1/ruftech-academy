@@ -2,18 +2,18 @@
 
 | Unit | Title | Project | Kind | Level | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 7.1 | Negative tests | m7-p1 | Repo | half | 990 | 4 |
-| 7.2 | Security review [Docker optional] | m7-p2 | Repo | half | 1050 | 5 |
-| 7.3 | CI pipeline | m7-p3 | Repo | half | 990 | 5 |
-| 7.4 | Deploy and configure | m7-p4 | Repo | independent | 1050 | 5 |
-| 7.5 | Web stack debugging [Docker] | m7-p5 | Seeded lab | independent | 1110 | 4 |
-| 7.6 | Incident and postmortem | m7-p6 | Repo | independent | 1050 | 5 |
+| 7.1 | Negative tests | m7-p1 | Repo | half | 780–1200 | 4 |
+| 7.2 | Security review [Docker optional] | m7-p2 | Repo | half | 840–1260 | 5 |
+| 7.3 | CI pipeline | m7-p3 | Repo | half | 780–1200 | 5 |
+| 7.4 | Deploy and configure | m7-p4 | Repo | independent | 840–1260 | 5 |
+| 7.5 | Web stack debugging [Docker] | m7-p5 | Seeded lab | independent | 900–1320 | 4 |
+| 7.6 | Incident and postmortem | m7-p6 | Repo | independent | 840–1260 | 5 |
 
 ## Module rules (decided here)
 
-Use only synthetic records. Check SQL against the marked practice database. Each sql step sets up its own rows, uses qualified public names, and rolls back. Use the module 4 fixtures and claims for ADMIN and ASSESSMENT. Use id 900001 upwards and names beginning ZZ. Counts are integers, money and dates are text, and lists have explicit ordering. Page checks use a learner-started app at http://localhost:3000, status 200, 360 × 780, no sideways scroll and 44px controls. Browser interaction tests (Q4) load Playwright from the project and first assert the app answers. Use separate synthetic role sessions in ignored local storage-state files, never a test bypass in the app. Test refusals against synthetic policy matrices. A document step requires its exact headings and 20 words under each. Use hosted evidence for staging and a separate local browser check [Q3]. The Docker outcomes are recorded separately [Q8].
+Use only synthetic records. Check SQL against the marked practice database. Each sql step sets up its own rows, uses qualified public names, and rolls back. Use the module 4 fixtures and claims for ADMIN and ASSESSMENT. Use the guide §10.4 allocation table and names beginning ZZ. Counts are integers, money and dates are text, and lists have explicit ordering. Page checks use a learner-started app at http://localhost:3000, status 200, 360 × 780, no sideways scroll and 44px controls. Use local page actions for browser interactions. Use separate synthetic role sessions in ignored local storage-state files, never a test bypass in the app. Test refusals against synthetic policy matrices. A document step requires its exact headings and 20 words under each. Use hosted evidence for staging and a separate local browser check [Q3]. The Docker outcomes are recorded separately [Q8].
 
-Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. Debugging and own builds are self-reviewed [Q1]. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
+Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. The debugging lab and own build have separate checks. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
 
 ## File and interface contract
 
@@ -48,7 +48,7 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 | title | Negative tests |
 | module / position | 7 / 1 |
 | guidance | half |
-| minutes | 990 |
+| minutes | `{ min: 780, max: 1200 }` |
 | gpis_part | Cross every role with every course table and operation. |
 | requires | [wsl, node, git] |
 
@@ -61,6 +61,9 @@ After this unit you can
 3. Measure test sensitivity
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with checking which doors a school key should open; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -98,7 +101,10 @@ In a scratch folder.
 
 ### Lab — Negative tests
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -150,6 +156,10 @@ In a scratch folder.
 3. Identify a missing fixture.
 4. Explain a zero-row false positive.
 
+**Debugging-lab check** (`m7-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m7-p1-own`). Run the table matrix with one allowed operation and one expected refusal. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m7-p1`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -182,7 +192,7 @@ Modules 4 and 5. Use synthetic data, WSL, Node and Git. Use only the learner’s
 | title | Security review [Docker optional] |
 | module / position | 7 / 2 |
 | guidance | half |
-| minutes | 1050 |
+| minutes | `{ min: 840, max: 1260 }` |
 | gpis_part | Check claims, validation, table grants and storage scope. |
 | requires | [wsl, node, git, supabase, lab-db, docker] |
 
@@ -195,6 +205,9 @@ After this unit you can
 3. Record evidence
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a caretaker reviewing who holds each key; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -232,7 +245,10 @@ In a scratch folder.
 
 ### Lab — Security review [Docker optional]
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -285,6 +301,10 @@ In a scratch folder.
 3. Explain inherited execute.
 4. Redact a finding and retain enough to retest.
 
+**Debugging-lab check** (`m7-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m7-p2-own`). Compare owner and other-user access to one synthetic storage path. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m7-p2`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -328,7 +348,7 @@ Modules 4 and 5. Use synthetic data, WSL, Node and Git. Use only the learner’s
 | title | CI pipeline |
 | module / position | 7 / 3 |
 | guidance | half |
-| minutes | 990 |
+| minutes | `{ min: 780, max: 1200 }` |
 | gpis_part | Guard source, lint, check types, build and run tests. Preserve each failure status. |
 | requires | [wsl, node, git, github] |
 
@@ -341,6 +361,9 @@ After this unit you can
 3. Prove failure locally
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a report passing several desks before release; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -378,7 +401,10 @@ In a scratch folder.
 
 ### Lab — CI pipeline
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -431,6 +457,10 @@ In a scratch folder.
 3. Test inert marker.
 4. Identify the shared entry point.
 
+**Debugging-lab check** (`m7-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m7-p3-own`). Check the gate transcript stops before release on a type error and passes on the clean revision. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m7-p3`, version 1.0.0, no `lab:`, requires [wsl, node, git, github])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -465,7 +495,7 @@ Modules 4 and 5. Use synthetic data, WSL, Node and Git. Use only the learner’s
 | title | Deploy and configure |
 | module / position | 7 / 4 |
 | guidance | independent |
-| minutes | 1050 |
+| minutes | `{ min: 840, max: 1260 }` |
 | gpis_part | Record aliases, revision and variable names. Keep credential values in provider settings. |
 | requires | [wsl, node, git, vercel, supabase, playwright] |
 
@@ -478,6 +508,9 @@ After this unit you can
 3. Verify the hosted release
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with labelling a rehearsal copy before opening day; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -492,6 +525,8 @@ After this unit you can
 1. Always expected → goal repeatability → Investigate drift
 2. Same revision proved → different host → Hosted version still needs evidence
 3. Open → staff provisioned → Disabled for staff system
+
+**Planning a project.** Recall the three plans from Project 1.6. Show one edge case for this milestone and how to turn it into a test before implementing it.
 
 ### Guided example — Deploy a library timetable
 
@@ -515,7 +550,18 @@ In a scratch folder.
 
 ### Lab — Deploy and configure
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Step 1 · Plan the milestone.** In `lab.md`, list the following exact implementation
+paths. Before the first change to any of them, commit `requirements.md`, `spec.md`
+and `decisions.md` together under `docs/plans/7.4/`. Use the headings in guide §0.4.
+
+- `docs/ops/staging.md`
+- `docs/ops/staging-evidence.md`
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -566,7 +612,16 @@ In a scratch folder.
 3. Repeat deployment.
 4. Verify rollback.
 
+**Debugging-lab check** (`m7-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m7-p4-own`). Match the before and after revisions in the redacted rollback record. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m7-p4`, version 1.0.0, no `lab:`, requires [wsl, node, git, vercel, supabase, playwright])
+
+Add three required `doc` steps for the plans in `docs/plans/7.4/`, one per file,
+with the headings in §0.4. Add a required `tests` step for the decision count and
+the Git ancestry check in §0.4, using the literal paths in step 1 above.
+
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
@@ -600,7 +655,7 @@ Modules 4 and 5. Use synthetic data, WSL, Node and Git. Use only the learner’s
 | title | Web stack debugging [Docker] |
 | module / position | 7 / 5 |
 | guidance | independent |
-| minutes | 1110 |
+| minutes | `{ min: 900, max: 1320 }` |
 | gpis_part | The proxy routes to an app that reads its config and borrows a database connection. |
 | requires | [wsl, node, docker] |
 
@@ -613,6 +668,9 @@ After this unit you can
 3. Prove recovery
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with tracing a missing notice from printer to classroom; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -649,6 +707,9 @@ In a scratch folder.
 | 6 | No Docker? | Document supplied log diagnosis | Claim live repair (unverified). Use real system (wrong target) |
 
 ### Lab — Web stack debugging [Docker]
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **Start.** Run `npx academy init m7-p5`. Build stack/ with compose.yaml, start.sh mode 0755, a wrong upstream route, unreadable fixture config, unreleased connection and deterministic logs for the written route. Start no services in the seed.Use the preceding unit’s finished work.
 
@@ -700,6 +761,10 @@ In a scratch folder.
 3. Trace a borrowed connection.
 4. Prove a second start works.
 
+**Debugging-lab check** (`m7-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m7-p5-own`). Check each layer’s incident card for a disconfirming observation and restart proof. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m7-p5`, version 1.0.0, lab root `stack`, seed `fixtures/seed.sh`, requires [wsl, node])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -741,7 +806,7 @@ Modules 1.3 and 4.6. Docker with Compose for live work, teaching images pre-pull
 | title | Incident and postmortem |
 | module / position | 7 / 6 |
 | guidance | independent |
-| minutes | 1050 |
+| minutes | `{ min: 840, max: 1260 }` |
 | gpis_part | Read a synthetic canary via the learner’s staging app before and after the incident. |
 | requires | [wsl, node, git, supabase, lab-db] |
 
@@ -754,6 +819,9 @@ After this unit you can
 3. Write a blameless report
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with writing down what happened after a power cut; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -791,7 +859,10 @@ In a scratch folder.
 
 ### Lab — Incident and postmortem
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -800,7 +871,7 @@ In a scratch folder.
 | 1 | `docs/ops/incident.md`, `docs/ops/recovery.csv` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
 | 3 | docs/ops/incident.md: Impact, Timeline, Evidence, Causes, Restoration, Follow-ups. Show initial and restored staging reads and measured impact. | `report` |
-| 4 | By forward migration create public.incident_drill(id bigint primary key,note text), RLS on. Learner backs up synthetic id 900001, note ZZ timetable ready, removes only that drill row and restores it persistently. Checker SELECT id::int,note FROM public.incident_drill WHERE id=900001 ORDER BY id → [{id:900001,note:'ZZ timetable ready'}]. No checker insert can mask a missing restore. | `restored` |
+| 4 | By forward migration create public.incident_drill(id bigint primary key,note text), RLS on. Learner backs up synthetic id 910001, note ZZ timetable ready, removes only that drill row and restores it persistently. Checker SELECT id::int,note FROM public.incident_drill WHERE id=910001 ORDER BY id → [{id:910001,note:'ZZ timetable ready'}]. No checker insert can mask a missing restore. | `restored` |
 | 5 | Read recovery.csv columns minute,event; require nonnegative nondecreasing minutes and ordered events detected,scoped,restored,verified. Compare staging reads manually. | `timeline` |
 
 **Finished state.** Separate observation, contributing conditions and follow-ups with owners and proof. Check with `npx academy check m7-p6`.
@@ -842,6 +913,10 @@ In a scratch folder.
 3. Read the canary via the app.
 4. Defend a preventive action.
 
+**Debugging-lab check** (`m7-p6-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m7-p6-own`). Compare canary evidence before and after restoration and recompute the loss window. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m7-p6`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -849,7 +924,7 @@ In a scratch folder.
 | deliverables | files | yes | `docs/ops/incident.md`, `docs/ops/recovery.csv` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
 | report | doc | yes | docs/ops/incident.md: Impact, Timeline, Evidence, Causes, Restoration, Follow-ups. Show initial and restored staging reads and measured impact. |
-| restored | sql | yes | By forward migration create public.incident_drill(id bigint primary key,note text), RLS on. Learner backs up synthetic id 900001, note ZZ timetable ready, removes only that drill row and restores it persistently. Checker SELECT id::int,note FROM public.incident_drill WHERE id=900001 ORDER BY id → [{id:900001,note:'ZZ timetable ready'}]. No checker insert can mask a missing restore. |
+| restored | sql | yes | By forward migration create public.incident_drill(id bigint primary key,note text), RLS on. Learner backs up synthetic id 910001, note ZZ timetable ready, removes only that drill row and restores it persistently. Checker SELECT id::int,note FROM public.incident_drill WHERE id=910001 ORDER BY id → [{id:910001,note:'ZZ timetable ready'}]. No checker insert can mask a missing restore. |
 | timeline | tests | yes | `tests/timeline.test.mjs` via files. Read recovery.csv columns minute,event; require nonnegative nondecreasing minutes and ordered events detected,scoped,restored,verified. Compare staging reads manually. |
 
 **Messages for required steps**

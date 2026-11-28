@@ -6,7 +6,7 @@
 ├──────────────────────────────────────┤
 │                                      │
 │  Learn software engineering          │
-│  by rebuilding a real system.        │
+│  by building a School Management System.        │
 │                                      │
 │  [        Start learning        ]    │
 │                                      │

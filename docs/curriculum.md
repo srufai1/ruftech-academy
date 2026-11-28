@@ -1,17 +1,17 @@
-# Curriculum — rebuild GPIS, step by step
+# Curriculum — build a School Management System
 
 Read `decisions.md` first. This file lists the modules in order.
 
 ## How the course works
 
-- **You build** your own repository, `gpis-rebuild`. **GPIS** (`srufai1/gpis-school-system`)
+- **You build a School Management System** in `~/projects/school-system`. **GPIS** (`srufai1/gpis-school-system`)
   is the reference answer. You read it; you never edit it or copy it in bulk.
 - **Stack:** Next.js 16 (App Router), TypeScript strict, Supabase (PostgreSQL, RLS, Auth),
   Tailwind CSS v4, shadcn/ui, Vercel. Python comes last, as its own track.
 - **Tools:** **WSL 2 with Ubuntu is required from Module 1**; all terminal work happens
   there. VS Code (with the WSL extension), Git and Node.js run inside WSL.
 - **Database:** your own **free Supabase cloud project** is the default for every database
-  lab. One project for learning (`gpis-rebuild-dev`); never a project that holds real data.
+  lab. One project for learning (`school-system-dev`); never a project that holds real data.
 - **Docker Desktop is optional.** It is needed only for the labs marked **[Docker]**
   (replication and restore, containers). Every other lab works without it.
 - **Pace:** 12–15 focused hours a week. Main course about 60 weeks; Python track 8 weeks.
@@ -60,12 +60,12 @@ GPIS comparison are **self-assessed** and are shown as such.
 | Level | Modules | You get |
 | :--- | :--- | :--- |
 | Guided | 1, 2, start of 3 | Steps; compare with GPIS after each step |
-| Half guided | rest of 3, 4, 5, 6 | Task, hints, checker |
-| Independent | 7, 8, 9, Python track (second half) | Requirements only; compare with GPIS at the end |
+| Half guided | rest of 3, 4–6, start of 7, 8 and Python | Numbered tasks, places to look and folded hints |
+| Independent | end of 7 and 8, all of 9, second half of Python | Numbered outcomes and closed hints after a 30-minute attempt; compare with GPIS at the end |
 
 ## Overview
 
-| # | Module | Rebuilds in GPIS | Level | Weeks |
+| # | Module | What you build | Level | Weeks |
 | :--- | :--- | :--- | :--- | :--- |
 | 1 | Command line, Git and how the web works | Repository, workflow, request journey | Guided | 6 |
 | 2 | JavaScript and TypeScript | The pure rules in `src/lib` | Guided | 8 |
@@ -74,9 +74,9 @@ GPIS comparison are **self-assessed** and are shown as such.
 | 5 | Backend and auth in Next.js | Server Actions, roles, import, assessment workflow | Half guided | 7 |
 | 6 | System design | (case study) GPIS for 50 schools | Half guided | 4 |
 | 7 | Security, testing and DevOps | Test suite, CI, deploy, backups, incidents | Half → independent | 8 |
-| 8 | Algorithms and problem solving | Ranking, aggregates, search, allocation | Independent | 4 |
+| 8 | Algorithms and problem solving | Ranking, aggregates, search, allocation | Half through 8.2 → independent from 8.3 | 4 |
 | 9 | Capstone | Report cards and one more full workstream | Independent | 8 |
-| P | Python track | A FastAPI service beside GPIS | Half → independent | 8 |
+| P | Python track | A FastAPI service beside your School Management System | Half → independent | 8 |
 
 System design comes after Databases, as decided. Backend sits between them because the case
 study needs to know what a request does on the server.
@@ -88,7 +88,7 @@ study needs to know what a request does on the server.
 **Goal.** Work in a terminal without fear, keep work safe in Git, and explain what happens
 between typing a URL and seeing a page.
 
-**Rebuilds.** No GPIS feature yet. You set up `gpis-rebuild` the way GPIS is set up: folder
+**What you build.** No GPIS feature yet. You set up `school-system` the way GPIS is set up: folder
 layout, `README.md`, an `AGENTS.md`-style rules file, small commits, one topic each.
 
 **Setup (week 1, before project 1.1).** Install WSL 2 with Ubuntu, then Git, Node.js and
@@ -102,14 +102,14 @@ VS Code with the WSL extension. Keep your projects inside the Linux home folder,
 | 1.3 Processes and ports | Find a process that leaks children and a server bound to the wrong address | `doc`: evidence file with process tree and socket output; `tests`: fixed server answers on the right address |
 | 1.4 Git rescue | Resolve a merge conflict and recover a "lost" commit | `git`: expected history, no force-push needed, no secret in any commit |
 | 1.5 Request journey | Trace the GPIS login request: DNS, TLS, proxy, app, database, browser | `doc`: diagram plus captured evidence; headings for each hop and its cache |
-| 1.6 Project home | Create `gpis-rebuild` with README, rules file, lint and a first CI-ready script | `files` + `static` + `git` (small commits, clear messages) |
+| 1.6 Project home | Create `school-system` with README, rules file, lint and a first CI-ready script | `files` + `static` + `git` (small commits, clear messages) |
 
 ## Module 2 — JavaScript and TypeScript (8 weeks, guided)
 
 **Goal.** Write correct, typed, tested functions. Read unfamiliar code and fix it without
 rewriting it.
 
-**Rebuilds.** The pure business rules of GPIS (no screen, no database): the code under
+**What you build.** The pure business rules of GPIS (no screen, no database): the code under
 `src/lib` that turns scores into remarks, positions and totals.
 
 | Project | Outcome | Checker |
@@ -126,7 +126,7 @@ rewriting it.
 **Goal.** Build accessible, mobile-first screens with Server and Client Components, and know
 which one to use.
 
-**Rebuilds.** The GPIS shell and its first screens, with local sample data: login page, app
+**What you build.** The GPIS shell and its first screens, with local sample data: login page, app
 shell with phone bottom bar, Students list, student profile, score entry screen. Design target
 is 360px wide with 44px touch targets, as in GPIS.
 
@@ -146,7 +146,7 @@ Projects 3.1–3.3 are guided. From 3.4 you get the task, hints and the checker.
 **Goal.** Design a schema that cannot hold wrong data, write SQL with confidence, and recover
 from loss.
 
-**Rebuilds.** The GPIS data model in your free Supabase cloud project: students, classes,
+**What you build.** The GPIS data model in your free Supabase cloud project: students, classes,
 academic years and terms, and above all the **temporal model** — a student has no class
 column; class membership is a dated record; every score points to the membership it was
 earned under.
@@ -172,7 +172,7 @@ checker marks 4.6 "partly done" in that case.
 **Goal.** Build server-side features that are safe when the client lies: validate on the
 server, authorise every action, keep writes atomic.
 
-**Rebuilds.** GPIS's working core: login with school usernames, roles, admitting and importing
+**What you build.** GPIS's working core: login with school usernames, roles, admitting and importing
 students, and the assessment workflow (Enter scores → Submit → Preview → Issue & Print).
 
 | Project | Outcome | Checker |
@@ -188,7 +188,7 @@ students, and the assessment workflow (Enter scores → Submit → Preview → I
 
 **Goal.** Reason about load, cost and failure with numbers, and defend trade-offs in writing.
 
-**Rebuilds.** Nothing is added to your GPIS. The case study is **"GPIS for 50 schools"**. GPIS
+**What you build.** Nothing is added to your School Management System. The case study is **"GPIS for 50 schools"**. GPIS
 stays single-school; you design what would have to change, and why GPIS was right not to do it.
 
 | Project | Outcome | Checker |
@@ -205,7 +205,7 @@ stays single-school; you design what would have to change, and why GPIS was righ
 **Goal.** Prove the system is safe and working, ship it without fear, and recover when it
 breaks.
 
-**Rebuilds.** What surrounds GPIS's code: its offline test suite, CI checks, Vercel deployment,
+**What you build.** What surrounds GPIS's code: its offline test suite, CI checks, Vercel deployment,
 encrypted backups and restore tests, and its habit of writing down incidents.
 
 | Project | Outcome | Checker |
@@ -217,7 +217,7 @@ encrypted backups and restore tests, and its habit of writing down incidents.
 | 7.5 Web stack debugging **[Docker]** | Repair a broken set of containers: wrong route, wrong permission, used-up connections | `tests`: service healthy after restart; `doc`: hypotheses and evidence |
 | 7.6 Incident and postmortem | Diagnose a seeded outage in your staging app and cloud project, restore service, write a blameless report | `doc`: impact, timeline, causes, follow-ups; `sql`: data restored |
 
-Projects 7.1–7.3 are half guided; 7.4–7.6 give requirements only. The traffic lab (plain
+Projects 7.1–7.3 are half guided; 7.4–7.6 give numbered outcomes and folded hints. The traffic lab (plain
 versus encrypted login on a local teaching network) is an optional **[Docker]** extra in 7.2.
 7.5 is the only required project in this module that needs Docker; without it, do the
 written diagnosis from the supplied logs and the checker marks it "partly done".
@@ -227,7 +227,7 @@ written diagnosis from the supplied logs and the checker marks it "partly done".
 **Goal.** Choose the right data structure, state the cost of a solution, and prove it correct
 with tests.
 
-**Rebuilds.** The parts of GPIS that are really algorithms: ranking, the JHS 3 BECE aggregate
+**What you build.** The parts of GPIS that are really algorithms: ranking, the JHS 3 BECE aggregate
 (all Core subjects plus the best 2 Electives), name search, and paying off the oldest debt
 first.
 
@@ -243,11 +243,11 @@ first.
 
 **Goal.** Deliver a complete GPIS workstream alone, from proposal to release, and defend it.
 
-**Rebuilds.** Report cards end to end (Creche–JHS 2 report card; JHS 3 results slip with BECE
+**What you build.** Report cards end to end (Creche–JHS 2 report card; JHS 3 results slip with BECE
 aggregate and no class position), plus **one** more workstream you choose: Class Teacher
 workspace, Fees and payments, or Books sales.
 
-You get requirements only. The five project stages are self-study checklists:
+You get numbered outcomes and folded hints. The five project stages are self-study checklists:
 
 | Stage | Outcome | Checker |
 | :--- | :--- | :--- |
@@ -267,7 +267,7 @@ notes. The second part is self-assessed.
 **Goal.** Learn Python well enough to build and run a small, typed, tested web service, and to
 know when a second service is worth its cost.
 
-**Rebuilds.** Nothing is replaced. You **add** a Python (FastAPI) service beside your GPIS: a
+**What you build.** Nothing is replaced. You **add** a Python (FastAPI) service beside your School Management System: a
 read-only reporting service for class results, called by the Next.js app.
 
 | Project | Outcome | Checker |
@@ -279,7 +279,7 @@ read-only reporting service for class results, called by the Next.js app.
 | P.5 Join the two | Next.js calls the service; clear behaviour when the service is down | `page`: results shown; error state when the service is stopped |
 | P.6 Was it worth it? | One page: what the second service cost and gave | `doc`: required headings; self-review |
 
-P.1–P.3 are half guided; P.4–P.6 give requirements only.
+P.1–P.3 are half guided; P.4–P.6 give numbered outcomes and folded hints.
 
 ---
 

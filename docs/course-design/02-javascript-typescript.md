@@ -4,14 +4,14 @@ Read `00-guide.md` first. Level: **guided** (all six units). 8 weeks, about 104 
 
 | Unit | Title | Project | Kind | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| 2.1 | Values, functions and tests | `m2-p1` Grading scale | Repo | 960 | 9 |
-| 2.2 | Arrays, objects and sorting | `m2-p2` Class ranking | Repo | 1020 | 8 |
-| 2.3 | TypeScript and input you cannot trust | `m2-p3` Score rules | Repo | 1140 | 9 |
-| 2.4 | Dates, time zones and text | `m2-p4` School dates and names | Repo | 1080 | 10 |
-| 2.5 | Reading and repairing code | `m2-p5` Repair, do not rewrite | Lab | 960 | 10 |
-| 2.6 | Types that model the school | `m2-p6` Typed data shapes | Repo | 1080 | 9 |
+| 2.1 | Values, functions and tests | `m2-p1` Grading scale | Repo | 780–1140 | 9 |
+| 2.2 | Arrays, objects and sorting | `m2-p2` Class ranking | Repo | 810–1230 | 8 |
+| 2.3 | TypeScript and input you cannot trust | `m2-p3` Score rules | Repo | 900–1380 | 9 |
+| 2.4 | Dates, time zones and text | `m2-p4` School dates and names | Repo | 870–1290 | 10 |
+| 2.5 | Reading and repairing code | `m2-p5` Repair, do not rewrite | Lab | 780–1140 | 10 |
+| 2.6 | Types that model the school | `m2-p6` Typed data shapes | Repo | 870–1290 | 9 |
 
-All repo projects run from `~/projects/gpis-rebuild`. Code goes in `src/lib/`, the learner's
+All repo projects run from `~/projects/school-system`. Code goes in `src/lib/`, the learner's
 own tests in `tests/`.
 
 ## Module rules (decided here, so the builder does not have to)
@@ -35,7 +35,7 @@ own tests in `tests/`.
 | D-01 in code | `src/lib/assessments/remark.ts`, `remarkFromTotal`: the bands are tested from the top with `>=` (so 79.5 is "Higher"), and a total outside 0–100 is clamped, not refused |
 | **D-02** | Standard competition ranking. 90, 90, 80 → 1, 1, 3. 75, 70, 70, 65 → 1, 2, 2, 4. Not dense ranking |
 | **D-03** | Ranking is on total score, inside one class only. JHS 3 is not ranked |
-| **Q-07** (closed) | A student with missing subject scores still receives a position. In code (`report-card.ts`, "A missing or partial final result adds nothing (Q-07)"): a missing subject adds nothing to the total; the total is rounded to two decimals |
+| **D-10** | A student with missing subject scores still receives a position. The ranking total adds available subject results and is rounded to two decimals (see `report-card.ts`). |
 | **D-04** | Every class list, ranking and on-roll count covers students with an open membership for that class and term **and** `status = 'active'`. An automated test for the status filter is required |
 | **D-10** | A missing score prints blank, never 0. Blank means "not assessed" |
 | **D-162** | Creche–JHS 2 parts: Individual Test, Class Test, Group Work, Project Work, each out of 15; Examination out of 100. CA raw (out of 60) scaled to 50, plus Exam scaled to 50, gives the Final out of 100. Zero, blank and `ABS` are three different things; blank and `ABS` never become 0; a total exists only when every part is a number. Marks have at most two decimal places |
@@ -62,7 +62,7 @@ own tests in `tests/`.
 | title | Values, functions and tests |
 | module / position | 2 / 1 |
 | guidance | guided |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | The grading scale every GPIS screen and document uses (D-01) |
 | requires | `[wsl, node, git]` |
 
@@ -76,21 +76,24 @@ After this unit you can:
 4. refuse bad input with `throw`, and test that the refusal happens;
 5. export a function from a module and import it in another file.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a marking key for one answer; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | Running JavaScript | `node file.mjs`, the REPL, `console.log` for looking (never inside a rule function) |
-| A2 | Values | number, string, boolean, `null`, `undefined`; `typeof`; `NaN` and `Number.isFinite` |
-| A3 | Names | `const` first, `let` when it must change, never `var` |
-| A4 | Comparing | `===` not `==`; `<`, `>=`; `&&`, `\|\|`, `!`; why `"80" >= 80` is a trap |
-| A5 | Functions | Parameters, `return`, early return; one job per function |
-| A6 | Choosing | `if` / `else if` in order from the top band down; a table of bands and a loop as the second way |
-| B1 | Modules | `export function`, `import { … } from "./x.mjs"` |
-| B2 | Tests | `test("…", () => { assert.equal(…) })`; `npm test`; a test name is a sentence about the rule |
-| B3 | Boundaries | A band has two edges; test both sides of each: 79, 80; 69, 70; … |
-| B4 | Refusing | `throw new RangeError("…")`; `assert.throws`; why a wrong remark is worse than an error |
-| B5 | In GPIS | D-01: one function, used everywhere; the remark is calculated when needed and never stored, so a change of scale cannot leave old wrong words in the database |
+| 1 | Running JavaScript | `node file.mjs`, the REPL, `console.log` for looking (never inside a rule function) |
+| 2 | Values | number, string, boolean, `null`, `undefined`; `typeof`; `NaN` and `Number.isFinite` |
+| 3 | Names | `const` first, `let` when it must change, never `var` |
+| 4 | Comparing | `===` not `==`; `<`, `>=`; `&&`, `\|\|`, `!`; why `"80" >= 80` is a trap |
+| 5 | Functions | Parameters, `return`, early return; one job per function |
+| 6 | Choosing | `if` / `else if` in order from the top band down; a table of bands and a loop as the second way |
+| 7 | Modules | `export function`, `import { … } from "./x.mjs"` |
+| 8 | Tests | `test("…", () => { assert.equal(…) })`; `npm test`; a test name is a sentence about the rule |
+| 9 | Boundaries | A band has two edges; test both sides of each: 79, 80; 69, 70; … |
+| 10 | Refusing | `throw new RangeError("…")`; `assert.throws`; why a wrong remark is worse than an error |
+| 11 | In GPIS | D-01: one function, used everywhere; the remark is calculated when needed and never stored, so a change of scale cannot leave old wrong words in the database |
 
 - **Diagram:** a number line 0–100 with the nine bands and their edges marked.
 - **Common mistakes**
@@ -129,6 +132,9 @@ What you just used: `const`, `function`, `if`, `===`, `throw`, `export` / `impor
 | 7 | A remark function gets 140. Which behaviour is safest for a report card? | Refuse (throw), so the wrong mark is found | Return "Highest" (hides a wrong mark as the best result); return `""` (prints a blank that looks like "not assessed"); return 100's remark and log it (nobody reads the log) |
 
 ### Lab — project 2.1 Grading scale (repo project)
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **What done means**
 
@@ -181,6 +187,10 @@ Not a GPIS rule; the bands are the learner's to design.
 - **Compare with GPIS:** (1) Open `src/lib/assessments/remark.ts`. What does GPIS do with a total of 140 or −5? Yours refuses. Which is safer where, and why might a function that is called only with already-checked totals choose to clamp? (2) GPIS has both a table (`REPORT_REMARK_BANDS`) and a chain of `if`s. What is the risk of having both? (3) Search GPIS for the word "Highest" in `src/`. In how many files is the scale written?
 - **Mastery:** (1) From an empty file, with the lesson closed: write and test a three-band rule with both refusals in 20 minutes. (2) Say the D-01 table aloud from memory, with its edges. (3) Explain why `>` and `>=` differ by exactly one pupil in a class. (4) Explain why the remark is not stored.
 
+**Debugging-lab check** (`m2-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m2-p1-own`). Exercise each documented medal boundary and a zero maximum. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m2-p1`, version 1.0.0, no `lab:`, `requires [wsl, node, git]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -219,7 +229,7 @@ Module 1 (unit 1.6: `package.json`, lint, `verify.sh`). No network.
 | title | Arrays, objects and sorting |
 | module / position | 2 / 2 |
 | guidance | guided |
-| minutes | 1020 |
+| minutes | `{ min: 810, max: 1230 }` |
 | gpis_part | Class positions on the report card: standard competition ranking (D-02, D-03) |
 | requires | `[wsl, node, git]` |
 
@@ -233,21 +243,24 @@ After this unit you can:
 4. implement competition ranking and explain how it differs from dense ranking;
 5. add decimal numbers without rounding surprises.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with lining up runners who share a place; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | Arrays | Index from 0, `length`, `push`, `at(-1)`; reading past the end gives `undefined` |
-| A2 | Objects | Properties, `{ id, total }`, destructuring, spread to copy |
-| A3 | References | Two names, one array. Copy before you change: `[...list]`, `toSorted` |
-| A4 | Loops | `for…of`; `map` (same length, new values), `filter` (fewer), `reduce` (one value) |
-| A5 | Sorting | `sort((a, b) => b.total - a.total)`; default sort is by text (`[10, 9]` → `[10, 9]`!); stable sort keeps the first of equals first |
-| B1 | Ranking | Position = 1 + the number of students with a strictly higher total. Ties share; the next position jumps |
-| B2 | Dense ranking, and why not | 1, 1, 2 hides how many are ahead; D-02 names it as wrong |
-| B3 | Keeping the order | Rank a sorted copy, write positions back by original index |
-| B4 | Decimals | `0.1 + 0.2`; round a total to two places with `Math.round(x * 100) / 100` |
-| B5 | Missing values | `null` adds nothing (Q-07); it is not 0 and it does not remove the student |
-| B6 | In GPIS | D-03: one class at a time; D-04: only active students are ranked; `ordinal` words ("1st", "22nd") are made in one place |
+| 1 | Arrays | Index from 0, `length`, `push`, `at(-1)`; reading past the end gives `undefined` |
+| 2 | Objects | Properties, `{ id, total }`, destructuring, spread to copy |
+| 3 | References | Two names, one array. Copy before you change: `[...list]`, `toSorted` |
+| 4 | Loops | `for…of`; `map` (same length, new values), `filter` (fewer), `reduce` (one value) |
+| 5 | Sorting | `sort((a, b) => b.total - a.total)`; default sort is by text (`[10, 9]` → `[10, 9]`!); stable sort keeps the first of equals first |
+| 6 | Ranking | Position = 1 + the number of students with a strictly higher total. Ties share; the next position jumps |
+| 7 | Dense ranking, and why not | 1, 1, 2 hides how many are ahead; D-02 names it as wrong |
+| 8 | Keeping the order | Rank a sorted copy, write positions back by original index |
+| 9 | Decimals | `0.1 + 0.2`; round a total to two places with `Math.round(x * 100) / 100` |
+| 10 | Missing values | `null` adds nothing (D-10); it is not 0 and it does not remove the student |
+| 11 | In GPIS | D-03: one class at a time; D-04: only active students are ranked; `ordinal` words ("1st", "22nd") are made in one place |
 
 - **Diagram:** a three-column table of the same six totals: sorted order, competition rank, dense rank, with the gap after a tie marked.
 - **Common mistakes**
@@ -281,12 +294,15 @@ What you just used: array methods, comparator, copy before sort, index mapping, 
 | 2 | GPIS D-02: totals 88, 88, 88, 60 → position of 60 | 4th | 2nd (dense); 3rd (counts the tie as two); 1st |
 | 3 | Predict: `[10, 9, 100].sort()` | `[10, 100, 9]` | `[9, 10, 100]` (expects number order); `[100, 10, 9]`; error |
 | 4 | Predict: `const a = [3, 1]; const b = a; b.sort(); a[0]` | 1 | 3 (thinks `b` is a copy); `undefined`; error because `a` is `const` (`const` stops re-assignment, not change) |
-| 5 | GPIS Q-07: subjects `[80, null, 70]`. Total used for ranking? | 150 | 75 (an average: not the rule); 0 (blank poisons the total); "the student is not ranked" (Q-07 says the student still gets a position) |
+| 5 | GPIS D-10: subjects `[80, null, 70]`. Total used for ranking? | 150 | 75 (an average: not the rule); 0 (blank poisons the total); "the student is not ranked" (D-10 says the student still gets a position) |
 | 6 | Which tool turns a list of students into a list of their totals? | `map` | `filter` (keeps or drops, does not change); `reduce` (gives one value); `sort` |
 | 7 | Find the mistake: `positions = sorted.map((s, i) => i + 1)` | Tied students get different positions | "`map` cannot give numbers"; "`i` starts at 1"; "Nothing is wrong" |
 | 8 | GPIS D-04: a withdrawn pupil has the highest total in the class list data. Position of the best active pupil? | 1st: withdrawn pupils are not ranked | 2nd (ranks the withdrawn pupil); "no position until the withdrawn pupil is deleted"; "shared 1st" |
 
 ### Lab — project 2.2 Class ranking (repo project)
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **What done means** — `src/lib/ranking.mjs` exports four functions:
 
@@ -297,7 +313,7 @@ What you just used: array methods, comparator, copy before sort, index mapping, 
 | 3 | `subjectsTotal(subjects)` adds an array of numbers and `null`s; `null` adds nothing; the result is rounded to two decimals; all `null` or `[]` → 0 | `totals` |
 | 4 | `ordinal(n)` gives `"1st"`, `"2nd"`, `"3rd"`, `"4th"`, `"11th"`, `"12th"`, `"13th"`, `"21st"`, `"22nd"`, `"101st"`, `"111th"`; refuses anything but a whole number ≥ 1 | `ordinal` |
 | 5 | `rankClass(students)` takes `[{ id, status, subjects }]` and returns `[{ id, total, position, ordinal }]` for the students whose `status` is `"active"`, in the input order | `rank-class` |
-| 6 | A student with a missing subject is ranked on the total of the others (Q-07) | `rank-class` |
+| 6 | A student with a missing subject is ranked on the total of the others (D-10) | `rank-class` |
 | 7 | Students who are not active are left out and do not move anyone's position (D-04) | `rank-class` |
 | 8 | `tests/ranking.test.mjs`: at least 15 tests of your own, including one named for D-04; `npm test`, lint pass | `own-tests`, `npm-test`, `lint` |
 
@@ -338,6 +354,10 @@ rank what remains.
 - **Compare with GPIS:** (1) Open `src/lib/assessments/rank.ts`. GPIS sorts once and walks the list; the lab's first version counts higher totals for each student. Which is faster for a class of 40? For 4,000? (Module 8 returns to this.) (2) In `report-card.ts`, find `rankingRoster`. Which D-number does that one line carry out? (3) GPIS ranks on a total rounded to two decimals. What could go wrong if it ranked on unrounded sums?
 - **Mastery:** (1) By hand: positions for 64, 91, 64, 77, 91, 91. (2) From an empty file, write `competitionRanks` with its tests in 20 minutes. (3) Explain to a parent why two pupils are "2nd" and nobody is "3rd". (4) Show a three-line example where sorting changes someone else's array, and repair it.
 
+**Debugging-lab check** (`m2-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m2-p2-own`). Use a draw and a tie on points; compare every league row. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m2-p2`, version 1.0.0, no `lab:`, `requires [wsl, node, git]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -374,7 +394,7 @@ Unit 2.1. No network.
 | title | TypeScript and input you cannot trust |
 | module / position | 2 / 3 |
 | guidance | guided |
-| minutes | 1140 |
+| minutes | `{ min: 900, max: 1380 }` |
 | gpis_part | Score entry rules: marks against stored maxima; zero, blank and ABS are different (D-162, D-10) |
 | requires | `[wsl, node, git]` |
 
@@ -388,21 +408,24 @@ After this unit you can:
 4. calculate a score total from its parts and say exactly when no total exists;
 5. run `tsc --noEmit` with `strict` and fix what it finds without `any`.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a register with separate boxes for absent and zero; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | Why types | A test checks the cases you thought of; a type checks every call. Types are removed before the code runs |
-| A2 | Setting up | `npm i -D typescript`, `tsconfig.json` (the module rules above), `"typecheck": "tsc --noEmit"`, Node runs `.ts` directly |
-| A3 | Basic types | `number`, `string`, `boolean`, arrays, object types, `type` aliases, optional `?` |
-| A4 | Unions and literals | `number \| "ABS" \| null`; narrowing with `typeof` and `===` |
-| A5 | `unknown` at the edge | Input from a form is `unknown`; check, then narrow. Never `any` |
-| B1 | Results, not exceptions | `{ ok: true, value } \| { ok: false, error }`: a discriminated union; the caller must look at `ok` |
-| B2 | Parsing a mark | Trim; blank → `null`; `ABS` any case; a strict pattern for digits (`"1e2"`, `"0x10"`, `" -1"`, `"12."` refused); range 0 to max; at most two decimals |
-| B3 | Zero, blank, ABS | Three facts: "scored nothing", "not entered", "was absent". None may turn into another (D-162, D-10) |
-| B4 | The total | CA raw / 60 × 50 + exam / examMax × 50, to two decimals; `null` unless every part is a number |
-| B5 | Maxima are data | The maximum arrives as an argument (it is stored on the record, D-27); a 140 exam (D-171) is the same function with another number |
-| B6 | In GPIS | `raw-marks.ts`: the same rules are checked again by the Server Action and by database CHECK constraints: three layers |
+| 1 | Why types | A test checks the cases you thought of; a type checks every call. Types are removed before the code runs |
+| 2 | Setting up | `npm i -D typescript`, `tsconfig.json` (the module rules above), `"typecheck": "tsc --noEmit"`, Node runs `.ts` directly |
+| 3 | Basic types | `number`, `string`, `boolean`, arrays, object types, `type` aliases, optional `?` |
+| 4 | Unions and literals | `number \| "ABS" \| null`; narrowing with `typeof` and `===` |
+| 5 | `unknown` at the edge | Input from a form is `unknown`; check, then narrow. Never `any` |
+| 6 | Results, not exceptions | `{ ok: true, value } \| { ok: false, error }`: a discriminated union; the caller must look at `ok` |
+| 7 | Parsing a mark | Trim; blank → `null`; `ABS` any case; a strict pattern for digits (`"1e2"`, `"0x10"`, `" -1"`, `"12."` refused); range 0 to max; at most two decimals |
+| 8 | Zero, blank, ABS | Three facts: "scored nothing", "not entered", "was absent". None may turn into another (D-162, D-10) |
+| 9 | The total | CA raw / 60 × 50 + exam / examMax × 50, to two decimals; `null` unless every part is a number |
+| 10 | Maxima are data | The maximum arrives as an argument (it is stored on the record, D-27); a 140 exam (D-171) is the same function with another number |
+| 11 | In GPIS | `raw-marks.ts`: the same rules are checked again by the Server Action and by database CHECK constraints: three layers |
 
 - **Diagram:** a flow: text from the box → `parseMark` → `number` / `"ABS"` / `null` / error → `calculateTotal` → total or `null`.
 - **Common mistakes**
@@ -442,6 +465,9 @@ What you just used: `unknown`, union types, narrowing, a result type, a whole-te
 | 8 | Predict: `parseFloat("12abc")`, and what a strict mark parser must do with `"12abc"` | 12; refuse it | `NaN`; accept 12 (silently drops what the teacher typed); `"12abc"`; accept as text |
 
 ### Lab — project 2.3 Score rules (repo project)
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **What done means** — `src/lib/marks.ts`:
 
@@ -501,6 +527,10 @@ Science, D-171) scaled to 70 **as a whole number, halves up**; Final out of 100.
 - **Compare with GPIS:** (1) Read `parseRawMark` in `raw-marks.ts`. It returns a `short` message as well as `error`. Where on a phone screen would each be shown? (2) GPIS checks marks in the browser, in the Server Action and in the database. Name one way each of the first two can be skipped. (3) `calculateRawAssessment` has a comment about rounding "from unrounded components". Find a set of marks where rounding each part first would change the total.
 - **Mastery:** (1) With the lesson closed, write the type for "a number, ABS or blank" and a function that says which one it got. (2) Work out by hand: 9, 10.5, 15, 12 and exam 47/100. (3) Explain to a teacher why an empty box and a 0 print differently. (4) Read aloud and explain a `tsc` error you cause on purpose.
 
+**Debugging-lab check** (`m2-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m2-p3-own`). Compare mock totals at a rounding boundary with the stated 30/70 formula. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m2-p3`, version 1.0.0, no `lab:`, `requires [wsl, node, git]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -541,7 +571,7 @@ Units 2.1–2.2. **Network: yes** (`npm install typescript`).
 | title | Dates, time zones and text |
 | module / position | 2 / 4 |
 | guidance | guided |
-| minutes | 1080 |
+| minutes | `{ min: 870, max: 1290 }` |
 | gpis_part | "Today at the school", term dates, and finding a student by name in any word order (D-247) |
 | requires | `[wsl, node, git]` |
 
@@ -555,21 +585,24 @@ After this unit you can:
 4. find which term a date falls in, including the first and last day;
 5. clean and split text, and match names in any word order without caring about case or full stops.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with one instant seen on clocks in two places; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | Two different things | A moment in time (the same everywhere) and a date on a calendar (depends on where you are). A birthday is a calendar date |
-| A2 | `Date` | It holds a moment. `new Date()`, `toISOString()` (always UTC), `getDate()` (uses the machine's zone: the trap) |
-| A3 | The school's zone | `Africa/Accra`; `toLocaleDateString("en-CA", { timeZone })` gives `YYYY-MM-DD`. Name the zone even though Accra is UTC+0: the server may not be |
-| A4 | Dates as text | `YYYY-MM-DD` sorts correctly as text; compare with `<` and `<=` |
-| A5 | Real dates | 30 February does not exist; build with `Date.UTC` and read back; leap years |
-| A6 | Day arithmetic | Whole days in UTC: `addDays`, `daysBetween`. Never add 24 × 60 × 60 × 1000 to a local time |
-| B1 | Periods | A term is `startsOn` to `endsOn`, both included. "Which term is this date in?" may be "none" |
-| B2 | Text | `trim`, `toLocaleLowerCase`, `split(/\s+/)`, `filter(Boolean)`, `includes`, `replaceAll` |
-| B3 | A little pattern language | `/\./g`, `\s+`, `^…$`, `test`, `replace` |
-| B4 | Matching names | D-247: every typed word, any order, full stops dropped. "o. adu" finds "Godfred O. Adu" |
-| B5 | Clocks in tests | A function that reads the clock cannot be tested; give it `now` as a parameter with a default |
+| 1 | Two different things | A moment in time (the same everywhere) and a date on a calendar (depends on where you are). A birthday is a calendar date |
+| 2 | `Date` | It holds a moment. `new Date()`, `toISOString()` (always UTC), `getDate()` (uses the machine's zone: the trap) |
+| 3 | The school's zone | `Africa/Accra`; `toLocaleDateString("en-CA", { timeZone })` gives `YYYY-MM-DD`. Name the zone even though Accra is UTC+0: the server may not be |
+| 4 | Dates as text | `YYYY-MM-DD` sorts correctly as text; compare with `<` and `<=` |
+| 5 | Real dates | 30 February does not exist; build with `Date.UTC` and read back; leap years |
+| 6 | Day arithmetic | Whole days in UTC: `addDays`, `daysBetween`. Never add 24 × 60 × 60 × 1000 to a local time |
+| 7 | Periods | A term is `startsOn` to `endsOn`, both included. "Which term is this date in?" may be "none" |
+| 8 | Text | `trim`, `toLocaleLowerCase`, `split(/\s+/)`, `filter(Boolean)`, `includes`, `replaceAll` |
+| 9 | A little pattern language | `/\./g`, `\s+`, `^…$`, `test`, `replace` |
+| 10 | Matching names | D-247: every typed word, any order, full stops dropped. "o. adu" finds "Godfred O. Adu" |
+| 11 | Clocks in tests | A function that reads the clock cannot be tested; give it `now` as a parameter with a default |
 
 - **Diagram:** one moment (`2026-12-14T23:30:00Z`) shown as three calendar dates: Los Angeles 14 Dec, Accra 14 Dec, Tokyo 15 Dec.
 - **Common mistakes**
@@ -609,6 +642,9 @@ What you just used: `Date`, `Date.UTC`, `toLocaleDateString` with a zone, text c
 | 8 | Predict: `"  Ama   Birikran ".trim().split(" ").length` | 4 | 2 (forgets the three spaces between give empty pieces); 3; 5 |
 
 ### Lab — project 2.4 School dates and names (repo project)
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **What done means**
 
@@ -664,6 +700,10 @@ words.
 - **Compare with GPIS:** (1) Read the comment at the top of `src/lib/school-date.ts`. Ghana is UTC+0 all year, so why does GPIS still name the zone? (2) `matchesStudentSearch` in `name-class-search.ts` also searches the student's code and understands "name, class". What does the comma do? (3) GPIS stores a date of birth as a date, not a moment. What would go wrong for a pupil born at 00:30 if it were a moment?
 - **Mastery:** (1) From an empty file: "today in `Pacific/Auckland`" with a test that passes on any machine. (2) By hand: `daysBetween("2027-12-25", "2028-03-01")`. (3) Write `matchesName` again from memory, with four tests. (4) Explain "moment" and "calendar date" to someone using a birthday as the example.
 
+**Debugging-lab check** (`m2-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m2-p4-own`). Test the day before the birthday and a leap-day birthday in a common year. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m2-p4`, version 1.0.0, no `lab:`, `requires [wsl, node, git]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -705,7 +745,7 @@ Units 2.1–2.3. No network.
 | title | Reading and repairing code |
 | module / position | 2 / 5 |
 | guidance | guided |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | Admission helpers: admission numbers (D-48), name splitting (D-46), House assignment (D-70) |
 | requires | `[wsl, node, git]` |
 
@@ -720,6 +760,9 @@ After this unit you can:
 5. leave working code alone.
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with checking the first line where two class lists disagree; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
@@ -767,6 +810,9 @@ What you just used: reading tests as a contract, a reproducing test, shrinking, 
 | 6 | While fixing a bug you see an ugly but working function next to it. What do you do? | Leave it; note it for later | Tidy it in the same commit (hides the real change); rewrite both; delete it |
 
 ### Lab — project 2.5 Repair, do not rewrite (lab project)
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 - **Start:** `npx academy init m2-p5` → `~/academy-labs/m2-p5/admissions-helper` (a Git
   repository with a tag `start`).
@@ -833,6 +879,10 @@ lines; 12 or more tests.
 - **Compare with GPIS:** (1) In the read-only copy run `git log --oneline --grep="Fix" | head`. Open one with `git show`. How many lines of source changed, and is there a test in the same commit? (2) GPIS's rules say "Stay inside the task." Describe the commit in the debugging lab that broke that rule and what it cost. (3) Find where GPIS assigns a House (search for "House" under `src/lib/admissions`). How does it break ties?
 - **Mastery:** (1) Given a bug report from a classmate about any function, produce a failing test in ten minutes. (2) Explain why a test that fails for the wrong reason is worse than no test. (3) Use `git bisect` on a five-commit repository you make yourself. (4) State D-48, D-46 and D-70 from memory.
 
+**Debugging-lab check** (`m2-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m2-p5-own`). Replay the documented edge case and the learner’s added regression test. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m2-p5`, version 1.0.0, `lab: root ~/academy-labs/m2-p5/admissions-helper`, `requires [wsl, node, git]`)
 
 | Step id | Kind | Req. | Verifies |
@@ -874,7 +924,7 @@ Units 2.1–2.4. No network (the seeded project has no dependencies).
 | title | Types that model the school |
 | module / position | 2 / 6 |
 | guidance | guided |
-| minutes | 1080 |
+| minutes | `{ min: 870, max: 1290 }` |
 | gpis_part | The temporal model: a student has no class; membership is a dated record; a score points to its membership (D-19 to D-23) |
 | requires | `[wsl, node, git]` |
 
@@ -888,21 +938,24 @@ After this unit you can:
 4. write functions over these types without `any` and without `as`;
 5. write a type-level test: code that must **not** compile.
 
-### Lesson (two parts)
+### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a pupil changing classes while keeping the same identity; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | § | Section | Key ideas |
 | :--- | :--- | :--- |
-| A1 | A type is a promise about data | Object types, `readonly`, optional against `\| null` (missing against "known to be empty") |
-| A2 | Small exact sets | `type StudentStatus = "active" \| "withdrawn" \| "alumni"`; a typing mistake becomes a compile error |
-| A3 | Identifiers | `StudentId`, `ClassId` as branded numbers, so a class id cannot be passed where a student id is wanted |
-| A4 | Tagged unions again | `Result<T>`; exhaustive `switch` with `never` |
-| A5 | Generic helpers | `Array<T>`, `Record<K, V>`, `Pick`, `Omit`, `Readonly` |
-| B1 | The obvious model, and why it is wrong | `student.classId`: one overwritable value. Reprint last term's card → today's class, wrong cohort, and it looks normal |
-| B2 | Membership | Student, class, academic year, `startedOn`, `endedOn \| null`, terms covered. Several per student per year, never overlapping (D-19, D-22) |
-| B3 | Moves happen at term boundaries | So a term always belongs to exactly one class (D-20) |
-| B4 | A score points to its membership | Resolved once when written, never worked out again when read (D-21). It also carries its maxima (D-27) |
-| B5 | Two statuses | Student: active, withdrawn, alumni. Membership: open or ended. Withdrawal ends the membership and sets the status. Alumni is a status, not a class (D-23) |
-| B6 | "Who is on the roll?" | Open membership for that class and term **and** `status === "active"` (D-04) |
+| 1 | A type is a promise about data | Object types, `readonly`, optional against `\| null` (missing against "known to be empty") |
+| 2 | Small exact sets | `type StudentStatus = "active" \| "withdrawn" \| "alumni"`; a typing mistake becomes a compile error |
+| 3 | Identifiers | `StudentId`, `ClassId` as branded numbers, so a class id cannot be passed where a student id is wanted |
+| 4 | Tagged unions again | `Result<T>`; exhaustive `switch` with `never` |
+| 5 | Generic helpers | `Array<T>`, `Record<K, V>`, `Pick`, `Omit`, `Readonly` |
+| 6 | The obvious model, and why it is wrong | `student.classId`: one overwritable value. Reprint last term's card → today's class, wrong cohort, and it looks normal |
+| 7 | Membership | Student, class, academic year, `startedOn`, `endedOn \| null`, terms covered. Several per student per year, never overlapping (D-19, D-22) |
+| 8 | Moves happen at term boundaries | So a term always belongs to exactly one class (D-20) |
+| 9 | A score points to its membership | Resolved once when written, never worked out again when read (D-21). It also carries its maxima (D-27) |
+| 10 | Two statuses | Student: active, withdrawn, alumni. Membership: open or ended. Withdrawal ends the membership and sets the status. Alumni is a status, not a class (D-23) |
+| 11 | "Who is on the roll?" | Open membership for that class and term **and** `status === "active"` (D-04) |
 
 - **Diagram (Mermaid `erDiagram`):** `Student ||--o{ Membership`, `SchoolClass ||--o{ Membership`, `AcademicYear ||--o{ Term`, `Membership ||--o{ Score`. No line from Student to SchoolClass.
 - **Common mistakes**
@@ -911,6 +964,8 @@ After this unit you can:
   3. `endedOn?: string` → "not ended" and "forgot to load it" look the same → `string \| null`, required.
   4. `as Student` on data from outside → the compiler is told a lie → check, then narrow.
   5. Filtering on status only (or membership only) for a class list → a withdrawn pupil with an open membership appears, or an active pupil in another class does → both (D-04).
+
+**Planning a project.** Recall the three plans from Project 1.6. Show one edge case for this milestone and how to turn it into a test before implementing it.
 
 ### Guided example — "A lending library, typed"
 
@@ -942,6 +997,17 @@ What you just used: literal unions, branded ids, `| null`, `Result`, `never`, `@
 | 8 | GPIS D-20: why may a pupil change class only at a term boundary? | So that every term belongs to exactly one class, and a term's scores have one cohort | To reduce paperwork (not the stated reason); because the database is slow; because terms are short |
 
 ### Lab — project 2.6 Typed data shapes (repo project)
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give the command or file and an inline hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Step 1 · Plan the milestone.** In `lab.md`, list the following exact implementation
+paths. Before the first change to any of them, commit `requirements.md`, `spec.md`
+and `decisions.md` together under `docs/plans/2.6/`. Use the headings in guide §0.4.
+
+- `src/lib/school-types.ts`
+- `src/lib/membership.ts`
+
 
 **What done means** — `src/lib/school-types.ts` and `src/lib/membership.ts`:
 
@@ -996,7 +1062,16 @@ on a line before writing `overlaps`. (c) `classRoll` is two `filter`s and a `toS
 - **Compare with GPIS:** (1) Read "The temporal model" in GPIS's `AGENTS.md`. Which of your types carries out each of D-19, D-21 and D-23? (2) GPIS prevents overlapping memberships in the database (D-22), not in code. Your `overlaps` is code. What can a database constraint do that your function cannot? (Module 4 builds it.) (3) Open `docs/LEGACY_TEMPORAL_FINDINGS.md` and read the first finding. Which line of your debugging lab is the same mistake?
 - **Mastery:** (1) From memory, write the `Membership` type and say why each field is there. (2) Explain to a head teacher, in four sentences, why reprinting an old card went wrong in the old system. (3) Write `classRoll` again in 15 minutes with three tests. (4) Add a fourth student status in a scratch copy and list every place the compiler sends you.
 
+**Debugging-lab check** (`m2-p6-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m2-p6-own`). Check chronological history and gaps for two memberships and an open placement. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m2-p6`, version 1.0.0, no `lab:`, `requires [wsl, node, git]`)
+
+Add three required `doc` steps for the plans in `docs/plans/2.6/`, one per file,
+with the headings in §0.4. Add a required `tests` step for the decision count and
+the Git ancestry check in §0.4, using the literal paths in step 1 above.
+
 
 | Step id | Kind | Req. | Verifies |
 | :--- | :--- | :--- | :--- |

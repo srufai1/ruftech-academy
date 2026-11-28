@@ -2,18 +2,18 @@
 
 | Unit | Title | Project | Kind | Level | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| P.1 | Python core | py-p1 | Repo | half | 1050 | 5 |
-| P.2 | Log report again | py-p2 | Seeded lab | half | 960 | 4 |
-| P.3 | API consumer | py-p3 | Seeded lab | half | 1050 | 4 |
-| P.4 | FastAPI service [Docker optional] | py-p4 | Repo | independent | 1140 | 6 |
-| P.5 | Join the two | py-p5 | Repo | independent | 1050 | 6 |
-| P.6 | Was it worth it? | py-p6 | Repo | independent | 990 | 4 |
+| P.1 | Python core | py-p1 | Repo | half | 840–1260 | 5 |
+| P.2 | Log report again | py-p2 | Seeded lab | half | 780–1140 | 4 |
+| P.3 | API consumer | py-p3 | Seeded lab | half | 840–1260 | 4 |
+| P.4 | FastAPI service [Docker optional] | py-p4 | Repo | independent | 900–1380 | 6 |
+| P.5 | Join the two | py-p5 | Repo | independent | 840–1260 | 6 |
+| P.6 | Was it worth it? | py-p6 | Repo | independent | 780–1200 | 4 |
 
 ## Module rules (decided here)
 
-Use slug py and content/module-10/. Repo units keep the service under services/results/ in gpis-rebuild. P.2 and P.3 use disposable seeded labs. Learners activate a local venv before invoking the checker so python resolves consistently. Record versions in services/results/requirements.txt (FastAPI, uvicorn, psycopg, pytest, httpx and mypy). Course Node tests spawn the public Python entry points and assert actual outputs; pytest and mypy are tests/run commands, never step kinds. Use Decimal for marks and explicit decimal serialisation. Keep local API simulations offline. Bind development services to loopback. Only Next.js talks to the reporting service from the server after checking the staff session and class access. Paper and screen rules remain the same across languages.
+Use slug py and content/module-10/. Repo units keep the service under services/results/ in school-system. P.2 and P.3 use disposable seeded labs. Learners activate a local venv before invoking the checker so python resolves consistently. Record versions in services/results/requirements.txt (FastAPI, uvicorn, psycopg, pytest, httpx and mypy). Course Node tests spawn the public Python entry points and assert actual outputs; pytest and mypy are tests/run commands, never step kinds. Use Decimal for marks and explicit decimal serialisation. Keep local API simulations offline. Bind development services to loopback. Only Next.js talks to the reporting service from the server after checking the staff session and class access. Paper and screen rules remain the same across languages.
 
-Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. Debugging and own builds are self-reviewed [Q1]. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
+Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. The debugging lab and own build have separate checks. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
 
 ## File and interface contract
 
@@ -32,7 +32,7 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 
 | Source in the read-only GPIS | Text to use |
 | :--- | :--- |
-| D-01, D-02, D-03, D-04, Q-07 | “Ties share a position; the next position skips ahead by the number of tied students.” Creche–JHS 2 grades are calculated on the common scale; rank one eligible class at a time. |
+| D-01, D-02, D-03, D-04, D-10 | “Ties share a position; the next position skips ahead by the number of tied students.” Creche–JHS 2 grades are calculated on the common scale; rank one eligible class at a time. |
 | D-10, D-27, D-162, D-171 | “Missing subject scores print blank”. Use stored maxima; JHS Integrated Science exam is out of 140. Distinguish blank, ABS and numerical zero. |
 | D-80, D-81, D-218 | “Both are sums over exactly the same selected set.” JHS 3 mock raw and aggregate count all cores plus the two highest elective finals. Only submitted data reaches a document. |
 | D-21, D-218 | “Reprint reproduces the issued snapshot”. Use the period membership and preserve the identity and contents of issued records. |
@@ -50,7 +50,7 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 | title | Python core |
 | module / position | 10 / 1 |
 | guidance | half |
-| minutes | 1050 |
+| minutes | `{ min: 840, max: 1260 }` |
 | gpis_part | Use explicit mark and result types. Map Python None, the ABS marker and numeric zero distinctly. |
 | requires | [wsl, node, git, python] |
 
@@ -63,6 +63,9 @@ After this unit you can
 3. Keep decimal boundaries
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with writing the same marking rule in a second language; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://docs.python.org/3/tutorial/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -100,7 +103,10 @@ In a scratch folder.
 
 ### Lab — Python core
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -153,6 +159,10 @@ In a scratch folder.
 3. Run strict type checking.
 4. Explain a parity failure.
 
+**Debugging-lab check** (`py-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`py-p1-own`). Run the generated boundary vectors through both languages and compare JSON values. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`py-p1`, version 1.0.0, no `lab:`, requires [wsl, node, git, python])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -187,7 +197,7 @@ Module 9 and the module 2/8 calculation fixtures. WSL, Git, Node and Python 3.11
 | title | Log report again |
 | module / position | 10 / 2 |
 | guidance | half |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | Extract status and path from the module 1.2 access-log format independently of the client address. |
 | requires | [wsl, node, python] |
 
@@ -200,6 +210,9 @@ After this unit you can
 3. Separate command outcomes
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with counting events in the gatekeeper’s log; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://docs.python.org/3/tutorial/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -236,6 +249,9 @@ In a scratch folder.
 | 6 | Five wrong GPIS logins under D-170? | 30-minute account lock; log entries alone do not prove account state | Five-minute lock (wrong rule). Five HTTP errors always prove one lock (identities unknown) |
 
 ### Lab — Log report again
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **Start.** Run `npx academy init py-p2`. Create logs/ with byte-identical module 1.2 access.log, term 1 access.log, empty.log and no-failures.log. Add malformed.log and debug/report.py with the documented tie fault. No background processes.Use the preceding unit’s finished work.
 
@@ -289,6 +305,10 @@ In a scratch folder.
 3. Separate stdout and stderr.
 4. Compare an empty and missing file.
 
+**Debugging-lab check** (`py-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`py-p2-own`). Mix a malformed line with two valid events and verify the daily summary. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`py-p2`, version 1.0.0, lab root `logs`, seed `fixtures/seed.sh`, requires [wsl, node, python])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -321,7 +341,7 @@ Module 9 and the module 2/8 calculation fixtures. WSL, Git, Node and Python 3.11
 | title | API consumer |
 | module / position | 10 / 3 |
 | guidance | half |
-| minutes | 1050 |
+| minutes | `{ min: 840, max: 1260 }` |
 | gpis_part | Request the next cursor exactly once; stop on null and reject repeated cursors. |
 | requires | [wsl, node, python] |
 
@@ -334,6 +354,9 @@ After this unit you can
 3. Write safe CSV
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with collecting a register one sheet at a time; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://docs.python.org/3/tutorial/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -370,6 +393,9 @@ In a scratch folder.
 | 6 | D-218 reprint of one issued result? | Read the stored issue each time | Treat retry as a new issue (duplicates). Read current draft (different data) |
 
 ### Lab — API consumer
+
+Open with what the learner is building and why. Use the numbered requirements below as the steps. Give a place to look in a closed hint under each numbered step. End with “How to check your work”, the copyable main command and what a pass shows.
+
 
 **Start.** Run `npx academy init py-p3`. Seed export/ with empty starter export.py, sample pages A/B, a prior export and debug/ trace. The checker’s short-lived fake HTTP server is a test fixture; it starts no learner service.Use the preceding unit’s finished work.
 
@@ -423,6 +449,10 @@ In a scratch folder.
 3. Round-trip a quoted name.
 4. Prove old output survives failure.
 
+**Debugging-lab check** (`py-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`py-p3-own`). Fail the next page request and check manifest and export still describe the same rows. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`py-p3`, version 1.0.0, lab root `export`, seed `fixtures/seed.sh`, requires [wsl, node, python])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -455,7 +485,7 @@ Module 9 and the module 2/8 calculation fixtures. WSL, Git, Node and Python 3.11
 | title | FastAPI service [Docker optional] |
 | module / position | 10 / 4 |
 | guidance | independent |
-| minutes | 1140 |
+| minutes | `{ min: 900, max: 1380 }` |
 | gpis_part | A GET selects one class and term. Return an ordered synthetic result list with decimal strings and nullable totals. |
 | requires | [wsl, node, git, python, supabase, lab-db, docker] |
 
@@ -468,6 +498,9 @@ After this unit you can
 3. Start and stop deliberately
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with a records desk that answers questions; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://docs.python.org/3/tutorial/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -482,6 +515,8 @@ After this unit you can
 1. Empty success → hides auth failure → 401 without any database read
 2. Allow with valid token → token not a DB grant → Database denies it
 3. Include if recent → wrong state → Excluded from projection
+
+**Planning a project.** Recall the three plans from Project 1.6. Show one edge case for this milestone and how to turn it into a test before implementing it.
 
 ### Guided example — Read a museum catalogue
 
@@ -505,7 +540,19 @@ In a scratch folder.
 
 ### Lab — FastAPI service [Docker optional]
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Step 1 · Plan the milestone.** In `lab.md`, list the following exact implementation
+paths. Before the first change to any of them, commit `requirements.md`, `spec.md`
+and `decisions.md` together under `docs/plans/P.4/`. Use the headings in guide §0.4.
+
+- `services/results/app.py`
+- `services/results/tests/test_api.py`
+- `supabase/migrations/20261004000000_results_reader.sql`
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -513,8 +560,8 @@ In a scratch folder.
 | :--- | :--- | :--- |
 | 1 | `services/results/app.py`, `services/results/tests/test_api.py`, `supabase/migrations/*results_reader*.sql` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
-| 3 | Learner starts python -m uvicorn app:app --host 127.0.0.1 --port 8000 inside services/results. Use synthetic lab class 900001, term 900001 with two persistent demo members and published totals 75.25 and null. GET /results/class/900001?term=900001 with server token → 200 {class_id:900001,term_id:900001,rows:[{student_id:900001,total:'75.25'},{student_id:900002,total:null}]}. Ascending student_id. Missing/wrong bearer → 401, unknown class → 404, invalid int → 422. No internal DB detail in response. | `contract` |
-| 4 | Forward migration creates results_reader with no elevated role memberships and no BYPASSRLS, grants only select on public.published_class_results (class_id,term_id,student_id,total). As results_reader select rows of persistent fixture ordered by student_id; expect 900001/75.25 and 900002/null with numerics cast to text. UPDATE public.scores SET id=id WHERE false → expect_error true. SELECT has_table_privilege('results_reader','public.scores','insert') AS allowed → false. Service DSN uses this restricted identity; supply connection and token through ignored local configuration. | `readonly` |
+| 3 | Learner starts python -m uvicorn app:app --host 127.0.0.1 --port 8000 inside services/results. Use synthetic lab class 910001, term 910001 with two persistent demo members and published totals 75.25 and null. GET /results/class/910001?term=910001 with server token → 200 {class_id:910001,term_id:910001,rows:[{student_id:910001,total:'75.25'},{student_id:910002,total:null}]}. Ascending student_id. Missing/wrong bearer → 401, unknown class → 404, invalid int → 422. No internal DB detail in response. | `contract` |
+| 4 | Forward migration creates results_reader with no elevated role memberships and no BYPASSRLS, grants only select on public.published_class_results (class_id,term_id,student_id,total). As results_reader select rows of persistent fixture ordered by student_id; expect 910001/75.25 and 910002/null with numerics cast to text. UPDATE public.scores SET id=id WHERE false → expect_error true. SELECT has_table_privilege('results_reader','public.scores','insert') AS allowed → false. Service DSN uses this restricted identity; supply connection and token through ignored local configuration. | `readonly` |
 | 5 | Run cd services/results && python -m pytest -q tests/test_api.py; exit 0 with passed cases including database unavailable → 503, no exception detail in response. | `python-tests` |
 | 6 | Learner starts optional Docker packaging at loopback 8001. Repeat authorised and wrong-token GET and compare status and JSON to the WSL service. WSL path alone meets required checks. | `container` |
 
@@ -557,14 +604,23 @@ In a scratch folder.
 3. Prove write refusal.
 4. Stop and restart the WSL service.
 
+**Debugging-lab check** (`py-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`py-p4-own`). Check health responses before, during and after a simulated database outage. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`py-p4`, version 1.0.0, no `lab:`, requires [wsl, node, git, python, supabase, lab-db])
+
+Add three required `doc` steps for the plans in `docs/plans/P.4/`, one per file,
+with the headings in §0.4. Add a required `tests` step for the decision count and
+the Git ancestry check in §0.4, using the literal paths in step 1 above.
+
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
 | deliverables | files | yes | `services/results/app.py`, `services/results/tests/test_api.py`, `supabase/migrations/*results_reader*.sql` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
-| contract | tests | yes | `tests/contract.test.mjs` via files. Learner starts python -m uvicorn app:app --host 127.0.0.1 --port 8000 inside services/results. Use synthetic lab class 900001, term 900001 with two persistent demo members and published totals 75.25 and null. GET /results/class/900001?term=900001 with server token → 200 {class_id:900001,term_id:900001,rows:[{student_id:900001,total:'75.25'},{student_id:900002,total:null}]}. Ascending student_id. Missing/wrong bearer → 401, unknown class → 404, invalid int → 422. No internal DB detail in response. |
-| readonly | sql | yes | Forward migration creates results_reader with no elevated role memberships and no BYPASSRLS, grants only select on public.published_class_results (class_id,term_id,student_id,total). As results_reader select rows of persistent fixture ordered by student_id; expect 900001/75.25 and 900002/null with numerics cast to text. UPDATE public.scores SET id=id WHERE false → expect_error true. SELECT has_table_privilege('results_reader','public.scores','insert') AS allowed → false. Service DSN uses this restricted identity; supply connection and token through ignored local configuration. |
+| contract | tests | yes | `tests/contract.test.mjs` via files. Learner starts python -m uvicorn app:app --host 127.0.0.1 --port 8000 inside services/results. Use synthetic lab class 910001, term 910001 with two persistent demo members and published totals 75.25 and null. GET /results/class/910001?term=910001 with server token → 200 {class_id:910001,term_id:910001,rows:[{student_id:910001,total:'75.25'},{student_id:910002,total:null}]}. Ascending student_id. Missing/wrong bearer → 401, unknown class → 404, invalid int → 422. No internal DB detail in response. |
+| readonly | sql | yes | Forward migration creates results_reader with no elevated role memberships and no BYPASSRLS, grants only select on public.published_class_results (class_id,term_id,student_id,total). As results_reader select rows of persistent fixture ordered by student_id; expect 910001/75.25 and 910002/null with numerics cast to text. UPDATE public.scores SET id=id WHERE false → expect_error true. SELECT has_table_privilege('results_reader','public.scores','insert') AS allowed → false. Service DSN uses this restricted identity; supply connection and token through ignored local configuration. |
 | python-tests | tests | yes | Run cd services/results && python -m pytest -q tests/test_api.py; exit 0 with passed cases including database unavailable → 503, no exception detail in response. |
 
 **Messages for required steps**
@@ -602,7 +658,7 @@ Module 9 and the module 2/8 calculation fixtures. WSL, Git, Node and Python 3.11
 | title | Join the two |
 | module / position | 10 / 5 |
 | guidance | independent |
-| minutes | 1050 |
+| minutes | `{ min: 840, max: 1260 }` |
 | gpis_part | Validate request claims and class access in Next.js. Send only the server-side service token to FastAPI. |
 | requires | [wsl, node, git, python, supabase, lab-db, playwright] |
 
@@ -615,6 +671,9 @@ After this unit you can
 3. Rehearse the outage
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with two desks passing one request between them; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://docs.python.org/3/tutorial/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -652,7 +711,10 @@ In a scratch folder.
 
 ### Lab — Join the two
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -660,7 +722,7 @@ In a scratch folder.
 | :--- | :--- | :--- |
 | 1 | `src/lib/results-service.ts`, `services/results/tests/test_integration.py`, `docs/ops/results-service.md` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
-| 3 | Playwright (Q4) at /capstone/class/900001/results?term=900001 using a lab staff session. With FastAPI running, show Class results, 75.25 and a blank cell for 900002; zero must remain visibly zero when supplied. Signed-out request redirects to login. Capture browser requests and assert no service bearer header sent to clients. | `join` |
+| 3 | Use page actions at /capstone/class/910001/results?term=910001 using a lab staff session. With FastAPI running, show Class results, 75.25 and a blank cell for 910002; zero must remain visibly zero when supplied. Signed-out request redirects to login. Check the client/service boundary separately in the transport test. | `join` |
 | 4 | Use injected server fetch in results-service.ts, public readClassResults(classId,termId,fetcher). HTTP 503, ECONNREFUSED and a fetch exceeding 2s map to unavailable; valid 200 with [] maps to empty; successful retry maps to ready. Course harness checks the abort signal at deadline. | `failure` |
 | 5 | docs/ops/results-service.md: Running, Stopped, Restarted, Deployment. Learner visits same signed-in route in each state. Record status and visible text; stopped shows Results unavailable and Retry, restart restores 75.25. Hosted verification if deployed is self-reviewed [Q3]. | `states` |
 | 6 | http://localhost:3000/login: status 200, School username and Sign in, no sideways scroll, 44px targets. Protected results are exercised by join with a session. | `entry` |
@@ -704,13 +766,18 @@ In a scratch folder.
 3. Stop the service and time feedback.
 4. Restore it and reread.
 
+**Debugging-lab check** (`py-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`py-p5-own`). Check the slow-read deadline and a successful read after restart. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`py-p5`, version 1.0.0, no `lab:`, requires [wsl, node, git, python, supabase, lab-db, playwright])
 
 | Step id | Kind | Required | Exactly what it verifies |
 | :--- | :--- | :--- | :--- |
 | deliverables | files | yes | `src/lib/results-service.ts`, `services/results/tests/test_integration.py`, `docs/ops/results-service.md` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
-| join | tests | yes | `tests/join.test.mjs` via files. Playwright (Q4) at /capstone/class/900001/results?term=900001 using a lab staff session. With FastAPI running, show Class results, 75.25 and a blank cell for 900002; zero must remain visibly zero when supplied. Signed-out request redirects to login. Capture browser requests and assert no service bearer header sent to clients. |
+| join | page | yes | Use page actions at /capstone/class/910001/results?term=910001 using a lab staff session. With FastAPI running, show Class results, 75.25 and a blank cell for 910002; zero must remain visibly zero when supplied. Signed-out request redirects to login. Check the client/service boundary separately in the transport test. |
+| transport | tests | yes | In the local service fixture use a synthetic per-run marker for the server credential. Inspect browser requests and client responses during the joined read and fail if any carries the marker. Report only pass or fail. |
 | failure | tests | yes | `tests/failure.test.mjs` via files. Use injected server fetch in results-service.ts, public readClassResults(classId,termId,fetcher). HTTP 503, ECONNREFUSED and a fetch exceeding 2s map to unavailable; valid 200 with [] maps to empty; successful retry maps to ready. Course harness checks the abort signal at deadline. |
 | states | doc | yes | docs/ops/results-service.md: Running, Stopped, Restarted, Deployment. Learner visits same signed-in route in each state. Record status and visible text; stopped shows Results unavailable and Retry, restart restores 75.25. Hosted verification if deployed is self-reviewed [Q3]. |
 | entry | page | yes | http://localhost:3000/login: status 200, School username and Sign in, no sideways scroll, 44px targets. Protected results are exercised by join with a session. |
@@ -740,7 +807,7 @@ Module 9 and the module 2/8 calculation fixtures. WSL, Git, Node and Python 3.11
 | title | Was it worth it? |
 | module / position | 10 / 6 |
 | guidance | independent |
-| minutes | 990 |
+| minutes | `{ min: 780, max: 1200 }` |
 | gpis_part | Use identical synthetic classes, same time window and matching outputs for the original and service paths. |
 | requires | [wsl, node, git, python] |
 
@@ -753,6 +820,9 @@ After this unit you can
 3. Make a reversible decision
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with comparing the cost of keeping two desks open; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://docs.python.org/3/tutorial/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -790,7 +860,10 @@ In a scratch folder.
 
 ### Lab — Was it worth it?
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -839,6 +912,10 @@ In a scratch folder.
 2. Identify a confounder.
 3. Defend one operational cost.
 4. Explain how to reverse the decision.
+
+**Debugging-lab check** (`py-p6-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`py-p6-own`). Trace the rollback note to a named owner and a test of the public result shape. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
 
 ### Check plan (`py-p6`, version 1.0.0, no `lab:`, requires [wsl, node, git, python])
 

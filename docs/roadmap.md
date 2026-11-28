@@ -526,6 +526,17 @@ content waits for T25 and T26.
 
 ---
 
+### T35 — page step: print view
+- **Needs.** T26 and T32. Build this before writing module 3 or module 5 content.
+- **Goal.** Let a page check see the local app with its print stylesheet active.
+- **Accept.** The optional field `media: print` applies Chromium print media before the first
+  navigation and throughout the step. Omission keeps screen behaviour. Reject other values.
+  The local-origin rule, action language, sessions, time limits, cleanup and prerequisite
+  messages are the same as T26. Producing a PDF is outside the step.
+- **Tests.** Offline schema tests for omission, print and invalid values. In a real browser,
+  the same local page shows different screen and print text under each setting, including
+  after navigation. Run the existing T26 suite.
+
 ## After the roadmap
 
 Not planned here: writing the lessons for modules 3–9 and the Python track. Each module is

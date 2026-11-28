@@ -4,9 +4,9 @@
  */
 export const SITE = {
   name: "Ruftech Academy",
-  description: "Learn software engineering by rebuilding a real system.",
+  description: "Learn software engineering by building a School Management System.",
   landing: {
-    headline: "Learn software engineering by rebuilding a real system.",
+    headline: "Learn software engineering by building a School Management System.",
     start: "Start learning",
     steps: [
       "Read a lesson",

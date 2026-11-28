@@ -2,17 +2,17 @@
 
 | Unit | Title | Project | Kind | Level | Minutes | Check steps |
 | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| 9.1 | Proposal | m9-p1 | Repo | independent | 960 | 4 |
-| 9.2 | MVP specification | m9-p2 | Repo | independent | 1140 | 4 |
-| 9.3 | Implementation plan | m9-p3 | Repo | independent | 900 | 5 |
-| 9.4 | Build and review | m9-p4 | Repo | independent | 2100 | 8 |
-| 9.5 | Release and defence | m9-p5 | Repo | independent | 1140 | 5 |
+| 9.1 | Proposal | m9-p1 | Repo | independent | 780–1140 | 4 |
+| 9.2 | MVP specification | m9-p2 | Repo | independent | 900–1380 | 4 |
+| 9.3 | Implementation plan | m9-p3 | Repo | independent | 720–1080 | 5 |
+| 9.4 | Build and review | m9-p4 | Repo | independent | 1680–2520 | 8 |
+| 9.5 | Release and defence | m9-p5 | Repo | independent | 900–1380 | 5 |
 
 ## Module rules (decided here)
 
-Use only synthetic records. Check SQL against the marked practice database. Each sql step sets up its own rows, uses qualified public names, and rolls back. Use the module 4 fixtures and claims for ADMIN and ASSESSMENT. Use id 900001 upwards and names beginning ZZ. Counts are integers, money and dates are text, and lists have explicit ordering. Page checks use a learner-started app at http://localhost:3000, status 200, 360 × 780, no sideways scroll and 44px controls. Browser interaction tests (Q4) load Playwright from the project and first assert the app answers. Use separate synthetic role sessions in ignored local storage-state files, never a test bypass in the app. Independent. Deliver BOTH the Creche–JHS 2 report card and the JHS 3 results slip, plus exactly one workstream. Record teacher, fees or books as the sole word in docs/capstone/track.txt. The branch requirements below are course-sized slices of the corresponding GPIS workflows. Teacher: an active year-bound assignment gives access to the assigned class only and an ended assignment denies access. Fees: settle original-period debt with immutable exact-GHS allocations, reject overpayment and replay the same request safely. Books: sell against available stock, keep a separate ledger and receipt, and prove exactly one success for the last copy. Use a server action, database enforcement, a phone view and a refusal for the chosen slice. Documents need 25 words per named heading unless a limit is given. A pass includes a self-assessed oral defence without notes.
+Use only synthetic records. Check SQL against the marked practice database. Each sql step sets up its own rows, uses qualified public names, and rolls back. Use the module 4 fixtures and claims for ADMIN and ASSESSMENT. Use the guide §10.4 allocation table and names beginning ZZ. Counts are integers, money and dates are text, and lists have explicit ordering. Page checks use a learner-started app at http://localhost:3000, status 200, 360 × 780, no sideways scroll and 44px controls. Use local page actions for browser interactions. Use separate synthetic role sessions in ignored local storage-state files, never a test bypass in the app. Independent. Deliver BOTH the Creche–JHS 2 report card and the JHS 3 results slip, plus exactly one workstream. Record teacher, fees or books as the sole word in docs/capstone/track.txt. The branch requirements below are course-sized slices of the corresponding GPIS workflows. Teacher: an active year-bound assignment gives access to the assigned class only and an ended assignment denies access. Fees: settle original-period debt with immutable exact-GHS allocations, reject overpayment and replay the same request safely. Books: sell against available stock, keep a separate ledger and receipt, and prove exactly one success for the last copy. Use a server action, database enforcement, a phone view and a refusal for the chosen slice. Documents need 25 words per named heading unless a limit is given. A pass includes a self-assessed oral defence without notes.
 
-Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. Debugging and own builds are self-reviewed [Q1]. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
+Use the eight-step sequence, review checklist and reflection in 00-guide.md. Use text diagrams. The debugging lab and own build have separate checks. For each own build commit the variation and put the comparison in `notes/<unit-id>.md`. Read GPIS after a pass, or after a written 30-minute attempt in a half-guided unit.
 
 ## File and interface contract
 
@@ -30,7 +30,7 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 
 | Source in the read-only GPIS | Text to use |
 | :--- | :--- |
-| D-01, D-02, D-03, D-04, Q-07 | “Ties share a position; the next position skips ahead by the number of tied students.” Rank active open members in one class on subject totals. Incomplete subjects add nothing. Creche–JHS 2 uses D-01 remarks. |
+| D-01, D-02, D-03, D-04, D-10 | “Ties share a position; the next position skips ahead by the number of tied students.” Rank active open members in one class on subject totals. Incomplete subjects add nothing. Creche–JHS 2 uses D-01 remarks. |
 | D-10, D-162, D-171, D-27, D-80 | “Missing subject scores print blank”. Creche–JHS 2 CA 60 scales to 50 and exam to 50. Use stored maxima, including JHS Integrated Science out of 140. JHS 3 uses a mock sitting and CA 30 plus scaled exam 70. |
 | D-81 and D-218 | “No class position, and no D-01 remark words.” All cores and the best two electives determine raw and aggregate. Only submitted subject rows feed a result. An incomplete slip can print unofficially; an official issue needs completion. |
 | D-218, D-07, D-33, D-34 | “Reprint reproduces the issued snapshot”. Print reports through a shared portrait A4 layer. ID card sheets are the exception. |
@@ -51,7 +51,7 @@ Print the paths and the named inputs, outputs and routes from the check plan in 
 | title | Proposal |
 | module / position | 9 / 1 |
 | guidance | independent |
-| minutes | 960 |
+| minutes | `{ min: 780, max: 1140 }` |
 | gpis_part | Identify who enters, issues and reprints the report and who owns the option workflow. |
 | requires | [wsl, node, git] |
 
@@ -64,6 +64,9 @@ After this unit you can
 3. Defend two trade-offs
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with asking whom a new register will help; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -101,7 +104,10 @@ In a scratch folder.
 
 ### Lab — Proposal
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -151,6 +157,10 @@ In a scratch folder.
 3. Defend two decisions.
 4. Describe one failing outcome.
 
+**Debugging-lab check** (`m9-p1-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m9-p1-own`). Inspect the sponsor brief for a measurable outcome and the named risk. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m9-p1`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -183,7 +193,7 @@ Modules 1–8, especially 5.6, 7.4 and 8.2. WSL, Git and Node. All evidence uses
 | title | MVP specification |
 | module / position | 9 / 2 |
 | guidance | independent |
-| minutes | 1140 |
+| minutes | `{ min: 900, max: 1380 }` |
 | gpis_part | Specify 3–5 stories with role, initial state, action and visible outcome. |
 | requires | [wsl, node, git] |
 
@@ -196,6 +206,9 @@ After this unit you can
 3. Specify refusal and retry
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with agreeing what the first register must contain; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -233,7 +246,10 @@ In a scratch folder.
 
 ### Lab — MVP specification
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -283,6 +299,10 @@ In a scratch folder.
 3. Test one refusal.
 4. Explain why a red test is useful here.
 
+**Debugging-lab check** (`m9-p2-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m9-p2-own`). Trace the refusal and empty state to a testable story. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m9-p2`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -315,7 +335,7 @@ Modules 1–8, especially 5.6, 7.4 and 8.2. WSL, Git and Node. All evidence uses
 | title | Implementation plan |
 | module / position | 9 / 3 |
 | guidance | independent |
-| minutes | 900 |
+| minutes | `{ min: 720, max: 1080 }` |
 | gpis_part | Start with a proof for the riskiest dependency, then build narrow vertical slices. |
 | requires | [wsl, node, git] |
 
@@ -328,6 +348,9 @@ After this unit you can
 3. Prove order with history
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with putting school jobs in dependency order; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -365,7 +388,10 @@ In a scratch folder.
 
 ### Lab — Implementation plan
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -416,6 +442,10 @@ In a scratch folder.
 3. Recompute hours.
 4. Verify plan ancestry.
 
+**Debugging-lab check** (`m9-p3-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m9-p3-own`). Recalculate the critical delivery path after the proposed delay. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m9-p3`, version 1.0.0, no `lab:`, requires [wsl, node, git])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -450,7 +480,7 @@ Modules 1–8, especially 5.6, 7.4 and 8.2. WSL, Git and Node. All evidence uses
 | title | Build and review |
 | module / position | 9 / 4 |
 | guidance | independent |
-| minutes | 2100 |
+| minutes | `{ min: 1680, max: 2520 }` |
 | gpis_part | Rehearse Creche–JHS 2 ties and missing marks, then JHS 3 mock selection and incompleteness. |
 | requires | [wsl, node, git, supabase, lab-db, playwright] |
 
@@ -463,6 +493,9 @@ After this unit you can
 3. Verify across boundaries
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with checking one finished class report end to end; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -500,7 +533,10 @@ In a scratch folder.
 
 ### Lab — Build and review
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -509,7 +545,7 @@ In a scratch folder.
 | 1 | `src/lib/capstone/results.ts`, `src/app/capstone/page.tsx`, `docs/capstone/review.md` | `deliverables` |
 | 2 | At least one commit, no_secrets true. Include the guide’s database-URL pattern. | `history` |
 | 3 | Import buildReport and buildSlip from results.ts. Report fixture [{id,status,open,finals}] with active/open totals 90,90,80, inactive 99 and closed 100 → positions 1,1,3 only. finals [null,80] prints blank and contributes 80. Slip accepts 8.2 offerings and selected mock id: D-81 six finals → raw 426, aggregate 14; unrelated mock ignored; missing final → INCOMPLETE and NOT AVAILABLE; no position/remark. Include stored max 140 with raw 112 → 80 percent. | `core` |
-| 4 | Run node --test tests/capstone/core.test.mjs tests/capstone/track.test.mjs, require at least one executed passing case in each. Course test reads track.txt and drives chosen slice using project Playwright (Q4) and synthetic sessions. Teacher: assigned A allowed, B denied, ended assignment loses access. Fees: 6.00 applied to 4.00 then 5.00 yields 4.00 and 2.00; repeat same request keeps one receipt; overpayment refused. Books: two requests for one copy yield one completed sale and zero stock; retry winner yields same sale. Verify after reload. No public practice bypass. | `track` |
+| 4 | Run node --test tests/capstone/core.test.mjs tests/capstone/track.test.mjs, require at least one executed passing case in each. The course integration test reads track.txt and exercises the selected workstream contract with synthetic role fixtures. Teacher: assigned A allowed, B denied, ended assignment loses access. Fees: 6.00 applied to 4.00 then 5.00 yields 4.00 and 2.00; repeat same request keeps one receipt; overpayment refused. Books: two requests for one copy yield one completed sale and zero stock; retry winner yields same sale. Verify after reload. No public practice bypass. | `track` |
 | 5 | Lint, tsc and production build each exit 0. | `project` |
 | 6 | Repeat 5.6 freeze fixture, two numerical submissions for id 900001 in same term, issued document id saved before update. SELECT (old.payload=baseline.payload) AS stable,(new.id<>old.id) AS revised from scratch baseline joined to public.issued_documents by captured ids → true,true. As ASSESSMENT altering issued payload errors. Compare issued snapshot identifiers again after denied write. | `snapshots` |
 | 7 | /login at localhost:3000 shows School username and Sign in. Authenticated phone checks use track and assert a 360px layout without horizontal scrolling, 44px actions and one main action per screen. | `entry` |
@@ -554,6 +590,10 @@ In a scratch folder.
 3. Prove one refusal in the chosen track.
 4. Reprint after a correction.
 
+**Debugging-lab check** (`m9-p4-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m9-p4-own`). Replay the chosen correction; compare the old report with its stored evidence. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
+
 ### Check plan (`m9-p4`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db, playwright])
 
 | Step id | Kind | Required | Exactly what it verifies |
@@ -561,7 +601,8 @@ In a scratch folder.
 | deliverables | files | yes | `src/lib/capstone/results.ts`, `src/app/capstone/page.tsx`, `docs/capstone/review.md` |
 | history | git | yes | At least one commit, no_secrets true. Include the guide’s database-URL pattern. |
 | core | tests | yes | `tests/core.test.mjs` via files. Import buildReport and buildSlip from results.ts. Report fixture [{id,status,open,finals}] with active/open totals 90,90,80, inactive 99 and closed 100 → positions 1,1,3 only. finals [null,80] prints blank and contributes 80. Slip accepts 8.2 offerings and selected mock id: D-81 six finals → raw 426, aggregate 14; unrelated mock ignored; missing final → INCOMPLETE and NOT AVAILABLE; no position/remark. Include stored max 140 with raw 112 → 80 percent. |
-| track | tests | yes | Run node --test tests/capstone/core.test.mjs tests/capstone/track.test.mjs, require at least one executed passing case in each. Course test reads track.txt and drives chosen slice using project Playwright (Q4) and synthetic sessions. Teacher: assigned A allowed, B denied, ended assignment loses access. Fees: 6.00 applied to 4.00 then 5.00 yields 4.00 and 2.00; repeat same request keeps one receipt; overpayment refused. Books: two requests for one copy yield one completed sale and zero stock; retry winner yields same sale. Verify after reload. No public practice bypass. |
+| track | tests | yes | Run node --test tests/capstone/core.test.mjs tests/capstone/track.test.mjs, require at least one executed passing case in each. The course integration test reads track.txt and exercises the selected workstream contract with synthetic role fixtures. Teacher: assigned A allowed, B denied, ended assignment loses access. Fees: 6.00 applied to 4.00 then 5.00 yields 4.00 and 2.00; repeat same request keeps one receipt; overpayment refused. Books: two requests for one copy yield one completed sale and zero stock; retry winner yields same sale. Verify after reload. No public practice bypass. |
+| report-journey | page | yes | Use the saved practice Admin session. From the issued-document list, click the link for the original synthetic report; assert its printed score, reload, and assert it again. Return to the list, open the corrected issue and check its own score. The integration tests above cover the selected workstream's permissions, retries and concurrent writes. |
 | project | static | yes | Lint, tsc and production build each exit 0. |
 | snapshots | sql | yes | Repeat 5.6 freeze fixture, two numerical submissions for id 900001 in same term, issued document id saved before update. SELECT (old.payload=baseline.payload) AS stable,(new.id<>old.id) AS revised from scratch baseline joined to public.issued_documents by captured ids → true,true. As ASSESSMENT altering issued payload errors. Compare issued snapshot identifiers again after denied write. |
 | entry | page | yes | /login at localhost:3000 shows School username and Sign in. Authenticated phone checks use track and assert a 360px layout without horizontal scrolling, 44px actions and one main action per screen. |
@@ -594,7 +635,7 @@ Modules 1–8, especially 5.6, 7.4 and 8.2. WSL, Git and Node. All evidence uses
 | title | Release and defence |
 | module / position | 9 / 5 |
 | guidance | independent |
-| minutes | 1140 |
+| minutes | `{ min: 900, max: 1380 }` |
 | gpis_part | State the revision, staging URL, migration state and rollback target. |
 | requires | [wsl, node, git, supabase, lab-db, playwright, vercel] |
 
@@ -607,6 +648,9 @@ After this unit you can
 3. Defend scope and trade-offs
 
 ### Lesson
+
+Teach each idea below in the four layers of guide §0.1. Start with showing a finished register to the headteacher; use the technical terms and the smallest worked case from the outline next. Put longer walkthroughs in the guided example. For “Learn more”, select the relevant section of the [free reference](https://sre.google/workbook/table-of-contents/) (read · 10 min). Teach every quiz concept before the quiz.
+
 
 | Section | Key idea and small example |
 | :--- | :--- |
@@ -644,7 +688,10 @@ In a scratch folder.
 
 ### Lab — Release and defence
 
-**Start.** Run every command from `~/projects/gpis-rebuild`. Use the preceding unit’s finished work.
+Open with what the learner is building and why. Use the numbered requirements below as the steps. State the observable result of each numbered step. Fold each hint and suggest trying for 30 minutes first. End with “How to check your work”, the copyable main command and what a pass shows.
+
+
+**Start.** Run every command from `~/projects/school-system`. Use the preceding unit’s finished work.
 
 **What done means**
 
@@ -694,6 +741,10 @@ In a scratch folder.
 2. Reproduce a report without notes.
 3. Explain the rejected design.
 4. Demonstrate rollback evidence.
+
+**Debugging-lab check** (`m9-p5-debug`). Use the debugging lab’s seeded fault and fixed-state contract above as the failing and passing cases. Check the diagnosis headings and repeat the original failing input and assert the repaired outcome.
+
+**Own-build check** (`m9-p5-own`). Check the defence recording, reconsideration evidence and documented exclusion. Run it on the empty starting state and on the completed variation. Keep judgement about the learner’s explanation in the review.
 
 ### Check plan (`m9-p5`, version 1.0.0, no `lab:`, requires [wsl, node, git, supabase, lab-db, playwright, vercel])
 

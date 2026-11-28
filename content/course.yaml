@@ -9,6 +9,6 @@ modules:
   - { number: 5, slug: m5, title: "Backend and auth in Next.js", guidance: half, guidance_label: "Half guided", weeks: 7 }
   - { number: 6, slug: m6, title: "System design", guidance: half, guidance_label: "Half guided", weeks: 4 }
   - { number: 7, slug: m7, title: "Security, testing and DevOps", guidance: half, guidance_label: "Half → independent", weeks: 8 }
-  - { number: 8, slug: m8, title: "Algorithms and problem solving", guidance: half, guidance_label: "Half guided", weeks: 4 }
+  - { number: 8, slug: m8, title: "Algorithms and problem solving", guidance: half, guidance_label: "Half → independent from 8.3", weeks: 4 }
   - { number: 9, slug: m9, title: "Capstone", guidance: independent, guidance_label: Independent, weeks: 8 }
   - { number: 10, slug: py, title: "Python track", guidance: half, guidance_label: "Half → independent", weeks: 8, label: Python }
