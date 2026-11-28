@@ -7,6 +7,8 @@ import { getUnitByProject, moduleOfUnit } from "@/lib/content/load";
 import { renderMarkdown } from "@/lib/content/markdown";
 import { countItems, projectParts } from "@/lib/content/sections";
 import { formatWhen, readRuns, toRunViews } from "@/lib/check-runs/read";
+import { Deployments } from "./deployments";
+import { deploymentProjects } from "@/lib/reviews/deployment";
 import { ReviewLink } from "./review-link";
 
 type Props = { params: Promise<{ id: string }> };
@@ -55,6 +57,8 @@ export default async function ProjectPage({ params }: Props) {
       ownBuildHtml={renderMarkdown(unit.ownBuild)}
       checks={checks}
       passedNow={passedNow}
+      deployment={deploymentProjects.includes(unit.check.id) &&
+        <Deployments project={unit.check.id} owner={claims.app_metadata?.role === "owner"} supabase={supabase} />}
       review={<ReviewLink href={`/project/${unit.check.id}/review`} passed={passedNow} revisions={reviews.count ?? 0} />}
     />
   );

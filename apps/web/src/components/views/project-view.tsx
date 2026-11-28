@@ -21,6 +21,7 @@ export type ProjectViewProps = {
   passedNow: boolean;
   /** The link to the self-review (T22), given by the page. */
   review: React.ReactNode;
+  deployment?: React.ReactNode;
 };
 
 /** Project task page (mockup 04), with the checker results the CLI sent (T20). */
@@ -58,6 +59,8 @@ export function ProjectView(p: ProjectViewProps) {
           <Results runs={runs} />
         </section>
       ))}
+
+      {p.deployment}
 
       <section aria-labelledby="after-pass" className="space-y-2">
         <h2 id="after-pass" className="font-semibold">After a pass</h2>

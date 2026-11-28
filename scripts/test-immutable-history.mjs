@@ -70,10 +70,10 @@ await test("a later mistake in grants still cannot open history", async () => {
   }
 });
 
-await test("history triggers exist on exactly the three tables", async () => {
+await test("history triggers exist on exactly the five history tables", async () => {
   const found = await rows(db, `select c.relname, count(*)::int n from pg_trigger g join pg_class c on c.oid = g.tgrelid
     where g.tgfoid = 'public.forbid_history_change'::regproc and not g.tgisinternal group by 1 order by 1`);
-  assert.deepEqual(found, [{ relname: "check_runs", n: 2 }, { relname: "quiz_attempts", n: 2 }, { relname: "reviews", n: 2 }]);
+  assert.deepEqual(found, [{ relname: "check_runs", n: 2 }, { relname: "deployment_reviews", n: 2 }, { relname: "deployment_submissions", n: 2 }, { relname: "quiz_attempts", n: 2 }, { relname: "reviews", n: 2 }]);
 });
 
 await test("check_runs refuses a direct INSERT from every API role, even a perfectly valid row", async () => {

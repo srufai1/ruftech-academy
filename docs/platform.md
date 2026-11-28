@@ -96,7 +96,17 @@ flowchart TD
   classDef gate fill:#fde8e8,stroke:#b3261e,color:#4a0d0a
 ```
 
-## Data model (8 tables)
+## Deployed site review
+
+Projects 3.1, 7.4, 9.5 and the hosted extra for Python project 5 accept an HTTPS link
+to a demo with synthetic data. On the project page the learner adds a note describing
+what to try. For a private demo, arrange temporary practice access directly with the
+owner. Keep credentials out of the URL and note. The owner opens the same project page
+to see submissions and record a decision with a reason. A learner can submit a new
+demo after making changes. Earlier submissions and decisions remain visible. The local
+checker result appears separately.
+
+## Data model (10 tables)
 
 | Table | Purpose | Changes allowed |
 | :--- | :--- | :--- |
@@ -108,6 +118,8 @@ flowchart TD
 | `check_definitions` | Published check versions: project, version, file hash | Read only |
 | `check_runs` | One row per checker run received: results, commit, signature | **Insert only, through one function** |
 | `reviews` | Self-review revisions: checklist, explanation, GPIS comparison | **Insert only** (a change is a new revision) |
+| `deployment_submissions` | Learner's HTTPS demo address and note | Insert only. Visible to the learner and the owner |
+| `deployment_reviews` | Owner's verdict and reason for one demo submission | Insert only. One decision per submission |
 
 ```mermaid
 erDiagram
@@ -204,13 +216,15 @@ RLS is on for every table, with no policy until one is written (deny by default)
 | `check_definitions` | any signed-in user | never (content build only) | never | never |
 | `check_runs` | own rows | **no policy**; only `record_check_run()` inserts | never | never |
 | `reviews` | own rows | own rows | never | never |
+| `deployment_submissions` | submitting learner and owner | signed-in learner | never | never |
+| `deployment_reviews` | submitting learner and owner | owner only | never | never |
 
-"Own" always means `user_id = auth.uid()`. The content build runs as a migration-style script
+The learner identity comes from `auth.uid()`. The content build runs as a migration-style script
 with the database owner's connection, from the developer's machine or CI, never from `src/`.
 
 ### Immutable attempts
 
-`quiz_attempts`, `check_runs` and `reviews` are history. Three layers keep them unchanged:
+Quiz attempts, check runs, self-reviews, demo submissions and deployment reviews are history. Three layers keep them unchanged:
 
 1. **Privileges:** `UPDATE` and `DELETE` are not granted to `authenticated` on these tables.
 2. **Policies:** there is no update or delete policy.
@@ -256,7 +270,7 @@ ruftech-academy/
 | :--- | :--- |
 | Hosted terminals, sandboxes, in-browser editor | ADR-3; the learner's own terminal and VS Code |
 | AI tutor, chat, RAG | ADR-3 |
-| Cohorts, teams, mentors, review queues, peer review | One learner; self-review only (ADR-5) |
+| Cohorts, teams, mentors, review queues, peer review | Self-study with an owner review for deployed demos |
 | Admin screens and a content editor | Content is files in the repo, changed with Git |
 | Payments, certificates, badges, leaderboards | Not needed to learn |
 | Analytics dashboards, weekly reports, recommendations | One progress page is enough |

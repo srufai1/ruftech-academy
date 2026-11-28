@@ -10,14 +10,14 @@ import assert from "node:assert/strict";
 import { as, createUser, expectRefused, freshDatabase, migrationFiles, rows, runner } from "./lib/pglite-schema.mjs";
 import { seed } from "./lib/schema-fixtures.mjs";
 
-const TABLES = ["profiles", "content_items", "progress", "quiz_attempts", "devices", "check_definitions", "check_runs", "reviews"];
+const TABLES = ["profiles", "content_items", "progress", "quiz_attempts", "devices", "check_definitions", "check_runs", "reviews", "deployment_submissions", "deployment_reviews"];
 const OWNED = { progress: "user_id", quiz_attempts: "user_id", devices: "user_id", check_runs: "user_id", reviews: "user_id", profiles: "id" };
 
 const db = await freshDatabase();
 const f = await seed(db);
 const { test, done } = runner("Schema and RLS");
 
-await test("the eight tables of platform.md exist, and nothing else", async () => {
+await test("the ten tables of platform.md exist, and nothing else", async () => {
   const found = (await rows(db, `select c.relname from pg_class c join pg_namespace n on n.oid = c.relnamespace
     where n.nspname = 'public' and c.relkind in ('r', 'p') order by 1`)).map((r) => r.relname);
   assert.deepEqual(found, [...TABLES].sort());
@@ -52,6 +52,8 @@ await test("the service role has no privilege either (the app never uses it)", a
 
 // What a signed-in learner holds, table by table. Column lists are exact.
 const MATRIX = {
+  deployment_reviews: { select: true, insert: ["confirmed", "reason", "submission_id"], update: [], delete: false },
+  deployment_submissions: { select: true, insert: ["address", "item_slug", "note"], update: [], delete: false },
   profiles: { select: true, insert: [], update: ["full_name", "time_zone"], delete: false },
   content_items: { select: true, insert: [], update: [], delete: false },
   check_definitions: { select: true, insert: [], update: [], delete: false },
@@ -82,7 +84,8 @@ await test("privilege matrix: a signed-in learner holds exactly the listed right
 await test("policies: one per allowed action, for signed-in users only; none allows delete", async () => {
   const found = (await rows(db, `select tablename || ':' || cmd k, roles::text r from pg_policies where schemaname = 'public' order by 1`));
   assert.deepEqual(found.map((p) => p.k), [
-    "check_definitions:SELECT", "check_runs:SELECT", "content_items:SELECT", "devices:SELECT", "devices:UPDATE",
+    "check_definitions:SELECT", "check_runs:SELECT", "content_items:SELECT",
+    "deployment_reviews:INSERT", "deployment_reviews:SELECT", "deployment_submissions:INSERT", "deployment_submissions:SELECT", "devices:SELECT", "devices:UPDATE",
     "profiles:SELECT", "profiles:UPDATE", "progress:INSERT", "progress:SELECT", "progress:UPDATE",
     "quiz_attempts:INSERT", "quiz_attempts:SELECT", "reviews:INSERT", "reviews:SELECT",
   ]);

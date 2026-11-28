@@ -43,9 +43,11 @@ In Supabase → SQL Editor, run each file **whole**, in this order. Each one onl
 | 6 | `supabase/migrations/0006_register_device.sql` | `register_device()` for `academy login` |
 | 7 | `supabase/migrations/0007_record_check_run.sql` | `record_check_run()` and the private key table |
 | 8 | `supabase/migrations/0008_named_checks.sql` | Extra checks per unit (debugging lab, own build, Docker) — T27 |
+| 9 | `supabase/migrations/0009_deployment_reviews.sql` | Deployed site submissions and owner decisions — T31 |
 
-> On the current project all eight (0001–0008) are **applied** (28 November 2026). Run them only for a new project. A future migration `0008_…` is run the
-> same way, after testing it on your computer.
+> On the current project all eight (0001–0008) are **applied** (28 November 2026). Run them only for a new project. Apply 0009 when enabling deployed site reviews. In Supabase Auth, assign the trusted
+> `app_metadata.role` value `owner` only to the academy owner's account using the Auth admin
+> interface. The owner must sign in again to receive the updated claim.
 
 **Check:** in the SQL Editor —
 
@@ -53,7 +55,7 @@ In Supabase → SQL Editor, run each file **whole**, in this order. Each one onl
 select count(*) as tables from pg_tables where schemaname = 'public';
 ```
 
-Expected: `8`.
+Expected after 0009: `10`.
 
 ---
 
